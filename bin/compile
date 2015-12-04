@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# bin/compile <build-dir> <cache-dir>
+
+set -e
+set -o pipefail
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+DEFAULT_SWIFT_VERSION="swift-2.2-SNAPSHOT-2015-12-01-b"
+
+if [ -f $BUILD_DIR/.swift-version ]; then
+  SWIFT_VERSION=$(cat $BUILD_DIR/.swift-version)
+else
+  SWIFT_VERSION=$DEFAULT_SWIFT_VERSION
+fi
+
+mkdir -p $CACHE_DIR
+
+if [[ ! -d "$CACHE_DIR/$SWIFT_VERSION" ]]; then
+  cd $CACHE_DIR
+  echo "-----> Installing $SWIFT_VERSION"
+  mkdir -p $SWIFT_VERSION
+  curl https://swift.org/builds/ubuntu1404/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04.tar.gz -s | tar xz -C $SWIFT_VERSION &> /dev/null
+fi
+
+export PATH="$CACHE_DIR/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04/usr/bin:$PATH"
+
+cd $BUILD_DIR
+echo "-----> Building Package"
+swift build --configuration release
+
+echo "-----> Copying binaries to 'bin'"
+mkdir -p $BUILD_DIR/bin
+find $BUILD_DIR/.build/release -type f -perm /a+x -exec cp {} $BUILD_DIR/bin \;
