@@ -41,6 +41,4 @@ cd $BUILD_DIR
 echo "-----> Building Package"
 swift build --configuration release
 
-echo "-----> Copying binaries to 'bin'"
-mkdir -p $BUILD_DIR/bin
-find $BUILD_DIR/.build/release -type f -perm /a+x -exec cp {} $BUILD_DIR/bin \;
+ln -s .build/release bin
