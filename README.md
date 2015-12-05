@@ -32,11 +32,10 @@ the root.
 ### Procfile
 
 Using the Procfile, you can set the process to run for your web server. Any
-binaries built from your Swift source using SPM will be placed inside the `bin`
-directory.
+binaries built from your Swift source using SPM will be placed in your $PATH.
 
 ```swift
-web: bin/HelloWorld --workers 3 --bind 0.0.0.0:$PORT
+web: HelloWorld --workers 3 --bind 0.0.0.0:$PORT
 ```
 
 ### Specify a Swift version

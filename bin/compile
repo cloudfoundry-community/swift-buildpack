@@ -47,5 +47,16 @@ mkdir -p $BUILD_DIR/.swift-lib
 cp $SWIFT_DIR/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
 
 echo "-----> Copying binaries to 'bin'"
-mkdir -p $BUILD_DIR/bin
-find $BUILD_DIR/.build/release -type f -perm /a+x -exec cp {} $BUILD_DIR/bin \;
+mkdir -p $BUILD_DIR/.swift-bin
+find $BUILD_DIR/.build/release -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-bin \;
+
+cp -n ${LP_DIR}/.profile.d/* .profile.d/
+export PATH=$PATH:/app/vendor/swift/usr/bin
+
+PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
+# Usage: $ set-env key value
+set-env() {
+  echo "export $1=$2" >> $PROFILE_PATH
+}
+set-env PATH '$HOME/.swift-bin:$PATH'
+set-env LD_LIBRARY_PATH '$HOME/.swift-lib'
