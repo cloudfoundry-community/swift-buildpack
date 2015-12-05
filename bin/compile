@@ -50,11 +50,9 @@ echo "-----> Copying binaries to 'bin'"
 mkdir -p $BUILD_DIR/.swift-bin
 find $BUILD_DIR/.build/release -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-bin \;
 
-cp -n ${LP_DIR}/.profile.d/* .profile.d/
-export PATH=$PATH:/app/vendor/swift/usr/bin
-
+# Setup application environment
 PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
-# Usage: $ set-env key value
+mkdir -p $BUILD_DIR/.profile.d
 set-env() {
   echo "export $1=$2" >> $PROFILE_PATH
 }
