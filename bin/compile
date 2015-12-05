@@ -8,6 +8,7 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 
 DEFAULT_SWIFT_VERSION="swift-2.2-SNAPSHOT-2015-12-01-b"
+CLANG_VERSION=3.7.0
 
 if [ -f $BUILD_DIR/.swift-version ]; then
   SWIFT_VERSION=$(cat $BUILD_DIR/.swift-version)
@@ -24,7 +25,14 @@ if [[ ! -d "$CACHE_DIR/$SWIFT_VERSION" ]]; then
   curl https://swift.org/builds/ubuntu1404/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04.tar.gz -s | tar xz -C $SWIFT_VERSION &> /dev/null
 fi
 
-export PATH="$CACHE_DIR/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04/usr/bin:$PATH"
+if [[ ! -d "$CACHE_DIR/clang-$CLANG_VERSION" ]]; then
+  cd $CACHE_DIR
+  echo "-----> Installing clang-$CLANG_VERSION"
+  mkdir -p "clang-$CLANG_VERSION"
+  curl http://llvm.org/releases/$CLANG_VERSION/clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04.tar.xz -s | xz -d -c | tar x -C clang-$CLANG_VERSION &> /dev/null
+fi
+
+export PATH="$CACHE_DIR/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04/usr/bin:$CACHE_DIR/clang-$CLANG_VERSION/clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04/bin:$PATH"
 
 cd $BUILD_DIR
 echo "-----> Building Package"
