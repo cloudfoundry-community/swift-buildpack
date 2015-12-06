@@ -2,7 +2,7 @@
 
 This is a Heroku buildpack for Swift app, powered by SPM (Swift Package Manager).
 
-Check out the [Currasow-example-helloworld](https://github.com/kylef/Currasow-example-helloworld)
+Check out the [Curassow-example-helloworld](https://github.com/kylef/Curassow-example-helloworld)
 for a fully working example that can be deployed to Heroku.
 
 ## Usage
