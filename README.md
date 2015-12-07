@@ -43,6 +43,20 @@ swift-2.2-SNAPSHOT-2015-12-01-b
 
 **NOTE**: *Since there are frequent Swift language changes, it's advised that you pin to your Swift version.*
 
+### Debugging
+
+If the buildpack preparation or compilation steps are failing then you can enable some debugging:
+
+```
+cf set-env <appname> BP_DEBUG 1
+```
+
+To deactivate:
+
+```
+cf unset-env <appname> BP_DEBUG
+```
+
 Packaging
 ---------
 
