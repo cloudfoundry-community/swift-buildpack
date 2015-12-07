@@ -54,7 +54,7 @@ mkdir -p $CLANG_NAME_VERSION
 compiled_tgz=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
 echo "Downloaded Clang" | indent
 
-xz -d -c $compiled_xz | tar x -C $CLANG_NAME_VERSION &> /dev/null
+xz -d -c --files=$compiled_xz | tar x -C $CLANG_NAME_VERSION &> /dev/null
 CLANG_PATH=$PWD/$(echo $CLANG_NAME_VERSION/clang*)
 
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
