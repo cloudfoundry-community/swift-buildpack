@@ -36,36 +36,29 @@ mkdir -p $CACHE_DIR
 SWIFT_DIR=$BUILD_DIR/.swift
 mkdir -p $SWIFT_DIR
 
-if [[ ! -d "$SWIFT_DIR/$SWIFT_VERSION" ]]; then
-  cd $SWIFT_DIR
-  status "Installing Swift $SWIFT_VERSION"
-  mkdir -p $SWIFT_NAME_VERSION
+cd $SWIFT_DIR
+status "Installing Swift $SWIFT_VERSION"
+mkdir -p $SWIFT_NAME_VERSION
 
-  compiled_tgz=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp)
-  echo "Downloaded Swift [$compiled_tgz]" | indent
+compiled_tgz=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp)
+echo "Downloaded Swift" | indent
 
-  if [[ "${BP_DEBUG}X" == "X" ]]; then
-    tar xz -C $SWIFT_NAME_VERSION -f $compiled_tgz &> /dev/null
-  else
-    tar xz -C $SWIFT_NAME_VERSION -f $compiled_tgz
-  fi
+tar xz -C $SWIFT_NAME_VERSION -f $compiled_tgz
+SWIFT_PATH=$PWD/$(echo $SWIFT_NAME_VERSION/swift*)
+echo $SWIFT_PATH
 
-  ls -al $SWIFT_NAME_VERSION/
-fi
+cd $CACHE_DIR
+status "Installing Clang $CLANG_VERSION"
+mkdir -p $CLANG_NAME_VERSION
 
-if [[ ! -d "$CACHE_DIR/clang-$CLANG_VERSION" ]]; then
-  cd $CACHE_DIR
-  status "Installing Clang $CLANG_VERSION"
-  mkdir -p $CLANG_NAME_VERSION
+compiled_tgz=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
+echo "Downloaded Clang" | indent
 
-  compiled_tgz=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
-  echo "Downloaded Clang [$compiled_tgz]" | indent
+xz -d -c $compiled_xz | tar x -C $CLANG_NAME_VERSION &> /dev/null
+CLANG_PATH=$PWD/$(echo $CLANG_NAME_VERSION/clang*)
 
-  xz -d -c $compiled_xz | tar x -C $CLANG_NAME_VERSION &> /dev/null | indent
-  ls -al $CLANG_NAME_VERSION/
-fi
-
-export PATH="$SWIFT_DIR/$SWIFT_NAME_VERSION/$SWIFT_NAME_VERSION-ubuntu14.04/usr/bin:$CACHE_DIR/$CLANG_NAME_VERSION/clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04/bin:$PATH"
+export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
+echo $PATH
 
 cd $BUILD_DIR
 echo "-----> Building Package"
@@ -74,7 +67,7 @@ swift build --configuration release
 # These should be statically linked, seems a swift bug
 echo "-----> Copying dynamic libraries"
 mkdir -p $BUILD_DIR/.swift-lib
-cp $SWIFT_DIR/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
+cp $SWIFT_DIR/$SWIFT_VERSION/$SWIFT_NAME_VERSION*/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
 
 echo "-----> Copying binaries to 'bin'"
 mkdir -p $BUILD_DIR/.swift-bin
