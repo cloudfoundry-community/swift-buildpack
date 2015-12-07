@@ -15,6 +15,8 @@ if [ -f $BUILD_DIR/.swift-version ]; then
 else
   SWIFT_VERSION=$DEFAULT_SWIFT_VERSION
 fi
+SWIFT_NAME_VERSION="swift-${SWIFT_VERSION}"
+CLANG_NAME_VERSION="clang-${CLANG_VERSION}"
 
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
@@ -33,28 +35,31 @@ mkdir -p $SWIFT_DIR
 if [[ ! -d "$SWIFT_DIR/$SWIFT_VERSION" ]]; then
   cd $SWIFT_DIR
   status "Installing Swift $SWIFT_VERSION"
-  mkdir -p $SWIFT_VERSION
+  mkdir -p $SWIFT_NAME_VERSION
 
-  translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency swift-$SWIFT_VERSION.tar.gz /tmp)
+  translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp)
   echo "Downloaded Swift [$translated_url]" | indent
-  compiled_tgz="/tmp/swift-$SWIFT_VERSION.tgz"
+  compiled_tgz="/tmp/$SWIFT_NAME_VERSION.tgz"
 
-  tar xz -C $compiled_tgz &> /dev/null | indent
+  tar xz -C $SWIFT_NAME_VERSION $compiled_tgz &> /dev/null | indent
+
+  ls -al $SWIFT_NAME_VERSION/
 fi
 
 if [[ ! -d "$CACHE_DIR/clang-$CLANG_VERSION" ]]; then
   cd $CACHE_DIR
   status "Installing Clang $CLANG_VERSION"
-  mkdir -p "clang-$CLANG_VERSION"
+  mkdir -p $CLANG_NAME_VERSION
 
-  translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency clang-$CLANG_VERSION.tar.xz /tmp)
+  translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
   echo "Downloaded Clang [$translated_url]" | indent
-  compiled_xz="/tmp/clang-$CLANG_VERSION.xz"
+  compiled_xz="/tmp/$CLANG_NAME_VERSION.xz"
 
-  xz -d -c $compiled_xz | tar x -C clang-$CLANG_VERSION &> /dev/null | indent
+  xz -d -c $compiled_xz | tar x -C $CLANG_NAME_VERSION &> /dev/null | indent
+  ls -al $CLANG_NAME_VERSION/
 fi
 
-export PATH="$SWIFT_DIR/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04/usr/bin:$CACHE_DIR/clang-$CLANG_VERSION/clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04/bin:$PATH"
+export PATH="$SWIFT_DIR/$SWIFT_NAME_VERSION/$SWIFT_NAME_VERSION-ubuntu14.04/usr/bin:$CACHE_DIR/$CLANG_NAME_VERSION/clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04/bin:$PATH"
 
 cd $BUILD_DIR
 echo "-----> Building Package"
