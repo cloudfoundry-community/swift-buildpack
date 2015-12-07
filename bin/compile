@@ -45,7 +45,6 @@ echo "Downloaded Swift" | indent
 
 tar xz -C $SWIFT_NAME_VERSION -f $compiled_tgz
 SWIFT_PATH=$PWD/$(echo $SWIFT_NAME_VERSION/swift*)
-echo $SWIFT_PATH
 
 cd $CACHE_DIR
 status "Installing Clang $CLANG_VERSION"
@@ -58,7 +57,6 @@ xz -d -c --files=$compiled_xz | tar x -C $CLANG_NAME_VERSION &> /dev/null
 CLANG_PATH=$PWD/$(echo $CLANG_NAME_VERSION/clang*)
 
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
-echo $PATH
 
 cd $BUILD_DIR
 echo "-----> Building Package"
