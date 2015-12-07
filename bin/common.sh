@@ -1,10 +1,10 @@
 error() {
-  echo " !     $*" >&2
+  echo " !       $*" >&2
   exit 1
 }
 
 status() {
-  echo "-----> $*"
+  echo "-------> $*"
 }
 
 protip() {
@@ -23,7 +23,7 @@ protip() {
 # so you get updates while the command runs and dont wait for the end
 # e.g. npm install | indent
 indent() {
-  c='s/^/       /'
+  c='s/^/         /'
   case $(uname) in
     Darwin) sed -l "$c";; # mac/bsd sed: -l buffers on line boundaries
     *)      sed -u "$c";; # unix/gnu sed: -u unbuffered (arbitrary) chunks of data

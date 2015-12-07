@@ -7,6 +7,8 @@ set -o pipefail
 BUILD_DIR=$1
 CACHE_DIR=$2
 
+BP_DEBUG=1
+
 DEFAULT_SWIFT_VERSION="swift-2.2-SNAPSHOT-2015-12-01-b"
 CLANG_VERSION=3.7.0
 
@@ -32,11 +34,11 @@ mkdir -p $SWIFT_DIR
 
 if [[ ! -d "$SWIFT_DIR/$SWIFT_VERSION" ]]; then
   cd $SWIFT_DIR
-  echo "-----> Installing $SWIFT_VERSION"
+  status "Installing $SWIFT_VERSION"
   mkdir -p $SWIFT_VERSION
 
   translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency swift-$SWIFT_VERSION.tgz /tmp)
-  status "Downloaded Swift [$translated_url]"
+  indent "Downloaded Swift [$translated_url]"
   compiled_tgz="/tmp/swift-$SWIFT_VERSION.tgz"
 
   tar xz -C $compiled_tgz &> /dev/null | indent
@@ -44,11 +46,11 @@ fi
 
 if [[ ! -d "$CACHE_DIR/clang-$CLANG_VERSION" ]]; then
   cd $CACHE_DIR
-  echo "-----> Installing clang-$CLANG_VERSION"
+  status "Installing clang-$CLANG_VERSION"
   mkdir -p "clang-$CLANG_VERSION"
 
   translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency clang-$CLANG_VERSION.xz /tmp)
-  status "Downloaded Clang [$translated_url]"
+  indent "Downloaded Clang [$translated_url]"
   compiled_xz="/tmp/clang-$CLANG_VERSION.xz"
 
   xz -d -c $compiled_xz | tar x -C clang-$CLANG_VERSION &> /dev/null | indent
