@@ -36,7 +36,7 @@ if [[ ! -d "$SWIFT_DIR/$SWIFT_VERSION" ]]; then
   mkdir -p $SWIFT_VERSION
 
   translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency swift-$SWIFT_VERSION.tar.gz /tmp)
-  indent "Downloaded Swift [$translated_url]"
+  echo "Downloaded Swift [$translated_url]" | indent
   compiled_tgz="/tmp/swift-$SWIFT_VERSION.tgz"
 
   tar xz -C $compiled_tgz &> /dev/null | indent
@@ -48,7 +48,7 @@ if [[ ! -d "$CACHE_DIR/clang-$CLANG_VERSION" ]]; then
   mkdir -p "clang-$CLANG_VERSION"
 
   translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency clang-$CLANG_VERSION.tar.xz /tmp)
-  indent "Downloaded Clang [$translated_url]"
+  echo "Downloaded Clang [$translated_url]" | indent
   compiled_xz="/tmp/clang-$CLANG_VERSION.xz"
 
   xz -d -c $compiled_xz | tar x -C clang-$CLANG_VERSION &> /dev/null | indent
