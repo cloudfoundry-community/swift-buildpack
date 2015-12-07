@@ -37,7 +37,7 @@ if [[ ! -d "$SWIFT_DIR/$SWIFT_VERSION" ]]; then
   status "Installing Swift $SWIFT_VERSION"
   mkdir -p $SWIFT_VERSION
 
-  translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency swift-$SWIFT_VERSION.tgz /tmp)
+  translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency swift-$SWIFT_VERSION.tar.gz /tmp)
   indent "Downloaded Swift [$translated_url]"
   compiled_tgz="/tmp/swift-$SWIFT_VERSION.tgz"
 
@@ -49,7 +49,7 @@ if [[ ! -d "$CACHE_DIR/clang-$CLANG_VERSION" ]]; then
   status "Installing Clang $CLANG_VERSION"
   mkdir -p "clang-$CLANG_VERSION"
 
-  translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency clang-$CLANG_VERSION.xz /tmp)
+  translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency clang-$CLANG_VERSION.tar.xz /tmp)
   indent "Downloaded Clang [$translated_url]"
   compiled_xz="/tmp/clang-$CLANG_VERSION.xz"
 
