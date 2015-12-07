@@ -2,11 +2,10 @@
 language: swift
 
 url_to_dependency_map:
-  # swift-2.2-SNAPSHOT-2015-12-01-b-ubuntu14.04.tar.gz
-  - match: swift-(.*)-SNAPSHOT-(.*)-ubuntu14.04.tar.gz
+  - match: swift-(.*).tar.gz
     name: swift
     version: $1
-  - match: clang+llvm-(.*)-x86_64-linux-gnu-ubuntu-14.04.tar.xz
+  - match: clang-(.*).tar.xz
     name: clang
     version: $1
 

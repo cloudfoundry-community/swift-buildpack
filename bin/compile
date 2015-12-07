@@ -16,6 +16,15 @@ else
   SWIFT_VERSION=$DEFAULT_SWIFT_VERSION
 fi
 
+compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
+compile_buildpack_bin=$compile_buildpack_dir/bin
+$compile_buildpack_dir/compile-extensions/bin/check_stack_support
+
+# Load some convenience functions like status(), echo(), and indent()
+source $compile_buildpack_dir/bin/common.sh
+
+BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-extensions/lib/common
+
 mkdir -p $CACHE_DIR
 
 SWIFT_DIR=$BUILD_DIR/.swift
@@ -25,14 +34,24 @@ if [[ ! -d "$SWIFT_DIR/$SWIFT_VERSION" ]]; then
   cd $SWIFT_DIR
   echo "-----> Installing $SWIFT_VERSION"
   mkdir -p $SWIFT_VERSION
-  curl https://swift.org/builds/ubuntu1404/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04.tar.gz -s | tar xz -C $SWIFT_VERSION &> /dev/null
+
+  translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency swift-$SWIFT_VERSION.tgz /tmp)
+  status "Downloaded Swift [$translated_url]"
+  compiled_tgz="/tmp/swift-$SWIFT_VERSION.tgz"
+
+  tar xz -C $compiled_tgz &> /dev/null | indent
 fi
 
 if [[ ! -d "$CACHE_DIR/clang-$CLANG_VERSION" ]]; then
   cd $CACHE_DIR
   echo "-----> Installing clang-$CLANG_VERSION"
   mkdir -p "clang-$CLANG_VERSION"
-  curl http://llvm.org/releases/$CLANG_VERSION/clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04.tar.xz -s | xz -d -c | tar x -C clang-$CLANG_VERSION &> /dev/null
+
+  translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency clang-$CLANG_VERSION.xz /tmp)
+  status "Downloaded Clang [$translated_url]"
+  compiled_xz="/tmp/clang-$CLANG_VERSION.xz"
+
+  xz -d -c $compiled_xz | tar x -C clang-$CLANG_VERSION &> /dev/null | indent
 fi
 
 export PATH="$SWIFT_DIR/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04/usr/bin:$CACHE_DIR/clang-$CLANG_VERSION/clang+llvm-$CLANG_VERSION-x86_64-linux-gnu-ubuntu-14.04/bin:$PATH"
