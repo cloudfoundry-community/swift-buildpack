@@ -1,0 +1,25 @@
+echo "-------> Buildpack version $(cat $BUILDPACK_PATH/VERSION)"
+
+install_python() {
+    cache=$(cd "$1/" && pwd)
+    export PYTHONHOME=$cache/python
+    export PATH=$PYTHONHOME/bin:$PATH
+
+    if test -d $PYTHONHOME
+    then
+        echo "-----> Python 2.7.6 already installed"
+    else
+        echo -n "-----> Installing Python 2.7.6..."
+        ${BUILDPACK_PATH}/builds/runtimes/python-2.7.6 $PYTHONHOME > /dev/null 2>&1
+        echo "done"
+    fi
+}
+
+translate_dependency_url() {
+    ${BUILDPACK_PATH}/compile-extensions/bin/translate_dependency_url $1
+}
+
+is_cached() {
+    ${BUILDPACK_PATH}/compile-extensions/bin/is_cached
+    return $?
+}

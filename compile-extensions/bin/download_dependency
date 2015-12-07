@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << File.expand_path('../../lib', __FILE__)
+require 'yaml'
+require 'compile_extensions'
+require 'digest'
+require 'fileutils'
+
+original_url      = ARGV[0]
+install_directory = ARGV[1]
+file_location     = File.join(install_directory, original_url.split('/').last)
+manifest_location = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "manifest.yml"))
+cache_path        = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'dependencies'))
+manifest          = YAML.load_file(manifest_location)
+dependencies      = CompileExtensions::Dependencies.new(manifest)
+translated_uri    = dependencies.find_translated_url(original_url)
+dependency_md5    = dependencies.find_md5(original_url)
+
+if translated_uri.nil?
+  puts "DEPENDENCY_MISSING_IN_MANIFEST: #{original_url}"
+  exit 1
+end
+
+if File.exist? cache_path
+  file_path = File.join(cache_path, translated_uri.gsub(/[\/:]/, '_'))
+  translated_uri = "file://#{file_path}"
+end
+
+`curl -s #{translated_uri} -o #{file_location}`
+generated_md5 = Digest::MD5.file(file_location).hexdigest
+
+puts translated_uri
+if ENV['BP_DEBUG']
+  STDERR.puts "DEBUG: #{File.basename(__FILE__)}: #{translated_uri}"
+end
+
+if dependency_md5 == generated_md5
+  exit 0
+else
+  FileUtils.rm(file_location)
+  exit 3
+end

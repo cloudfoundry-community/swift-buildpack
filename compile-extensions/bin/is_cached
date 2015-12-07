@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+cache_path = File.join(ENV['BUILDPACK_PATH'],'dependencies')
+
+exit 1 unless File.exist? cache_path

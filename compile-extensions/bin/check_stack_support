@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+manifest_path = File.join(File.dirname(__FILE__), '..', '..', 'manifest.yml')
+manifest = YAML.load_file(manifest_path)
+dependency = manifest['dependencies'].find do |dependency|
+  dependency['cf_stacks'].include?(ENV['CF_STACK'])
+end
+
+unless dependency
+  warn <<-HELPFUL_MESSAGE
+It looks like you're deploying on a stack (currently set to *#{ENV['CF_STACK'] || 'lucid64'}*) that's not supported by this buildpack.
+That could be because you're using a recent buildpack release on a deprecated stack.
+If you're using the buildpack installed by your CF admin, please let your admin know you saw this error message.
+If you at one point specified a buildpack that's at git URL, please make sure you're pointed at a version that supports this stack.
+  HELPFUL_MESSAGE
+
+  exit 44
+end
