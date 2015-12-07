@@ -41,7 +41,8 @@ generated_md5 = Digest::MD5.file(file_location).hexdigest
 
 puts translated_uri
 if ENV['BP_DEBUG']
-  STDERR.puts "DEBUG: #{File.basename(__FILE__)}: #{translated_uri}"
+  STDERR.puts "DEBUG: generated_md5 '#{generated_md5}'"
+  `ls -al #{file_location}`
 end
 
 if dependency_md5 == generated_md5
