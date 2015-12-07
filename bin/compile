@@ -4,6 +4,10 @@
 set -e
 set -o pipefail
 
+if [[ "${BP_DEBUG}X" != "X" ]]; then
+  set -x # show all commands
+fi
+
 BUILD_DIR=$1
 CACHE_DIR=$2
 
