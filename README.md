@@ -57,6 +57,19 @@ To deactivate:
 cf unset-env <appname> BP_DEBUG
 ```
 
+Admin installation
+------------------
+
+```
+cf create-buildpack swift_buildpack swift_buildpack-cached-v1.0.0.zip 10
+```
+
+Or to update:
+
+```
+cf create-buildpack swift_buildpack swift_buildpack-cached-v1.0.0.zip 10
+```
+
 Packaging
 ---------
 

@@ -56,15 +56,15 @@ CLANG_PATH=$PWD/$(echo $CLANG_NAME_VERSION/clang*)
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
 cd $BUILD_DIR
-echo "-----> Building Package"
+status "Building Package"
 swift build --configuration release
 
 # These should be statically linked, seems a swift bug
-echo "-----> Copying dynamic libraries"
+status "Copying dynamic libraries"
 mkdir -p $BUILD_DIR/.swift-lib
 cp $SWIFT_PATH/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
 
-echo "-----> Copying binaries to 'bin'"
+status "Copying binaries to 'bin'"
 mkdir -p $BUILD_DIR/.swift-bin
 find $BUILD_DIR/.build/release -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-bin \;
 
