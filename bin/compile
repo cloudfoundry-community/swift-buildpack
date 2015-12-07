@@ -41,11 +41,14 @@ if [[ ! -d "$SWIFT_DIR/$SWIFT_VERSION" ]]; then
   status "Installing Swift $SWIFT_VERSION"
   mkdir -p $SWIFT_NAME_VERSION
 
-  translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp)
-  echo "Downloaded Swift [$translated_url]" | indent
-  compiled_tgz="/tmp/$SWIFT_NAME_VERSION.tar.gz"
+  compiled_tgz=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp)
+  echo "Downloaded Swift [$compiled_tgz]" | indent
 
-  tar xz -C $SWIFT_NAME_VERSION $compiled_tgz &> /dev/null | indent
+  if [[ "${BP_DEBUG}X" == "X" ]]; then
+    tar xz -C $SWIFT_NAME_VERSION $compiled_tgz &> /dev/null
+  else
+    tar xz -C $SWIFT_NAME_VERSION $compiled_tgz
+  fi
 
   ls -al $SWIFT_NAME_VERSION/
 fi
@@ -55,9 +58,8 @@ if [[ ! -d "$CACHE_DIR/clang-$CLANG_VERSION" ]]; then
   status "Installing Clang $CLANG_VERSION"
   mkdir -p $CLANG_NAME_VERSION
 
-  translated_url=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
-  echo "Downloaded Clang [$translated_url]" | indent
-  compiled_xz="/tmp/$CLANG_NAME_VERSION.tar.xz"
+  compiled_tgz=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
+  echo "Downloaded Clang [$compiled_tgz]" | indent
 
   xz -d -c $compiled_xz | tar x -C $CLANG_NAME_VERSION &> /dev/null | indent
   ls -al $CLANG_NAME_VERSION/

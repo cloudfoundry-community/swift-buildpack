@@ -39,7 +39,8 @@ end
 `curl -s #{translated_uri} -o #{file_location}`
 generated_md5 = Digest::MD5.file(file_location).hexdigest
 
-puts translated_uri
+puts file_location
+debug "DEBUG: translated_uri '#{translated_uri}'"
 debug "DEBUG: generated_md5 '#{generated_md5}'"
 
 if dependency_md5 == generated_md5
