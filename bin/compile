@@ -57,7 +57,7 @@ export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
 cd $BUILD_DIR
 status "Building Package"
-swift build --configuration release
+swift build --configuration release | indent
 
 # These should be statically linked, seems a swift bug
 status "Copying dynamic libraries"
