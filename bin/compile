@@ -50,7 +50,7 @@ status "Installing Clang $CLANG_VERSION"
 mkdir -p $CLANG_NAME_VERSION
 dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
 echo "Downloaded Clang" | indent
-xz -d -c --files=$dependency | tar x -C $CLANG_NAME_VERSION &> /dev/null
+echo $dependency | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
 CLANG_PATH=$PWD/$(echo $CLANG_NAME_VERSION/clang*)
 
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
