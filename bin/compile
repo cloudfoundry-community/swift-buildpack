@@ -45,9 +45,9 @@ if [[ ! -d "$SWIFT_DIR/$SWIFT_VERSION" ]]; then
   echo "Downloaded Swift [$compiled_tgz]" | indent
 
   if [[ "${BP_DEBUG}X" == "X" ]]; then
-    tar xz -C $SWIFT_NAME_VERSION $compiled_tgz &> /dev/null
+    tar xz -C $SWIFT_NAME_VERSION -f $compiled_tgz &> /dev/null
   else
-    tar xz -C $SWIFT_NAME_VERSION $compiled_tgz
+    tar xz -C $SWIFT_NAME_VERSION -f $compiled_tgz
   fi
 
   ls -al $SWIFT_NAME_VERSION/
