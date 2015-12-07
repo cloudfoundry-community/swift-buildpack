@@ -8,6 +8,11 @@ require 'fileutils'
 
 original_url      = ARGV[0]
 install_directory = ARGV[1]
+
+if ENV['BP_DEBUG']
+  STDERR.puts "DEBUG: download ${original_url} to ${install_directory}"
+end
+
 file_location     = File.join(install_directory, original_url.split('/').last)
 manifest_location = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "manifest.yml"))
 cache_path        = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'dependencies'))
@@ -15,6 +20,11 @@ manifest          = YAML.load_file(manifest_location)
 dependencies      = CompileExtensions::Dependencies.new(manifest)
 translated_uri    = dependencies.find_translated_url(original_url)
 dependency_md5    = dependencies.find_md5(original_url)
+
+if ENV['BP_DEBUG']
+  STDERR.puts "DEBUG: translated_uri ${translated_uri}"
+  STDERR.puts "DEBUG: dependency_md5 ${dependency_md5}"
+end
 
 if translated_uri.nil?
   puts "DEPENDENCY_MISSING_IN_MANIFEST: #{original_url}"
