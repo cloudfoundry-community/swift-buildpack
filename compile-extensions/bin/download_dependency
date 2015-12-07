@@ -9,9 +9,11 @@ require 'fileutils'
 original_url      = ARGV[0]
 install_directory = ARGV[1]
 
-if ENV['BP_DEBUG']
-  STDERR.puts "DEBUG: download '#{original_url}' to '#{install_directory}'"
+def debug(msg)
+  STDERR.puts(msg) if ENV['BP_DEBUG']
 end
+
+debug "DEBUG: download '#{original_url}' to '#{install_directory}'"
 
 file_location     = File.join(install_directory, original_url.split('/').last)
 manifest_location = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "manifest.yml"))
@@ -21,10 +23,8 @@ dependencies      = CompileExtensions::Dependencies.new(manifest)
 translated_uri    = dependencies.find_translated_url(original_url)
 dependency_md5    = dependencies.find_md5(original_url)
 
-if ENV['BP_DEBUG']
-  STDERR.puts "DEBUG: translated_uri '#{translated_uri}'"
-  STDERR.puts "DEBUG: dependency_md5 '#{dependency_md5}'"
-end
+debug "DEBUG: translated_uri '#{translated_uri}'"
+debug "DEBUG: dependency_md5 '#{dependency_md5}'"
 
 if translated_uri.nil?
   STDERR.puts "DEPENDENCY_MISSING_IN_MANIFEST: '#{original_url}'"
@@ -40,10 +40,7 @@ end
 generated_md5 = Digest::MD5.file(file_location).hexdigest
 
 puts translated_uri
-if ENV['BP_DEBUG']
-  STDERR.puts "DEBUG: generated_md5 '#{generated_md5}'"
-  STDERR.print `ls -al #{file_location}`
-end
+debug "DEBUG: generated_md5 '#{generated_md5}'"
 
 if dependency_md5 == generated_md5
   exit 0
