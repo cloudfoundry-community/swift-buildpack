@@ -33,27 +33,24 @@ BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-exte
 
 mkdir -p $CACHE_DIR
 
+# download and unpack swift
 SWIFT_DIR=$BUILD_DIR/.swift
 mkdir -p $SWIFT_DIR
-
 cd $SWIFT_DIR
 status "Installing Swift $SWIFT_VERSION"
 mkdir -p $SWIFT_NAME_VERSION
-
-compiled_tgz=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp)
+dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp)
 echo "Downloaded Swift" | indent
-
-tar xz -C $SWIFT_NAME_VERSION -f $compiled_tgz
+tar xz -C $SWIFT_NAME_VERSION -f $dependency
 SWIFT_PATH=$PWD/$(echo $SWIFT_NAME_VERSION/swift*)
 
+# download and unpack clang
 cd $CACHE_DIR
 status "Installing Clang $CLANG_VERSION"
 mkdir -p $CLANG_NAME_VERSION
-
-compiled_tgz=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
+dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
 echo "Downloaded Clang" | indent
-
-xz -d -c --files=$compiled_xz | tar x -C $CLANG_NAME_VERSION &> /dev/null
+xz -d -c --files=$dependency | tar x -C $CLANG_NAME_VERSION &> /dev/null
 CLANG_PATH=$PWD/$(echo $CLANG_NAME_VERSION/clang*)
 
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
