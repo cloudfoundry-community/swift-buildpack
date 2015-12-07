@@ -62,7 +62,7 @@ swift build --configuration release
 # These should be statically linked, seems a swift bug
 echo "-----> Copying dynamic libraries"
 mkdir -p $BUILD_DIR/.swift-lib
-cp $SWIFT_DIR/$SWIFT_VERSION/$SWIFT_NAME_VERSION*/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
+cp $SWIFT_PATH/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
 
 echo "-----> Copying binaries to 'bin'"
 mkdir -p $BUILD_DIR/.swift-bin
