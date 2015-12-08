@@ -60,7 +60,7 @@ $ cat .swift-version
 2.2
 ```
 
-See `manifest.yml` for supported versions.
+See [manifest.yml](https://github.com/cloudfoundry-community/swift-buildpack/blob/master/manifest.yml#L14) for supported versions.
 
 **NOTE**: *Since there are frequent Swift language changes, it's advised that you pin to your Swift version.*
 
