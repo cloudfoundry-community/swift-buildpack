@@ -57,8 +57,10 @@ You can also customise the version of Swift used with a `.swift-version` file in
 
 ```shell
 $ cat .swift-version
-swift-2.2-SNAPSHOT-2015-12-01-b
+2.2
 ```
+
+See `manifest.yml` for supported versions.
 
 **NOTE**: *Since there are frequent Swift language changes, it's advised that you pin to your Swift version.*
 
