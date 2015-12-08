@@ -80,13 +80,15 @@ Admin installation
 ------------------
 
 ```
-cf create-buildpack swift_buildpack swift_buildpack-cached-v1.0.0.zip 10
+wget https://github.com/cloudfoundry-community/swift-buildpack/releases/download/v1.0.0/swift_buildpack-cached-v1.0.0.zip
+cf create-buildpack swift_buildpack swift_buildpack*.zip 10
 ```
 
 Or to update:
 
 ```
-cf update-buildpack swift_buildpack -p swift_buildpack-cached-v1.0.0.zip
+wget https://github.com/cloudfoundry-community/swift-buildpack/releases/download/v1.0.0/swift_buildpack-cached-v1.0.0.zip
+cf update-buildpack swift_buildpack -p swift_buildpack*.zip
 ```
 
 Packaging
