@@ -1,4 +1,4 @@
-echo "-------> Buildpack version $(cat $BUILDPACK_PATH/VERSION)"
+echo "-----> Buildpack version $(cat $BUILDPACK_PATH/VERSION)"
 
 install_python() {
     cache=$(cd "$1/" && pwd)
