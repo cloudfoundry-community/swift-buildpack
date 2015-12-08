@@ -1,5 +1,5 @@
-Heroku buildpack: swift
-=======================
+Apple Swift buildpack for Cloud Foundry
+=======================================
 
 This is a Cloud Foundry/Heroku buildpack for Swift app, powered by SPM (Swift Package Manager). It can be used on any Cloud Foundry, and administrators can upload an online (fetch assets from Internet) or offline (is bundled with buildpack assets) variation.
 
