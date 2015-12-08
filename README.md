@@ -15,10 +15,29 @@ $ ls
 Procfile Project.swift Sources
 
 $ cf push -b https://github.com/cloudfoundry-community/swift-buildpack.git
------> Swift app detected
------> Installing swift-2.2-SNAPSHOT-2015-12-01-b
------> Installing clang-3.7.0
+-----> Downloaded app package (4.0K)
+-----> Downloaded app buildpack cache (171M)
+-----> Buildpack version 1.0.0
+-----> Installing Swift 2.2
+       Downloaded Swift
+-----> Installing Clang 3.7.0
+       Downloaded Clang
 -----> Building Package
+       Cloning Packages/Curassow
+       Cloning Packages/Nest
+       Cloning Packages/Inquiline
+       Cloning Packages/Commander
+       Compiling Swift Module 'Nest' (1 sources)
+       Linking Library:  .build/release/Nest.a
+       Compiling Swift Module 'Inquiline' (3 sources)
+       Linking Library:  .build/release/Inquiline.a
+       Compiling Swift Module 'Commander' (8 sources)
+       Linking Library:  .build/release/Commander.a
+       Compiling Swift Module 'Curassow' (7 sources)
+       Linking Library:  .build/release/Curassow.a
+       Compiling Swift Module 'HelloWorld' (1 sources)
+       Linking Executable:  .build/release/HelloWorld
+-----> Copying dynamic libraries
 -----> Copying binaries to 'bin'
 ```
 
