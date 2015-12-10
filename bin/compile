@@ -32,10 +32,10 @@ source $compile_buildpack_dir/bin/common.sh
 BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-extensions/lib/common
 
 mkdir -p $CACHE_DIR
+cd $CACHE_DIR
 
 # download and unpack swift
 if [[ ! -d "$CACHE_DIR/$SWIFT_NAME_VERSION" ]]; then
-  cd $CACHE_DIR
   status "Installing Swift $SWIFT_VERSION"
   mkdir -p $SWIFT_NAME_VERSION
   dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp)
@@ -46,7 +46,6 @@ SWIFT_PATH=$CACHE_DIR/$(echo $SWIFT_NAME_VERSION/swift*)
 
 # download and unpack clang
 if [[ ! -d "$CACHE_DIR/$CLANG_NAME_VERSION" ]]; then
-  cd $CACHE_DIR
   status "Installing Clang $CLANG_VERSION"
   mkdir -p $CLANG_NAME_VERSION
   dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
