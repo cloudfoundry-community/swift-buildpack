@@ -34,7 +34,7 @@ BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-exte
 mkdir -p $CACHE_DIR
 
 # download and unpack swift
-if [[ ! -d "$CACHE_DIR/$SWIFT_VERSION" ]]; then
+if [[ ! -d "$CACHE_DIR/$SWIFT_NAME_VERSION" ]]; then
   cd $CACHE_DIR
   status "Installing Swift $SWIFT_VERSION"
   mkdir -p $SWIFT_NAME_VERSION
