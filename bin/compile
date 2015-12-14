@@ -32,26 +32,27 @@ source $compile_buildpack_dir/bin/common.sh
 BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-extensions/lib/common
 
 mkdir -p $CACHE_DIR
+cd $CACHE_DIR
 
 # download and unpack swift
-SWIFT_DIR=$BUILD_DIR/.swift
-mkdir -p $SWIFT_DIR
-cd $SWIFT_DIR
-status "Installing Swift $SWIFT_VERSION"
-mkdir -p $SWIFT_NAME_VERSION
-dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp)
-echo "Downloaded Swift" | indent
-tar xz -C $SWIFT_NAME_VERSION -f $dependency
-SWIFT_PATH=$PWD/$(echo $SWIFT_NAME_VERSION/swift*)
+if [[ ! -d "$CACHE_DIR/$SWIFT_NAME_VERSION" ]]; then
+  status "Installing Swift $SWIFT_VERSION"
+  mkdir -p $SWIFT_NAME_VERSION
+  dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp)
+  echo "Downloaded Swift" | indent
+  tar xz -C $SWIFT_NAME_VERSION -f $dependency
+fi
+SWIFT_PATH=$CACHE_DIR/$(echo $SWIFT_NAME_VERSION/swift*)
 
 # download and unpack clang
-cd $CACHE_DIR
-status "Installing Clang $CLANG_VERSION"
-mkdir -p $CLANG_NAME_VERSION
-dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
-echo "Downloaded Clang" | indent
-echo $dependency | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
-CLANG_PATH=$PWD/$(echo $CLANG_NAME_VERSION/clang*)
+if [[ ! -d "$CACHE_DIR/$CLANG_NAME_VERSION" ]]; then
+  status "Installing Clang $CLANG_VERSION"
+  mkdir -p $CLANG_NAME_VERSION
+  dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
+  echo "Downloaded Clang" | indent
+  echo $dependency | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
+fi
+CLANG_PATH=$CACHE_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
@@ -67,6 +68,9 @@ cp $SWIFT_PATH/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
 status "Copying binaries to 'bin'"
 mkdir -p $BUILD_DIR/.swift-bin
 find $BUILD_DIR/.build/release -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-bin \;
+
+status "Cleaning up build files"
+rm -rf $BUILD_DIR/.build
 
 # Setup application environment
 PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
