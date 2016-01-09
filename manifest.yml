@@ -12,8 +12,8 @@ url_to_dependency_map:
 dependencies:
   - name: swift
     version: 2.2
-    uri: https://swift.org/builds/ubuntu1404/swift-2.2-SNAPSHOT-2015-12-10-a/swift-2.2-SNAPSHOT-2015-12-10-a-ubuntu14.04.tar.gz
-    md5: 169a8d3f1bbf489f33bb0628a9638036
+    uri: https://swift.org/builds/ubuntu1404/swift-2.2-SNAPSHOT-2015-12-31-a/swift-2.2-SNAPSHOT-2015-12-31-a-ubuntu14.04.tar.gz
+    md5: b1a461495574e4f8ba79bf18e89280d9
     cf_stacks:
       - cflinuxfs2
   - name: clang
