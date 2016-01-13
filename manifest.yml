@@ -11,37 +11,37 @@ url_to_dependency_map:
 
 dependencies:
   - name: swift
-    version: swift-2.2-SNAPSHOT-2015-12-01-b
+    version: 2.2-SNAPSHOT-2015-12-01-b
     uri: https://swift.org/builds/ubuntu1404/swift-2.2-SNAPSHOT-2015-12-01-b/swift-2.2-SNAPSHOT-2015-12-01-b-ubuntu14.04.tar.gz
     md5: a93f52921c491b747cad256904c8742f
     cf_stacks:
       - cflinuxfs2
   - name: swift
-    version: swift-2.2-SNAPSHOT-2015-12-10-a
+    version: 2.2-SNAPSHOT-2015-12-10-a
     uri: https://swift.org/builds/ubuntu1404/swift-2.2-SNAPSHOT-2015-12-10-a/swift-2.2-SNAPSHOT-2015-12-10-a-ubuntu14.04.tar.gz
     md5: 169a8d3f1bbf489f33bb0628a9638036
     cf_stacks:
       - cflinuxfs2
   - name: swift
-    version: swift-2.2-SNAPSHOT-2015-12-22-a
+    version: 2.2-SNAPSHOT-2015-12-22-a
     uri: https://swift.org/builds/ubuntu1404/swift-2.2-SNAPSHOT-2015-12-22-a/swift-2.2-SNAPSHOT-2015-12-22-a-ubuntu14.04.tar.gz
     md5: ca5cca416a9c3d4b00f159721ee8c14c
     cf_stacks:
       - cflinuxfs2
   - name: swift
-    version: swift-2.2-SNAPSHOT-2015-12-31-a
+    version: 2.2-SNAPSHOT-2015-12-31-a
     uri: https://swift.org/builds/ubuntu1404/swift-2.2-SNAPSHOT-2015-12-31-a/swift-2.2-SNAPSHOT-2015-12-31-a-ubuntu14.04.tar.gz
     md5: b1a461495574e4f8ba79bf18e89280d9
     cf_stacks:
       - cflinuxfs2
   - name: swift
-    version: swift-2.2-SNAPSHOT-2016-01-06-a
+    version: 2.2-SNAPSHOT-2016-01-06-a
     uri: https://swift.org/builds/ubuntu1404/swift-2.2-SNAPSHOT-2016-01-06-a/swift-2.2-SNAPSHOT-2016-01-06-a-ubuntu14.04.tar.gz
     md5: e6deaa25ce40887ebb9a916ad2e5c406
     cf_stacks:
       - cflinuxfs2
   - name: swift
-    version: swift-2.2-SNAPSHOT-2016-01-11-a
+    version: 2.2-SNAPSHOT-2016-01-11-a
     uri: https://swift.org/builds/ubuntu1404/swift-2.2-SNAPSHOT-2016-01-11-a/swift-2.2-SNAPSHOT-2016-01-11-a-ubuntu14.04.tar.gz
     md5: 8d53bbe29b7814aae8f66583c15f8730
     cf_stacks:
