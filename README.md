@@ -18,7 +18,7 @@ $ cf push -b https://github.com/cloudfoundry-community/swift-buildpack.git
 -----> Downloaded app package (4.0K)
 -----> Downloaded app buildpack cache (171M)
 -----> Buildpack version 1.0.0
------> Installing Swift 2.2
+-----> Installing Swift 2.2-SNAPSHOT-2016-01-11-a
        Downloaded Swift
 -----> Installing Clang 3.7.0
        Downloaded Clang
@@ -57,7 +57,7 @@ You can also customise the version of Swift used with a `.swift-version` file in
 
 ```shell
 $ cat .swift-version
-2.2
+2.2-SNAPSHOT-2016-01-11-a
 ```
 
 See [manifest.yml](https://github.com/cloudfoundry-community/swift-buildpack/blob/master/manifest.yml#L14) for supported versions.
