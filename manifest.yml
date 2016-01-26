@@ -46,6 +46,12 @@ dependencies:
     md5: 8d53bbe29b7814aae8f66583c15f8730
     cf_stacks:
       - cflinuxfs2
+  - name: swift
+    version: DEVELOPMENT-SNAPSHOT-2016-01-25-a
+    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-01-25-a/swift-DEVELOPMENT-SNAPSHOT-2016-01-25-a-ubuntu14.04.tar.gz
+    md5: d741ea8d8ae1c4122ac028a4a4873148
+    cf_stacks:
+      - cflinuxfs2
   - name: clang
     version: 3.7.0
     uri: http://llvm.org/releases/3.7.0/clang+llvm-3.7.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz
