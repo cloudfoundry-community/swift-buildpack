@@ -1,0 +1,9 @@
+---
+platform: linux
+image: docker:///cfcommunity/pipeline-task-swift-buildpack
+
+inputs:
+- name: repo
+
+run:
+  path: repo/ci/tasks/build-zip.sh

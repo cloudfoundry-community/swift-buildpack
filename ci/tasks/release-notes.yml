@@ -1,0 +1,10 @@
+---
+platform: linux
+image: docker:///cfcommunity/pipeline-task-swift-buildpack
+
+inputs:
+- name: repo
+  path: .
+
+run:
+  path: repo/ci/tasks/release-notes.rb

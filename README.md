@@ -96,8 +96,10 @@ cf update-buildpack swift_buildpack -p swift_buildpack*.zip
 Packaging
 ---------
 
+The two buildpack zip files are built from two different `manifest.yml` files:
+
 ```
 BUNDLE_GEMFILE=cf.Gemfile bundle install
-BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --uncached
-BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached
+BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --uncached --use-custom-manifest manifest.yml
+BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached --use-custom-manifest manifest-cached.yml
 ```
