@@ -3,15 +3,15 @@
 require "yaml"
 require "fileutils"
 
-release_notes_path = ARGV.shift
-uncached_manifest_path = ARGV.shift
-cached_manifest_path = ARGV.shift
-unless cached_manifest_path && File.exists?(uncached_manifest_path) && File.exists?(cached_manifest_path)
-  $stderr.puts "USAGE: release-notes.rb notes.md path/to/manifest.yml path/to/manifest-cached.yml"
-  exit 1
-end
+buildpack_dir = File.expand_path(File.join(File.dirname(File.expand_path(__FILE__)), "../.."))
 
-FileUtils.mkdir_p(File.dirname(release_notes_path))
+release_notes_dir = File.join(buildpack_dir, "tmp")
+uncached_manifest_path = File.join(buildpack_dir, "manifest.yml")
+cached_manifest_path = File.join(buildpack_dir, "manifest-cached.yml")
+
+FileUtils.mkdir_p(release_notes_dir)
+release_name_path = File.join(release_notes_dir, "name")
+release_notes_path = File.join(release_notes_dir, "notes.md")
 
 uncached_manifest = YAML.load_file(uncached_manifest_path)
 cached_manifest = YAML.load_file(cached_manifest_path)
@@ -30,4 +30,11 @@ File.open(release_notes_path, "w") do |f|
   cached_manifest["dependencies"].each do |dep|
     f.puts "| #{dep['name']} | #{dep['version']} |"
   end
+end
+
+buildpack_version = File.read(File.join(buildpack_dir, "VERSION")).strip
+swift_version = cached_manifest["dependencies"].find {|d| d['name'] == 'swift'}['version']
+
+File.open(release_name_path, "w") do |f|
+  f << "v#{buildpack_version} - Swift #{swift_version}"
 end
