@@ -11,14 +11,22 @@ jobs:
 - name: shipit
   plan:
   - get: repo
-  - task: build-zip
-    file: repo/ci/tasks/build-zip.yml
   - task: release-notes
     file: repo/ci/tasks/release-notes.yml
+  - task: tree
+    config:
+      platform: linux
+      image: docker:///cfcommunity/pipeline-task-swift-buildpack
+      inputs: [{name: release-notes}]
+      run:
+        path: tree
+  - task: build-zip
+    file: repo/ci/tasks/build-zip.yml
+
   - put: repo-github-release
     params:
-      name: release-notes/tmp/name
-      body: release-notes/tmp/notes.md
+      name: release-notes/repo/tmp/name
+      body: release-notes/repo/tmp/notes.md
       tag: repo/VERSION
       tag_prefix: v
       globs: [build-zip/*.zip]
