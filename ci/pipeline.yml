@@ -25,11 +25,11 @@ jobs:
 
   - put: repo-github-release
     params:
-      name: release-notes/repo/tmp/name
-      body: release-notes/repo/tmp/notes.md
+      name: release-notes/name
+      body: release-notes/notes.md
       tag: repo/VERSION
       tag_prefix: v
-      globs: [build-zip/*.zip]
+      globs: [zips/*.zip]
 
 - name: build-task-image
   public: true
