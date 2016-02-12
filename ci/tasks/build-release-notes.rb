@@ -5,7 +5,7 @@ require "fileutils"
 
 buildpack_dir = File.expand_path(File.join(File.dirname(File.expand_path(__FILE__)), "../.."))
 
-release_notes_dir = File.expand_path("release-notes-output")
+release_notes_dir = File.expand_path("release-notes")
 uncached_manifest_path = File.join(buildpack_dir, "manifest.yml")
 cached_manifest_path = File.join(buildpack_dir, "manifest-cached.yml")
 

@@ -6,7 +6,7 @@ inputs:
 - name: repo
 
 outputs:
-- name: release-notes-output
+- name: release-notes
 
 run:
-  path: repo/ci/tasks/release-notes.rb
+  path: repo/ci/tasks/build-release-notes.rb

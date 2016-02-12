@@ -11,8 +11,8 @@ jobs:
 - name: shipit
   plan:
   - get: repo
-  - task: release-notes
-    file: repo/ci/tasks/release-notes.yml
+  - task: build-release-notes
+    file: repo/ci/tasks/build-release-notes.yml
   - task: tree
     config:
       platform: linux
