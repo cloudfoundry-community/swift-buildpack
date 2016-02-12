@@ -13,15 +13,8 @@ jobs:
   - get: repo
   - task: build-release-notes
     file: repo/ci/tasks/build-release-notes.yml
-  - task: tree
-    config:
-      platform: linux
-      image: docker:///cfcommunity/pipeline-task-swift-buildpack
-      inputs: [{name: release-notes}]
-      run:
-        path: tree
   - task: build-zip
-    file: repo/ci/tasks/build-zip.yml
+    file: repo/ci/tasks/build-zips.yml
 
   - put: repo-github-release
     params:
