@@ -17,8 +17,8 @@ jobs:
     file: repo/ci/tasks/release-notes.yml
   - put: repo-github-release
     params:
-      name: release-notes/name
-      body: release-notes/notes.md
+      name: release-notes/tmp/name
+      body: release-notes/tmp/notes.md
       tag: repo/VERSION
       tag_prefix: v
       globs: [build-zip/*.zip]
