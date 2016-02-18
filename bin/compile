@@ -8,6 +8,7 @@ if [[ "${BP_DEBUG}X" != "X" ]]; then
   set -x # show all commands
 fi
 
+BIN_DIR=$(cd $(dirname $0); pwd)
 BUILD_DIR=$1
 CACHE_DIR=$2
 
@@ -31,6 +32,8 @@ $compile_buildpack_dir/compile-extensions/bin/check_stack_support
 source $compile_buildpack_dir/bin/common.sh
 
 BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-extensions/lib/common
+
+source "$BIN_DIR/steps/hooks/pre_compile"
 
 mkdir -p $CACHE_DIR
 cd $CACHE_DIR
@@ -81,3 +84,5 @@ set-env() {
 }
 set-env PATH '$HOME/.swift-bin:$PATH'
 set-env LD_LIBRARY_PATH '$HOME/.swift-lib'
+
+source "$BIN_DIR/steps/hooks/post_compile"
