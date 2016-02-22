@@ -1,7 +1,7 @@
 Apple Swift buildpack for Cloud Foundry
 =======================================
 
-This is a Cloud Foundry/Heroku buildpack for Swift app, powered by SPM (Swift Package Manager). It can be used on any Cloud Foundry, and administrators can upload an online (fetch assets from Internet) or offline (is bundled with buildpack assets) variation.
+This is a Cloud Foundry/Heroku buildpack for Swift app, powered by SwiftPM (Swift Package Manager). It can be used on any Cloud Foundry, and administrators can upload an online (fetch assets from Internet) or offline (is bundled with buildpack assets) variation.
 
 Check out a [helloworld](https://github.com/kylef/Curassow-example-helloworld) for a fully working example that can be deployed to any Cloud Foundry.
 
@@ -45,7 +45,7 @@ The buildpack will detect your app as Swift if it has a `Package.swift` file in 
 
 ### Procfile
 
-Using the `Procfile`, you can set the process to run for your web server. Any binaries built from your Swift source using SPM will be placed in your $PATH.
+Using the `Procfile`, you can set the process to run for your web server. Any binaries built from your Swift source using SwiftPM will be placed in your $PATH.
 
 ```swift
 web: HelloWorld --workers 3 --bind 0.0.0.0:$PORT
