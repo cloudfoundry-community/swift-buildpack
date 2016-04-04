@@ -42,3 +42,7 @@ export_env_dir() {
     done
   fi
 }
+
+set-env() {
+  echo "export $1=$2" >> $PROFILE_PATH
+}

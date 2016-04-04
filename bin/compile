@@ -8,11 +8,60 @@ if [[ "${BP_DEBUG}X" != "X" ]]; then
   set -x # show all commands
 fi
 
+# Variables
 BUILD_DIR=$1
 CACHE_DIR=$2
-
 DEFAULT_SWIFT_VERSION=DEVELOPMENT-SNAPSHOT-2016-03-24-a
 CLANG_VERSION=3.7.0
+compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
+compile_buildpack_bin=$compile_buildpack_dir/bin
+
+# Check environment support
+$compile_buildpack_dir/compile-extensions/bin/check_stack_support
+
+# Load some convenience functions like status(), echo(), and indent()
+source $compile_buildpack_dir/bin/common.sh
+
+# Install system level dependencies
+APT_CACHE_DIR="$CACHE_DIR/apt/cache"
+APT_STATE_DIR="$CACHE_DIR/apt/state"
+mkdir -p "$APT_CACHE_DIR/archives/partial"
+mkdir -p "$APT_STATE_DIR/lists/partial"
+
+APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR"
+status "Installing system level dependencies..."
+apt-get $APT_OPTIONS update
+apt-get $APT_OPTIONS -y --force-yes -d install --reinstall libblocksruntime-dev libkqueue0 | indent
+
+status "Downloaded DEB files..."
+mkdir -p $BUILD_DIR/.apt
+
+for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
+  status "Installing $(basename $DEB)"
+  dpkg -x $DEB $BUILD_DIR/.apt/
+done
+
+status "Writing profile script..."
+mkdir -p $BUILD_DIR/.profile.d
+cat <<EOF >$BUILD_DIR/.profile.d/000_apt.sh
+export PATH="\$HOME/.apt/usr/bin:\$PATH"
+export LD_LIBRARY_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu:\$HOME/.apt/usr/lib/i386-linux-gnu:\$HOME/.apt/usr/lib:\$LD_LIBRARY_PATH"
+export LIBRARY_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu:\$HOME/.apt/usr/lib/i386-linux-gnu:\$HOME/.apt/usr/lib:\$LIBRARY_PATH"
+export INCLUDE_PATH="\$HOME/.apt/usr/include:\$INCLUDE_PATH"
+export CPATH="\$INCLUDE_PATH"
+export CPPPATH="\$INCLUDE_PATH"
+export PKG_CONFIG_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/i386-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/pkgconfig:\$PKG_CONFIG_PATH"
+EOF
+
+export PATH="$BUILD_DIR/.apt/usr/bin:$PATH"
+export LD_LIBRARY_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu:$BUILD_DIR/.apt/usr/lib:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu:$BUILD_DIR/.apt/usr/lib:$LIBRARY_PATH"
+export INCLUDE_PATH="$BUILD_DIR/.apt/usr/include:$INCLUDE_PATH"
+export CPATH="$INCLUDE_PATH"
+export CPPPATH="$INCLUDE_PATH"
+export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-extensions/lib/common
 
 if [ -f $BUILD_DIR/.swift-version ]; then
   # Take any pinned Swift version, stripping any redundant `swift-` prefix if present
@@ -23,19 +72,10 @@ fi
 SWIFT_NAME_VERSION="swift-${SWIFT_VERSION}"
 CLANG_NAME_VERSION="clang-${CLANG_VERSION}"
 
-compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
-compile_buildpack_bin=$compile_buildpack_dir/bin
-$compile_buildpack_dir/compile-extensions/bin/check_stack_support
-
-# Load some convenience functions like status(), echo(), and indent()
-source $compile_buildpack_dir/bin/common.sh
-
-BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-extensions/lib/common
-
 mkdir -p $CACHE_DIR
 cd $CACHE_DIR
 
-# download and unpack swift
+# Download and unpack Swift binaries
 if [[ ! -d "$CACHE_DIR/$SWIFT_NAME_VERSION" ]]; then
   status "Installing Swift $SWIFT_VERSION"
   mkdir -p $SWIFT_NAME_VERSION
@@ -45,7 +85,7 @@ if [[ ! -d "$CACHE_DIR/$SWIFT_NAME_VERSION" ]]; then
 fi
 SWIFT_PATH=$CACHE_DIR/$(echo $SWIFT_NAME_VERSION/swift*)
 
-# download and unpack clang
+# Download and unpack clang
 if [[ ! -d "$CACHE_DIR/$CLANG_NAME_VERSION" ]]; then
   status "Installing Clang $CLANG_VERSION"
   mkdir -p $CLANG_NAME_VERSION
@@ -55,13 +95,21 @@ if [[ ! -d "$CACHE_DIR/$CLANG_NAME_VERSION" ]]; then
 fi
 CLANG_PATH=$CACHE_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 
+# Update PATH environment variable
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
-cd $BUILD_DIR
-status "Building Package"
-swift build --configuration release | indent
+# Add libdispatch binaries (these files will be part of the Swift binaries in the future)
+status "Adding libdispatch binaries..."
+tar xzf $compile_buildpack_dir/binary-dependencies/libdispatch.tar.gz -C $SWIFT_PATH
 
-# These should be statically linked, seems a swift bug
+cd $BUILD_DIR
+status "Building Package..."
+#swift build --configuration release | indent
+#swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
+#Xlinker -L and -rpath are both needed; -L for blocksruntime and -rpath for libkqueue
+swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
+
+# These should be statically linked, seems a Swift bug.
 status "Copying dynamic libraries"
 mkdir -p $BUILD_DIR/.swift-lib
 cp $SWIFT_PATH/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
@@ -75,9 +123,5 @@ rm -rf $BUILD_DIR/.build
 
 # Setup application environment
 PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
-mkdir -p $BUILD_DIR/.profile.d
-set-env() {
-  echo "export $1=$2" >> $PROFILE_PATH
-}
 set-env PATH '$HOME/.swift-bin:$PATH'
-set-env LD_LIBRARY_PATH '$HOME/.swift-lib'
+set-env LD_LIBRARY_PATH '$HOME/.swift-lib:$LIBRARY_PATH'
