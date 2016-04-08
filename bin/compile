@@ -99,7 +99,7 @@ CLANG_PATH=$CACHE_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
 # Add libdispatch binaries (these files will be part of the Swift binaries in the future)
-libdispatchBinariesFile = $compile_buildpack_dir/binary-dependencies/$SWIFT_NAME_VERSION-libdispatch.tar.gz
+libdispatchBinariesFile=$compile_buildpack_dir/binary-dependencies/$SWIFT_NAME_VERSION-libdispatch.tar.gz
 if [ -f $libdispatchBinariesFile ]; then
   status "Adding libdispatch binaries..."
   tar xzf $libdispatchBinariesFile -C $SWIFT_PATH
