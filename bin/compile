@@ -134,3 +134,6 @@ rm -rf $BUILD_DIR/.build
 PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
 set-env PATH '$HOME/.swift-bin:$PATH'
 set-env LD_LIBRARY_PATH '$HOME/.swift-lib:$LIBRARY_PATH'
+
+#Test
+find $BUILD_DIR
