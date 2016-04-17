@@ -107,6 +107,8 @@ fi
 
 cd $BUILD_DIR
 status "Building Package..."
+status "One more test..."
+swift build
 #swift build --configuration release | indent
 #swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
 #Xlinker -L and -rpath are both needed; -L for blocksruntime and -rpath for libkqueue
