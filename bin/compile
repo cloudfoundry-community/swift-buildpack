@@ -107,14 +107,13 @@ fi
 
 cd $BUILD_DIR
 status "Building Package..."
-status "One more test..."
+status "Building Package 222222..."
 swift build
 #swift build --configuration release | indent
 #swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
 #Xlinker -L and -rpath are both needed; -L for blocksruntime and -rpath for libkqueue
 #swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
-swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
-
+#swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
 
 # These should be statically linked, seems a Swift bug.
 status "Copying dynamic libraries"
