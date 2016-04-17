@@ -105,9 +105,6 @@ if [ -f $libdispatchBinariesFile ]; then
   tar xzf $libdispatchBinariesFile -C $SWIFT_PATH
 fi
 
-#Test
-find $BUILD_DIR -name "*.swift"
-
 cd $BUILD_DIR
 status "Building Package..."
 #swift build --configuration release | indent
@@ -140,3 +137,4 @@ set-env LD_LIBRARY_PATH '$HOME/.swift-lib:$LIBRARY_PATH'
 
 #Test
 find $BUILD_DIR -name "*.swift"
+find $BUILD_DIR -type d -name "resources"
