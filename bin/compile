@@ -136,6 +136,5 @@ set-env PATH '$HOME/.swift-bin:$PATH'
 set-env LD_LIBRARY_PATH '$HOME/.swift-lib:$LIBRARY_PATH'
 
 #Test
-find $BUILD_DIR -name "*.swift"
-find $BUILD_DIR -type d -name "resources"
-ls -la $BUILD_DIR/Packages/Kitura-0.7.4/Sources/Kitura/resources
+#find $BUILD_DIR -name "*.swift"
+#find $BUILD_DIR -type d -name "resources"
