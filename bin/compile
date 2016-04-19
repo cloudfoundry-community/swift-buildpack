@@ -137,6 +137,9 @@ set-env PATH '$HOME/.swift-bin:$PATH'
 set-env LD_LIBRARY_PATH '$HOME/.swift-lib:$LIBRARY_PATH'
 
 #Test
+status "Listing files 1"
 find $BUILD_DIR/.swift-bin
+status "Listing files 2"
+find $BUILD_DIR/.swift-lib
 #find $BUILD_DIR -name "*.swift"
 #find $BUILD_DIR -type d -name "resources"
