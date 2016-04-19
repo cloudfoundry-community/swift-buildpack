@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir>
+# See http://mikusa.blogspot.com/2013/11/cloudfoundry-build-packs-introduction.html
 
 set -e
 set -o pipefail
@@ -136,5 +137,6 @@ set-env PATH '$HOME/.swift-bin:$PATH'
 set-env LD_LIBRARY_PATH '$HOME/.swift-lib:$LIBRARY_PATH'
 
 #Test
+find $BUILD_DIR/.swift-bin
 #find $BUILD_DIR -name "*.swift"
 #find $BUILD_DIR -type d -name "resources"
