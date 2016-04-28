@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir>
+
+# For details on buildpacks, see the following link:
 # See http://mikusa.blogspot.com/2013/11/cloudfoundry-build-packs-introduction.html
 
 set -e
@@ -12,7 +14,7 @@ fi
 # Variables
 BUILD_DIR=$1
 CACHE_DIR=$2
-DEFAULT_SWIFT_VERSION=DEVELOPMENT-SNAPSHOT-2016-04-12-a
+DEFAULT_SWIFT_VERSION=DEVELOPMENT-SNAPSHOT-2016-04-25-a
 CLANG_VERSION=3.7.0
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
@@ -126,8 +128,8 @@ cp $BUILD_DIR/.build/debug/*.so $BUILD_DIR/.swift-lib  2>/dev/null || true
 
 status "Copying binaries to 'bin'"
 mkdir -p $BUILD_DIR/.swift-bin
-#Interim solution
 #find $BUILD_DIR/.build/release -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-bin \;
+#Interim solution
 find $BUILD_DIR/.build/debug -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-bin \;
 
 status "Cleaning up build files"
@@ -137,11 +139,3 @@ rm -rf $BUILD_DIR/.build
 PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
 set-env PATH '$HOME/.swift-bin:$PATH'
 set-env LD_LIBRARY_PATH '$HOME/.swift-lib:$LIBRARY_PATH'
-
-#Test
-status "Listing files 1"
-find $BUILD_DIR/.swift-bin
-status "Listing files 2"
-find $BUILD_DIR/.swift-lib
-#find $BUILD_DIR -name "*.swift"
-#find $BUILD_DIR -type d -name "resources"
