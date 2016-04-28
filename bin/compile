@@ -121,9 +121,8 @@ swift build -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_D
 status "Copying dynamic libraries"
 mkdir -p $BUILD_DIR/.swift-lib
 cp $SWIFT_PATH/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
-# TODO: Add logic for coopying so if they exist.
-#cp $BUILD_DIR/.build/release/*.so $BUILD_DIR/.swift-lib
-#cp $BUILD_DIR/.build/debug/*.so $BUILD_DIR/.swift-lib
+cp $BUILD_DIR/.build/debug/*.so $BUILD_DIR/.swift-lib  2>/dev/null || true
+#cp $BUILD_DIR/.build/release/*.so $BUILD_DIR/.swift-lib 2>/dev/null || true
 
 status "Copying binaries to 'bin'"
 mkdir -p $BUILD_DIR/.swift-bin
