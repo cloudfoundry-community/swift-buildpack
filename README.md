@@ -1,9 +1,9 @@
-Apple Swift buildpack for Cloud Foundry
+Swift buildpack for Bluemix (**WORK IN PROGRESS / NOT READY TO BE USED YET**)
 =======================================
 
-This is a Cloud Foundry/Heroku buildpack for Swift app, powered by SPM (Swift Package Manager). It can be used on any Cloud Foundry, and administrators can upload an online (fetch assets from Internet) or offline (is bundled with buildpack assets) variation.
+This is the Bluemix buildpack for Swift applications, powered by SPM (Swift Package Manager). It can be used on any Cloud Foundry environment, and administrators can upload an online (fetch assets from Internet) or offline (is bundled with buildpack assets) variation.
 
-Check out a [helloworld](https://github.com/kylef/Curassow-example-helloworld) for a fully working example that can be deployed to any Cloud Foundry.
+Check out [BluePic](https://github.com/IBM-Swift/BluePic), a sample application with a Kitura-based server that can be deployed to Bluemix.
 
 Usage
 -----
@@ -51,6 +51,9 @@ Using the `Procfile`, you can set the process to run for your web server. Any bi
 web: HelloWorld --workers 3 --bind 0.0.0.0:$PORT
 ```
 
+### Swift-cfenv
+
+
 ### Specify a Swift version
 
 You can also customise the version of Swift used with a `.swift-version` file in your repository:
@@ -60,9 +63,12 @@ $ cat .swift-version
 2.2-SNAPSHOT-2016-01-11-a
 ```
 
-See [manifest.yml](https://github.com/cloudfoundry-community/swift-buildpack/blob/master/manifest.yml#L14) for supported versions.
+See [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/bluemix-buildpack/manifest.yml) for supported versions.
 
 **NOTE**: *Since there are frequent Swift language changes, it's advised that you pin to your Swift version.*
+
+### libdispatch
+Only the following versions of the Swift binaries have libsdispath. 
 
 ### Debugging
 
