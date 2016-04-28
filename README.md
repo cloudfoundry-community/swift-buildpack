@@ -1,9 +1,11 @@
-Swift buildpack for Bluemix (**WORK IN PROGRESS / NOT READY TO BE USED YET**)
+(**PLEASE NOTE THIS IS WORK IN PROGRESS / NOT READY TO BE USED YET**)
+(**DOCUMENTATION AND CODE IS STILL IN PROGRESS**)
+Bluemix buildpack for Swift
 =======================================
 
-This is the Bluemix buildpack for Swift applications, powered by SPM (Swift Package Manager). It can be used on any Cloud Foundry environment, and administrators can upload an online (fetch assets from Internet) or offline (is bundled with buildpack assets) variation.
+This is the Bluemix buildpack for Swift applications, powered by the Swift Package Manager (SPM). Though develop mainly for Bluemix, this buildpack can be used on any Cloud Foundry environment. Administrators can upload an online (fetch assets from Internet) or offline (is bundled with buildpack assets) variation.
 
-Check out [BluePic](https://github.com/IBM-Swift/BluePic), a sample application with a Kitura-based server that can be deployed to Bluemix.
+Check out [Kitura-Sample](https://github.com/IBM-Swift/Kitura-Sample), a Kitura-based application that can be deployed to Bluemix.
 
 Usage
 -----
@@ -68,7 +70,7 @@ See [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/bluemix-bui
 **NOTE**: *Since there are frequent Swift language changes, it's advised that you pin to your Swift version.*
 
 ### libdispatch
-Only the following versions of the Swift binaries have libsdispath. 
+Only the following versions of the Swift binaries have libsdispath.
 
 ### Debugging
 
