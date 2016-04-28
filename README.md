@@ -103,6 +103,8 @@ cf update-buildpack swift_buildpack -p swift_buildpack*.zip
 
 Packaging
 ---------
+See: https://github.com/cloudfoundry/buildpack-packager
+https://github.com/cloudfoundry/compile-extensions
 
 The two buildpack zip files are built from two different `manifest.yml` files:
 
