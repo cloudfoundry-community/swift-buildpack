@@ -111,27 +111,17 @@ fi
 cd $BUILD_DIR
 status "Building Package..."
 #swift build --configuration release | indent
-#swift build --configuration release | indent
-#swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
-#Xlinker -L and -rpath are both needed; -L for blocksruntime and -rpath for libkqueue
-#swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
-# Trying debug release instead of release
 swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
-#swift build -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
 
 # These should be statically linked, seems a Swift bug.
 status "Copying dynamic libraries"
 mkdir -p $BUILD_DIR/.swift-lib
 cp $SWIFT_PATH/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
 cp $BUILD_DIR/.build/release/*.so $BUILD_DIR/.swift-lib 2>/dev/null || true
-#Interim solution
-#cp $BUILD_DIR/.build/debug/*.so $BUILD_DIR/.swift-lib  2>/dev/null || true
 
 status "Copying binaries to 'bin'"
 mkdir -p $BUILD_DIR/.swift-bin
 find $BUILD_DIR/.build/release -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-bin \;
-#Interim solution
-#find $BUILD_DIR/.build/debug -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-bin \;
 
 status "Cleaning up build files"
 rm -rf $BUILD_DIR/.build
