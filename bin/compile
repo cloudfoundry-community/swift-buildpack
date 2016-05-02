@@ -106,6 +106,8 @@ libdispatchBinariesFile=$compile_buildpack_dir/binary-dependencies/$SWIFT_NAME_V
 if [ -f $libdispatchBinariesFile ]; then
   status "Adding libdispatch binaries..."
   tar xzf $libdispatchBinariesFile -C $SWIFT_PATH
+else
+  status "This buildpack does not add libdispatch support for $SWIFT_NAME_VERSION."
 fi
 
 cd $BUILD_DIR
