@@ -143,6 +143,7 @@ web: Server --bind 0.0.0.0:$PORT
 
 ### Swift-cfenv
 
+Instead of specifying the host ip and port values in the `Procfile`, you can instead use the [Swift-cfenv](https://github.com/IBM-Swift/Swift-cfenv) Swift package in your app. The Swift-cfenv package provides structures and methods to parse Cloud Foundry-provided environment variables, such as the port number, IP address, and URL of the application. It also provides default values when running the application locally. For details on how to leverage this library in your Swift application, see the [README](https://github.com/IBM-Swift/Swift-cfenv) file.
 
 ### Specify a Swift version
 
@@ -191,13 +192,10 @@ cf update-buildpack swift_buildpack -p swift_buildpack*.zip
 
 Packaging
 ---------
-See: https://github.com/cloudfoundry/buildpack-packager
-https://github.com/cloudfoundry/compile-extensions
-
 The buildpack zip file provided in each release is built using `manifest-cached.yml` file:
 
 ```
 BUNDLE_GEMFILE=cf.Gemfile bundle install
 BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached --use-custom-manifest manifest-cached.yml
 ```
-For details on packaging see the [buildpack-packager](https://github.com/cloudfoundry/buildpack-packager).
+For details on packaging buildpacks, see the [buildpack-packager](https://github.com/cloudfoundry/buildpack-packager).
