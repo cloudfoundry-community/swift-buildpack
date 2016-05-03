@@ -1,17 +1,17 @@
 GIT
   remote: https://github.com/cf-buildpacks/machete
-  revision: aeadae465eb3a2ca979d84b678e7bb54cfbf8175
-  tag: v0.0.21
+  revision: 143a81238819217dd570aa896aa9b3e5d8a259d5
+  tag: v0.0.43
   specs:
-    machete (0.0.21)
+    machete (0.0.43)
       httparty
 
 GIT
   remote: https://github.com/cloudfoundry/buildpack-packager
-  revision: ae3ac1feefe81cfe2881b39423be201ba38b1615
-  tag: v2.2.5
+  revision: 0257225aae41b49b071c01d7e9f7d0938920837d
+  tag: v2.2.8
   specs:
-    buildpack-packager (2.2.5)
+    buildpack-packager (2.2.8)
       activesupport (~> 4.1.8)
       kwalify
       terminal-table (~> 1.4.5)
@@ -19,13 +19,13 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (4.1.14)
+    activesupport (4.1.15)
       i18n (~> 0.6, >= 0.6.9)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
-    coderay (1.1.0)
+    coderay (1.1.1)
     diff-lcs (1.2.5)
     httparty (0.13.7)
       json (~> 1.8)
@@ -34,7 +34,7 @@ GEM
     json (1.8.3)
     kwalify (0.7.2)
     method_source (0.8.2)
-    minitest (5.8.3)
+    minitest (5.8.4)
     multi_xml (0.5.5)
     pry (0.10.3)
       coderay (~> 1.1.0)
@@ -44,14 +44,14 @@ GEM
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
       rspec-mocks (~> 3.4.0)
-    rspec-core (3.4.1)
+    rspec-core (3.4.4)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-instafail (0.4.0)
       rspec
-    rspec-mocks (3.4.0)
+    rspec-mocks (3.4.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
@@ -70,3 +70,6 @@ DEPENDENCIES
   pry
   rspec
   rspec-instafail
+
+BUNDLED WITH
+   1.12.1
