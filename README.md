@@ -194,10 +194,10 @@ Packaging
 See: https://github.com/cloudfoundry/buildpack-packager
 https://github.com/cloudfoundry/compile-extensions
 
-The two buildpack zip files are built from two different `manifest.yml` files:
+The buildpack zip file provided in each release is built using `manifest-cached.yml` file:
 
 ```
 BUNDLE_GEMFILE=cf.Gemfile bundle install
-BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --uncached --use-custom-manifest manifest.yml
 BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached --use-custom-manifest manifest-cached.yml
 ```
+For details on packaging see the [buildpack-packager](https://github.com/cloudfoundry/buildpack-packager).
