@@ -166,6 +166,16 @@ swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a
 
 For a list of the Swift supported versions, check out the [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/bluemix-buildpack/manifest.yml) file. Since there are frequent Swift language changes, it's advised that you pin to your Swift version. Once you have tested your code with a specific version of Swift, you can then update the `.swift-version` file with the appropriate Swift version for compiling your application.
 
+### System level libraries
+
+This buildpack installs the following system libraries:
+
+- libcurl3
+- libblocksruntime-dev
+- libkqueue0
+
+Once Foundation (Linux) provides complete networking functionality and [`libdispatch`](#libdispatch) is bundled up with the Swift binaries, there won't be a need for installing these system libraries.
+
 ### libdispatch
 
 As yet, the Swift binaries (for Linux) do not include the [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) library. It is expected that this library is fully integrated with the Swift binaries at some point later this year. As a stopgap solution, this buildpack includes the libdispatch binaries for the following Swift versions:
@@ -187,27 +197,30 @@ To deactivate:
 cf unset-env <app_name> BP_DEBUG
 ```
 
-Admin installation
-------------------
+Admin tasks
+-----------
+
+To install this buildpack:
+```
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.0/swift_buildpack-cached-v1.1.0.zip
+cf create-buildpack swift_buildpack swift_buildpack-cached-v1.1.0.zip <position>
+```
+
+And to update it:
 
 ```
-wget https://github.com/cloudfoundry-community/swift-buildpack/releases/download/v1.0.0/swift_buildpack-cached-v1.0.0.zip
-cf create-buildpack swift_buildpack swift_buildpack*.zip 10
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.0/swift_buildpack-cached-v1.1.0.zip
+cf update-buildpack swift_buildpack -p swift_buildpack-cached-v1.1.0.zip
 ```
 
-Or to update:
-
-```
-wget https://github.com/cloudfoundry-community/swift-buildpack/releases/download/v1.0.0/swift_buildpack-cached-v1.0.0.zip
-cf update-buildpack swift_buildpack -p swift_buildpack*.zip
-```
+For more details on installing buildpacks, see [Adding buildpacks to Cloud Foundry](https://docs.pivotal.io/pivotalcf/adminguide/buildpacks.html).
 
 Packaging
 ---------
 The buildpack zip file provided in each release is built using `manifest-cached.yml` file:
 
-```
+```shell
 BUNDLE_GEMFILE=cf.Gemfile bundle install
 BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached --use-custom-manifest manifest-cached.yml
 ```
-For details on packaging buildpacks, see the [buildpack-packager](https://github.com/cloudfoundry/buildpack-packager).
+For details on packaging buildpacks, see [buildpack-packager](https://github.com/cloudfoundry/buildpack-packager).
