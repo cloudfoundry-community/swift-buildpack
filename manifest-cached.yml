@@ -11,9 +11,9 @@ url_to_dependency_map:
 
 dependencies:
   - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-04-25-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a/swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a-ubuntu14.04.tar.gz
-    md5: 947017460e0bdd482b7f13b88b0c2c97
+    version: DEVELOPMENT-SNAPSHOT-2016-05-03-a
+    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a/swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a-ubuntu14.04.tar.gz
+    md5: f77eec8407e64dad03a29bf9112e52ac
     cf_stacks:
       - cflinuxfs2
   - name: clang
