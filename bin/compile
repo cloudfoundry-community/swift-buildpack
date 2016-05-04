@@ -24,6 +24,10 @@ fi
 SWIFT_NAME_VERSION="swift-${SWIFT_VERSION}"
 CLANG_NAME_VERSION="clang-${CLANG_VERSION}"
 
+if [ -z "$SWIFT_BUILD_CONFIGURATION" ]; then
+  SWIFT_BUILD_CONFIGURATION="release"
+fi
+
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
 $compile_buildpack_dir/compile-extensions/bin/check_stack_support
@@ -62,17 +66,17 @@ export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
 cd $BUILD_DIR
 status "Building Package"
-swift build --configuration release | indent
+swift build --configuration "$SWIFT_BUILD_CONFIGURATION" | indent
 
 # These should be statically linked, seems a swift bug
 status "Copying dynamic libraries"
 mkdir -p $BUILD_DIR/.swift-lib
 cp $SWIFT_PATH/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
-cp $BUILD_DIR/.build/release/*.so $BUILD_DIR/.swift-lib
+cp $BUILD_DIR/.build/$SWIFT_BUILD_CONFIGURATION/*.so $BUILD_DIR/.swift-lib
 
 status "Copying binaries to 'bin'"
 mkdir -p $BUILD_DIR/.swift-bin
-find $BUILD_DIR/.build/release ! -name '*.so' -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-bin \;
+find $BUILD_DIR/.build/$SWIFT_BUILD_CONFIGURATION ! -name '*.so' -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-bin \;
 
 status "Cleaning up build files"
 rm -rf $BUILD_DIR/.build
