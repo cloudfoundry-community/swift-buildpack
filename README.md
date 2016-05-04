@@ -164,7 +164,7 @@ $ cat .swift-version
 swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a
 ```
 
-For a list of the Swift supported versions, check out the [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/bluemix-buildpack/manifest.yml) file. Since there are frequent Swift language changes, it's advised that you pin to your Swift version. Once you have tested your code with a specific version of Swift, you can then update the `.swift-version` file with the appropriate Swift version for compiling your application.
+For a list of the Swift supported versions, check out the [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/bluemix-buildpack/manifest.yml) file. Since there are frequent Swift language changes, it's advised that you pin your application to a specific Swift version. Once you have tested and migrated your code to a newer version of Swift, you can then update the `.swift-version` file with the appropriate Swift version.
 
 ### System level libraries
 
@@ -178,7 +178,7 @@ Once Foundation (Linux) provides complete networking functionality and [`libdisp
 
 ### libdispatch
 
-As yet, the Swift binaries (for Linux) do not include the [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) library. It is expected that this library is fully integrated with the Swift binaries at some point later this year. As a stopgap solution, this buildpack includes the libdispatch binaries for the following Swift versions:
+As yet, the Swift binaries (for Linux) do not include the [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) library. It is expected that this library will be fully integrated with the Swift binaries at some point later this year. As a stopgap solution, this buildpack includes the libdispatch binaries for the following Swift versions:
 
 - swift-DEVELOPMENT-SNAPSHOT-2016-03-24-a
 - swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a
