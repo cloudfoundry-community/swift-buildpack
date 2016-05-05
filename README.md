@@ -3,7 +3,7 @@ Bluemix buildpack for Swift
 
 This is the Bluemix buildpack for Swift applications, powered by the Swift Package Manager (SPM). Though this buildpack was developed mainly for Bluemix, it can be used on any Cloud Foundry environment. This buildpack requires access to the Internet for downloading and installing several system level dependencies.
 
-Please note that this buildpack is **not** yet installed on Bluemix. Our team plans to install it soon. You can still use this buildpack to deploy your Swift applications as described in the Usage  section below.
+Please note that this buildpack is **not** yet installed on Bluemix; our team is working on getting it installed soon. Having said that, you can still use this buildpack to deploy your Swift applications as described in the ```Usage``` section below.
 
 Our team is currently working on updating the [Kitura-Sample](https://github.com/IBM-Swift/Kitura-Sample) application so that it can be deployed to Bluemix using this buildpack. Stay tuned for updates regarding this!
 
