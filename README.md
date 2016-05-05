@@ -1,11 +1,11 @@
 Bluemix buildpack for Swift
-=======================================
+===========================
 
 This is the Bluemix buildpack for Swift applications, powered by the Swift Package Manager (SPM). Though this buildpack was developed mainly for Bluemix, it can be used on any Cloud Foundry environment. This buildpack requires access to the Internet for downloading and installing several system level dependencies.
 
-Please note that this buildpack is **not** yet installed on Bluemix; our team is working on getting it installed soon. Having said that, you can still use this buildpack to deploy your Swift applications as described in the ```Usage``` section below.
+Please note that this buildpack is **not** yet installed on Bluemix; our team is working on getting it installed soon. Having said that, you can still use this buildpack to deploy your Swift applications to Bluemix as described in the ```Usage``` section below.
 
-Our team is currently working on updating the [Kitura-Sample](https://github.com/IBM-Swift/Kitura-Sample) application so that it can be deployed to Bluemix using this buildpack. Stay tuned for updates regarding this!
+Also, check out the [Kitura-Starter-Bluemix](https://github.com/IBM-Swift/Kitura-Starter-Bluemix) for a fully working example of a Kitura-based server application that can be deployed to Bluemix (or any Cloud Foundry environment).
 
 Usage
 -----
@@ -13,28 +13,42 @@ Usage
 Example usage:
 
 ```shell
-cf push -b https://github.com/IBM-Swift/swift-buildpack.git
+$ cf push -b https://github.com/IBM-Swift/swift-buildpack.git
+Using manifest file /Users/olivieri/git/Kitura-Starter-Bluemix/manifest.yml
 
-...
+Creating app Kitura-Starter-Bluemix in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
+OK
 
------> Downloaded app package (4.2M)
+Creating route kitura-starter-bluemix-nonadapting-disguisedness.mybluemix.net...
+OK
+
+Binding kitura-starter-bluemix-nonadapting-disguisedness.mybluemix.net to Kitura-Starter-Bluemix...
+OK
+
+Uploading Kitura-Starter-Bluemix...
+Uploading app files from: /Users/olivieri/git/Kitura-Starter-Bluemix
+Uploading 50.4K, 36 files
+Done uploading               
+OK
+
+Starting app Kitura-Starter-Bluemix in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
+-----> Downloaded app package (28K)
 Cloning into '/tmp/buildpacks/swift-buildpack'...
 -----> Installing system level dependencies...
 Get:1 http://security.ubuntu.com trusty-security InRelease [65.9 kB]
 Ign http://archive.ubuntu.com trusty InRelease
 Get:2 http://archive.ubuntu.com trusty-updates InRelease [65.9 kB]
 Get:3 http://security.ubuntu.com trusty-security/main amd64 Packages [574 kB]
-Get:4 http://archive.ubuntu.com trusty Release.gpg [933 B]
-Get:5 http://security.ubuntu.com trusty-security/universe amd64 Packages [165 kB]
-Get:6 http://security.ubuntu.com trusty-security/multiverse amd64 Packages [4,855 B]
-Get:7 http://archive.ubuntu.com trusty-updates/main amd64 Packages [949 kB]
+Get:4 http://security.ubuntu.com trusty-security/universe amd64 Packages [165 kB]
+Get:5 http://security.ubuntu.com trusty-security/multiverse amd64 Packages [4,855 B]
+Get:6 http://archive.ubuntu.com trusty Release.gpg [933 B]
+Get:7 http://archive.ubuntu.com trusty-updates/main amd64 Packages [950 kB]
 Get:8 http://archive.ubuntu.com trusty-updates/universe amd64 Packages [464 kB]
 Get:9 http://archive.ubuntu.com trusty-updates/multiverse amd64 Packages [14.3 kB]
 Get:10 http://archive.ubuntu.com trusty Release [58.5 kB]
 Get:11 http://archive.ubuntu.com trusty/main amd64 Packages [1,743 kB]
 Get:12 http://archive.ubuntu.com trusty/universe amd64 Packages [7,589 kB]
 Get:13 http://archive.ubuntu.com trusty/multiverse amd64 Packages [169 kB]
-Fetched 11.9 MB in 10s (1,172 kB/s)
 Reading package lists...
        Reading package lists...
        Building dependency tree...
@@ -46,7 +60,7 @@ Reading package lists...
          libblocksruntime-dev libblocksruntime0 libkqueue0
        The following packages will be upgraded:
          curl libcurl3 libcurl4-openssl-dev
-       3 upgraded, 3 newly installed, 0 to remove and 132 not upgraded.
+       3 upgraded, 3 newly installed, 0 to remove and 134 not upgraded.
        Need to get 577 kB of archives.
        After this operation, 219 kB of additional disk space will be used.
        Get:1 http://archive.ubuntu.com/ubuntu/ trusty-updates/main curl amd64 7.35.0-1ubuntu2.6 [123 kB]
@@ -55,7 +69,7 @@ Reading package lists...
        Get:4 http://archive.ubuntu.com/ubuntu/ trusty/universe libblocksruntime0 amd64 0.1-1 [8,128 B]
        Get:5 http://archive.ubuntu.com/ubuntu/ trusty/universe libblocksruntime-dev amd64 0.1-1 [4,660 B]
        Get:6 http://archive.ubuntu.com/ubuntu/ trusty/universe libkqueue0 amd64 1.0.4-2ubuntu1 [23.4 kB]
-       Fetched 577 kB in 2s (261 kB/s)
+       Fetched 577 kB in 2s (266 kB/s)
        Download complete and in download only mode
 -----> Downloaded DEB files...
 -----> Installing curl_7.35.0-1ubuntu2.6_amd64.deb
@@ -65,7 +79,7 @@ Reading package lists...
 -----> Installing libcurl4-openssl-dev_7.35.0-1ubuntu2.6_amd64.deb
 -----> Installing libkqueue0_1.0.4-2ubuntu1_amd64.deb
 -----> Writing profile script...
------> Buildpack version 1.0.5
+-----> Buildpack version 1.1.0
 -----> Installing Swift DEVELOPMENT-SNAPSHOT-2016-04-25-a
        Downloaded Swift
 -----> Installing Clang 3.7.0
@@ -90,25 +104,16 @@ Reading package lists...
        Resolved version: 6.1.0
        Cloning https://github.com/IBM-Swift/Kitura-TemplateEngine.git
        Resolved version: 0.9.0
-       Cloning https://github.com/IBM-Swift/Kitura-CouchDB.git
-       Resolved version: 0.11.2
        Cloning https://github.com/IBM-Swift/HeliumLogger.git
-       Resolved version: 0.6.1
-       Cloning https://github.com/IBM-Swift/Swift-cfenv.git
+       Resolved version: 0.6.2
+       Cloning https://github.com/IBM-Swift/Swift-cfenv
        Resolved version: 0.0.4
-       Cloning https://github.com/ibm-bluemix-mobile-services/bluemix-objectstore-swift-sdk.git
-       Resolved version: 0.1.1
-       Cloning https://github.com/ibm-bluemix-mobile-services/bluemix-simple-http-client-swift.git
-       Resolved version: 0.1.2
-       Cloning https://github.com/ibm-bluemix-mobile-services/bluemix-simple-logger-swift.git
-       Resolved version: 0.1.0
        mkdir -p /tmp/staged/app/.build/release/CHttpParser.build
        Compile LoggerAPI
        Compile Socket
        Compile SwiftyJSON
-       Compile SimpleLogger
-       Compile CHttpParser utils.c
        Compile Kitura-TemplateEngine
+       Compile CHttpParser utils.c
        Compile CHttpParser http_parser.c
        Compile KituraSys
        Compile HeliumLogger
@@ -116,25 +121,37 @@ Reading package lists...
        Compile KituraNet
        Compile CFEnvironment
        Compile Kitura
-       Compile CouchDB
-       Compile SimpleHttpClient
-       Compile BluemixObjectStore
-       Compile CouchDBSample
-       Linking .build/release/CouchDBSample
-       Compile Server
-       Linking .build/release/Server
+       Compile Kitura-Starter-Bluemix
+       Linking .build/release/Kitura-Starter-Bluemix
 -----> Copying dynamic libraries
 -----> Copying binaries to 'bin'
 -----> Cleaning up build files
------> Uploading droplet (14M)
+-----> Uploading droplet (8.7M)
 
 0 of 1 instances running, 1 starting
 1 of 1 instances running
 
 App started
 
-...
 
+OK
+
+App Kitura-Starter-Bluemix was started using this command `Kitura-Starter-Bluemix`
+
+Showing health and status for app Kitura-Starter-Bluemix in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
+OK
+
+requested state: started
+instances: 1/1
+usage: 256M x 1 instances
+urls: kitura-starter-bluemix-nonadapting-disguisedness.mybluemix.net
+last uploaded: Thu May 5 18:09:46 UTC 2016
+stack: unknown
+buildpack: https://github.com/IBM-Swift/swift-buildpack
+
+     state     since                    cpu    memory          disk          details   
+#0   running   2016-05-05 01:14:58 PM   0.0%   12.8M of 256M   30.3M of 1G      
+$
 ```
 
 The buildpack will detect your app as Swift if it has a `Package.swift` file in the root.
