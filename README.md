@@ -155,6 +155,10 @@ Instead of specifying IP address and port values in the `Procfile` as runtime pa
 web: <executable_name>
 ```
 
+### What is the latest version of Swift supported?
+
+The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a```.
+
 ### Specify a Swift version
 
 You can also customize the version of Swift used with a `.swift-version` file in your repository:
