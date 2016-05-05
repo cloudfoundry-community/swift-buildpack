@@ -5,7 +5,7 @@ Bluemix buildpack for Swift
 
 This is the Bluemix buildpack for Swift applications, powered by the Swift Package Manager (SPM). Though this buildpack was developed mainly for Bluemix, it can be used on any Cloud Foundry environment. This buildpack requires access to the Internet for downloading and installing several system level dependencies.
 
-Check out [Kitura-Sample](https://github.com/IBM-Swift/Kitura-Sample), a Kitura-based application that can be deployed to Bluemix (**please note the Kitura-Sample application is NOT configured yet to be deployed to Bluemix.**)
+Our team is currently working on updating the [Kitura-Sample](https://github.com/IBM-Swift/Kitura-Sample) application so that it can be deployed to Bluemix using this buildpack. Stay tuned for updates regarding this!
 
 Usage
 -----
@@ -149,7 +149,7 @@ web: Server --bind 0.0.0.0:$PORT
 
 ### Swift-cfenv
 
-Instead of specifying IP address and port values in the `Procfile` as runtime parameters to your web server process, you can instead use the [Swift-cfenv](https://github.com/IBM-Swift/Swift-cfenv) Swift package to obtain such values at runtime. The Swift-cfenv package provides structures and methods to parse Cloud Foundry-provided environment variables, such as the port number, IP address, and URL of the application. It also provides default values when running the application locally. For details on how to leverage this library in your Swift application, see the [README](https://github.com/IBM-Swift/Swift-cfenv) file. When using Swift-cfenv in your app, your `Procfile` will be very simple; it will more than likely look like this:
+Instead of specifying IP address and port values in the `Procfile` as runtime parameters to your web server process, you can instead use the [Swift-cfenv](https://github.com/IBM-Swift/Swift-cfenv) package to obtain such values at runtime. The Swift-cfenv package provides structures and methods to parse Cloud Foundry-provided environment variables, such as the port number, IP address, and URL of the application. It also provides default values when running the application locally. For details on how to leverage this library in your Swift application, see the [README](https://github.com/IBM-Swift/Swift-cfenv) file. When using Swift-cfenv in your app, your `Procfile` will be very simple; it will more than likely look like this:
 
 ```
 web: <executable_name>
@@ -161,7 +161,7 @@ You can also customize the version of Swift used with a `.swift-version` file in
 
 ```shell
 $ cat .swift-version
-swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a
+swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a
 ```
 
 For a list of the Swift supported versions, check out the [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/bluemix-buildpack/manifest.yml) file. Since there are frequent Swift language changes, it's advised that you pin your application to a specific Swift version. Once you have tested and migrated your code to a newer version of Swift, you can then update the `.swift-version` file with the appropriate Swift version.
@@ -182,6 +182,7 @@ As yet, the Swift binaries (for Linux) do not include the [libdispatch](https://
 
 - swift-DEVELOPMENT-SNAPSHOT-2016-03-24-a
 - swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a
+- swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a
 
 ### Debugging
 
