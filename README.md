@@ -218,7 +218,7 @@ wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.0/swift
 cf update-buildpack swift_buildpack -p swift_buildpack-cached-v1.1.0.zip
 ```
 
-For more details on installing buildpacks, see [Adding buildpacks to Cloud Foundry](https://docs.pivotal.io/pivotalcf/adminguide/buildpacks.html).
+For more details on installing buildpacks, see [Adding buildpacks to Cloud Foundry](https://docs.cloudfoundry.org/adminguide/buildpacks.html).
 
 Packaging
 ---------
