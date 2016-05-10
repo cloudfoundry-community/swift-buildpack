@@ -72,7 +72,7 @@ swift build --configuration "$SWIFT_BUILD_CONFIGURATION" | indent
 status "Copying dynamic libraries"
 mkdir -p $BUILD_DIR/.swift-lib
 cp $SWIFT_PATH/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
-cp $BUILD_DIR/.build/$SWIFT_BUILD_CONFIGURATION/*.so $BUILD_DIR/.swift-lib
+find $BUILD_DIR/.build/$SWIFT_BUILD_CONFIGURATION -name '*.so' -type f -exec cp {} $BUILD_DIR/.swift-lib \;
 
 status "Copying binaries to 'bin'"
 mkdir -p $BUILD_DIR/.swift-bin
