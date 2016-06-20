@@ -174,7 +174,7 @@ web: <executable_name>
 
 ### What is the latest version of Swift supported?
 
-The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a```.
+The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a```.
 
 ### Specify a Swift version
 
