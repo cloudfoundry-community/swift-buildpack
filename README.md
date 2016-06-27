@@ -195,19 +195,19 @@ The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-
 
 ### Specify a Swift version
 
-The swift_buildpack installed on Bluemix caches the following versions of the Swift binaries:
+You specify the version of Swift for your application using a `.swift-version` file in the root of your repository:
+
+```shell
+$ cat .swift-version
+swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a
+```
+
+Please note that the swift_buildpack installed on Bluemix caches the following versions of the Swift binaries:
 
 - `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
 - `DEVELOPMENT-SNAPSHOT-2016-05-03-a`
 
-If you'd like to use a different version of Swift on Bluemix for your application, you'll need to specify the version with a `.swift-version` file in the root of your repository:
-
-```shell
-$ cat .swift-version
-swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a
-```
-
-In addition to including a `.swift-version` file, you'll also need to add the `-b https://github.com/IBM-Swift/swift-buildpack` parameter to the `cf push` command, as shown below:
+If you'd like to use a different version of Swift on Bluemix for your application, in addition to including a `.swift-version` file, you'll also need to add the `-b https://github.com/IBM-Swift/swift-buildpack` parameter to the `cf push` command, as shown below:
 
 ```shell
 cf push -b https://github.com/IBM-Swift/swift-buildpack
