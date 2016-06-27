@@ -8,7 +8,7 @@ Check out the [Kitura-Starter-Bluemix](https://github.com/IBM-Swift/Kitura-Start
 Usage
 -----
 
-Example usage:
+Example usage (if targeting `DEVELOPMENT-SNAPSHOT-2016-06-06-a` or `DEVELOPMENT-SNAPSHOT-2016-05-03-a`):
 
 ```shell
 $ cf push
@@ -195,7 +195,12 @@ The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-
 
 ### Specify a Swift version
 
-The swift_buildpack installed on Bluemix supports the DEVELOPMENT-SNAPSHOT-2016-06-06-a version of the Swift binaries. If you'd like to use a different version of Swift on Bluemix for your application, you'll need to specify the version with a `.swift-version` file in the root of your repository:
+The swift_buildpack installed on Bluemix caches the following versions of the Swift binaries:
+
+- `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
+- `DEVELOPMENT-SNAPSHOT-2016-05-03-a`
+
+If you'd like to use a different version of Swift on Bluemix for your application, you'll need to specify the version with a `.swift-version` file in the root of your repository:
 
 ```shell
 $ cat .swift-version
@@ -248,14 +253,14 @@ Admin tasks
 
 To install this buildpack:
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.3/swift_buildpack-cached-v1.1.0.zip
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.3/swift_buildpack-cached-v1.1.3.zip
 cf create-buildpack swift_buildpack swift_buildpack-cached-v1.1.3.zip <position>
 ```
 
 And to update it:
 
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.3/swift_buildpack-cached-v1.1.0.zip
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.3/swift_buildpack-cached-v1.1.3.zip
 cf update-buildpack swift_buildpack -p swift_buildpack-cached-v1.1.3.zip
 ```
 
@@ -269,4 +274,5 @@ The buildpack zip file provided in each release is built using `manifest-cached.
 BUNDLE_GEMFILE=cf.Gemfile bundle install
 BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached --use-custom-manifest manifest-cached.yml
 ```
+
 For details on packaging buildpacks, see [buildpack-packager](https://github.com/cloudfoundry/buildpack-packager).
