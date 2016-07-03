@@ -26,6 +26,7 @@ $compile_buildpack_dir/compile-extensions/bin/check_stack_support
 source $compile_buildpack_dir/bin/common.sh
 
 # Install system level dependencies - backup code
+#################################################
 #APT_CACHE_DIR="$CACHE_DIR/apt/cache"
 #APT_STATE_DIR="$CACHE_DIR/apt/state"
 #mkdir -p "$APT_CACHE_DIR/archives/partial"
@@ -34,6 +35,7 @@ source $compile_buildpack_dir/bin/common.sh
 #apt-get $APT_OPTIONS update
 #apt-get $APT_OPTIONS -y --force-yes -d install --reinstall libblocksruntime-dev libkqueue0 libcurl3 openssl libssl-dev | indent
 #status "Downloaded DEB files..."
+#################################################
 
 # Install system level dependencies
 status "Installing system level dependencies..."
