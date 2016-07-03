@@ -43,7 +43,6 @@ for DEB in $(ls -1 $compile_buildpack_dir/binary-dependencies/*.deb); do
   status "Installing $(basename $DEB)"
   dpkg -x $DEB $BUILD_DIR/.apt/
 done
-status "Finished installation of system level dependencies..."
 
 status "Writing profile script..."
 mkdir -p $BUILD_DIR/.profile.d
