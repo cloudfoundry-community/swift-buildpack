@@ -8,7 +8,7 @@ Check out the [Kitura-Starter-Bluemix](https://github.com/IBM-Swift/Kitura-Start
 Usage
 -----
 
-Example usage (if targeting `DEVELOPMENT-SNAPSHOT-2016-06-06-a` or `DEVELOPMENT-SNAPSHOT-2016-05-03-a`):
+Example usage (if targeting `DEVELOPMENT-SNAPSHOT-2016-06-20-a`, `DEVELOPMENT-SNAPSHOT-2016-06-06-a` or `DEVELOPMENT-SNAPSHOT-2016-05-03-a`):
 
 ```shell
 $ cf push
@@ -191,7 +191,7 @@ web: <executable_name>
 
 ### What is the latest version of Swift supported?
 
-The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a```.
+The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a```.
 
 ### Specify a Swift version
 
@@ -199,11 +199,12 @@ You specify the version of Swift for your application using a `.swift-version` f
 
 ```shell
 $ cat .swift-version
-swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a
+swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a
 ```
 
 Please note that the swift_buildpack installed on Bluemix caches the following versions of the Swift binaries:
 
+- `DEVELOPMENT-SNAPSHOT-2016-06-20-a`
 - `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
 - `DEVELOPMENT-SNAPSHOT-2016-05-03-a`
 
@@ -233,6 +234,7 @@ As yet, the Swift binaries (for Linux) do not include the [libdispatch](https://
 - swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a
 - swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a
 - swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a
+- swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a
 
 ### Debugging
 
