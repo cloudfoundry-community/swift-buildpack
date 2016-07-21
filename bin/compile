@@ -67,6 +67,8 @@ if [ -f $BUILD_DIR/Aptfile ]; then
     topic "Installing $(basename $DEB)"
     dpkg -x $DEB $BUILD_DIR/.apt/
   done
+else
+  status "No Aptfile found."
 fi
 
 # Write profile script and set additional environment variables
