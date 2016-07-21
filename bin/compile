@@ -37,7 +37,7 @@ source $compile_buildpack_dir/bin/common.sh
 #status "Downloaded DEB files..."
 #################################################
 
-# Install system level dependencies
+# Install system level dependencies for Kitura
 status "Installing system level dependencies..."
 mkdir -p $BUILD_DIR/.apt
 
@@ -45,6 +45,30 @@ for DEB in $(ls -1 $compile_buildpack_dir/binary-dependencies/*.deb); do
   status "Installing $(basename $DEB)"
   dpkg -x $DEB $BUILD_DIR/.apt/
 done
+
+# Install any application specific system dependencies
+if [ -f $BUILD_DIR/Aptfile ]; then
+  APT_CACHE_DIR="$CACHE_DIR/apt/cache"
+  APT_STATE_DIR="$CACHE_DIR/apt/state"
+  APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR"
+  mkdir -p "$APT_CACHE_DIR/archives/partial"
+  mkdir -p "$APT_STATE_DIR/lists/partial"
+  apt-get $APT_OPTIONS update
+  for PACKAGE in $(cat $BUILD_DIR/Aptfile); do
+    if [[ $PACKAGE == 'libblocksruntime-dev' || $PACKAGE == 'libkqueue0'  || $PACKAGE == 'libcurl3'  || $PACKAGE == 'openssl' || $PACKAGE == 'libssl-dev' ]]; then
+      status "$PACKAGE already installed."
+      continue
+    fi
+    status "Fetching .debs for $PACKAGE"
+    apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $PACKAGE | indent
+  done
+
+  for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
+    topic "Installing $(basename $DEB)"
+    dpkg -x $DEB $BUILD_DIR/.apt/
+  done
+fi
+############
 
 status "Writing profile script..."
 mkdir -p $BUILD_DIR/.profile.d
