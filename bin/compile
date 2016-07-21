@@ -68,8 +68,8 @@ if [ -f $BUILD_DIR/Aptfile ]; then
     dpkg -x $DEB $BUILD_DIR/.apt/
   done
 fi
-############
 
+# Write profile script and set additional environment variables
 status "Writing profile script..."
 mkdir -p $BUILD_DIR/.profile.d
 cat <<EOF >$BUILD_DIR/.profile.d/000_apt.sh
