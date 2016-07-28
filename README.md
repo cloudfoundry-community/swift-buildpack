@@ -8,7 +8,7 @@ Check out the [Kitura-Starter-Bluemix](https://github.com/IBM-Swift/Kitura-Start
 Usage
 -----
 
-Example usage (if targeting `DEVELOPMENT-SNAPSHOT-2016-06-20-a`, `DEVELOPMENT-SNAPSHOT-2016-06-06-a` or `DEVELOPMENT-SNAPSHOT-2016-05-03-a`):
+Example usage (if targeting `DEVELOPMENT-SNAPSHOT-2016-07-25-a`, `DEVELOPMENT-SNAPSHOT-2016-06-20-a` or `DEVELOPMENT-SNAPSHOT-2016-06-06-a`):
 
 ```shell
 $ cf push
@@ -79,8 +79,8 @@ Reading package lists...
 -----> Installing libssl-dev_1.0.1f-1ubuntu2.19_amd64.deb
 -----> Installing openssl_1.0.1f-1ubuntu2.19_amd64.deb
 -----> Writing profile script...
------> Buildpack version 1.1.3
------> Installing Swift DEVELOPMENT-SNAPSHOT-2016-06-06-a
+-----> Buildpack version 1.1.6
+-----> Installing Swift DEVELOPMENT-SNAPSHOT-2016-07-25-a
        Downloaded Swift
 -----> Installing Clang 3.7.0
        Downloaded Clang
@@ -191,7 +191,7 @@ web: <executable_name>
 
 ### What is the latest version of Swift supported?
 
-The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a```.
+The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a```.
 
 ### Specify a Swift version
 
@@ -199,11 +199,12 @@ You specify the version of Swift for your application using a `.swift-version` f
 
 ```shell
 $ cat .swift-version
-swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a
+swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a
 ```
 
 Please note that the swift_buildpack installed on Bluemix caches the following versions of the Swift binaries:
 
+- `DEVELOPMENT-SNAPSHOT-2016-07-25-a`
 - `DEVELOPMENT-SNAPSHOT-2016-06-20-a`
 - `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
 - `DEVELOPMENT-SNAPSHOT-2016-05-03-a`
@@ -235,6 +236,7 @@ As yet, the Swift binaries (for Linux) do not include the [libdispatch](https://
 - swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a
 - swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a
 - swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a
+- swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a
 
 ### Debugging
 
@@ -255,15 +257,15 @@ Admin tasks
 
 To install this buildpack:
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.3/swift_buildpack-cached-v1.1.3.zip
-cf create-buildpack swift_buildpack swift_buildpack-cached-v1.1.3.zip <position>
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.6/swift_buildpack-cached-v1.1.6.zip
+cf create-buildpack swift_buildpack swift_buildpack-cached-v1.1.6.zip <position>
 ```
 
 And to update it:
 
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.3/swift_buildpack-cached-v1.1.3.zip
-cf update-buildpack swift_buildpack -p swift_buildpack-cached-v1.1.3.zip
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.6/swift_buildpack-cached-v1.1.6.zip
+cf update-buildpack swift_buildpack -p swift_buildpack-cached-v1.1.6.zip
 ```
 
 For more details on installing buildpacks, see [Adding buildpacks to Cloud Foundry](https://docs.cloudfoundry.org/adminguide/buildpacks.html).
