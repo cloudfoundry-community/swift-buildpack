@@ -15,7 +15,7 @@ fi
 BUILD_DIR=$1
 CACHE_DIR=$2
 DEFAULT_SWIFT_VERSION=DEVELOPMENT-SNAPSHOT-2016-07-25-a
-CLANG_VERSION=3.7.0
+CLANG_VERSION=3.8.0
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
 
