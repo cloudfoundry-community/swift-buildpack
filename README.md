@@ -8,7 +8,7 @@ Check out the [Kitura-Starter-Bluemix](https://github.com/IBM-Swift/Kitura-Start
 Usage
 -----
 
-Example usage (if targeting any of the cached versions of the swift binaries):
+Example usage if targeting any of the **cached** versions of the Swift binaries (see the [Specify a Swift version](#Specify a Swift version) section):
 
 ```shell
 $ cf push
@@ -141,7 +141,7 @@ web: <executable_name>
 
 ### What is the latest version of Swift supported?
 
-The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a```.
+The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a```.
 
 ### Specify a Swift version
 
@@ -149,7 +149,7 @@ You specify the version of Swift for your application using a `.swift-version` f
 
 ```shell
 $ cat .swift-version
-swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a
+swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a
 ```
 
 Please note that the swift_buildpack installed on Bluemix caches the following versions of the Swift binaries:
