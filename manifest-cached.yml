@@ -40,13 +40,25 @@ dependencies:
     md5: 1a2ae03839cf8b5d14d8ea988c77c491
     cf_stacks:
       - cflinuxfs2
+  - name: swift
+    version: DEVELOPMENT-SNAPSHOT-2016-08-07-a
+    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a-ubuntu14.04.tar.gz
+    md5: 225883da3a9a9096a921f12a97905625
+    cf_stacks:
+      - cflinuxfs2
+  - name: swift
+    version: DEVELOPMENT-SNAPSHOT-2016-08-18-a
+    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a-ubuntu14.04.tar.gz
+    md5: e1d8cd3824d999a4c11ca6b574d9c997
+    cf_stacks:
+      - cflinuxfs2
   - name: clang
     version: 3.8.0
     uri: http://llvm.org/releases/3.8.0/clang+llvm-3.8.0-x86_64-linux-gnu-ubuntu-14.04.tar.xz
     md5: 890274421f4480ce228ed3eab1fd3c73
     cf_stacks:
       - cflinuxfs2
-
+      
 exclude_files:
   - .git/
   - .gitignore

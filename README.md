@@ -8,7 +8,7 @@ Check out the [Kitura-Starter-Bluemix](https://github.com/IBM-Swift/Kitura-Start
 Usage
 -----
 
-Example usage (if targeting `DEVELOPMENT-SNAPSHOT-2016-07-25-a`, `DEVELOPMENT-SNAPSHOT-2016-06-20-a` or `DEVELOPMENT-SNAPSHOT-2016-06-06-a`):
+Example usage (if targeting any of the cached versions of the swift binaries):
 
 ```shell
 $ cf push
@@ -154,6 +154,8 @@ swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a
 
 Please note that the swift_buildpack installed on Bluemix caches the following versions of the Swift binaries:
 
+- `DEVELOPMENT-SNAPSHOT-2016-08-18-a`
+- `DEVELOPMENT-SNAPSHOT-2016-08-07-a`
 - `DEVELOPMENT-SNAPSHOT-2016-07-25-a`
 - `DEVELOPMENT-SNAPSHOT-2016-06-20-a`
 - `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
@@ -187,6 +189,8 @@ As yet, the Swift binaries (for Linux) do not include the [libdispatch](https://
 - swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a
 - swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a
 - swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a
+- swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a
+- swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a
 
 ### Debugging
 
