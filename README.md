@@ -161,13 +161,13 @@ Please note that the swift_buildpack installed on Bluemix caches the following v
 - `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
 - `DEVELOPMENT-SNAPSHOT-2016-05-03-a`
 
-If you'd like to use a different version of Swift on Bluemix for your application, in addition to including a `.swift-version` file, you'll also need to add the `-b https://github.com/IBM-Swift/swift-buildpack` parameter to the `cf push` command, as shown below:
+If you'd like to use a different version of Swift (that is not cached) on Bluemix, in addition to including a `.swift-version` file, you'll also need to add the `-b https://github.com/IBM-Swift/swift-buildpack` parameter to the `cf push` command, as shown below:
 
 ```shell
 cf push -b https://github.com/IBM-Swift/swift-buildpack
 ```
 
-For a list of the Swift supported versions, check out the [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/bluemix-buildpack/manifest.yml) file. Since there are frequent Swift language changes, it's advised that you pin your application to a specific Swift version. Once you have tested and migrated your code to a newer version of Swift, you can then update the `.swift-version` file with the appropriate Swift version.
+For a complete list of the Swift supported versions, check out the [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/bluemix-buildpack/manifest.yml) file. Since there are frequent Swift language changes, it's advised that you pin your application to a specific Swift version. Once you have tested and migrated your code to a newer version of Swift, you can then update the `.swift-version` file with the appropriate Swift version.
 
 ### System level libraries
 
@@ -211,15 +211,15 @@ Admin tasks
 
 To install this buildpack:
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.6/swift_buildpack-cached-v1.1.6.zip
-cf create-buildpack swift_buildpack swift_buildpack-cached-v1.1.6.zip <position>
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.7/swift_buildpack-cached-v1.1.7.zip
+cf create-buildpack swift_buildpack swift_buildpack-cached-v1.1.7.zip <position>
 ```
 
 And to update it:
 
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.6/swift_buildpack-cached-v1.1.6.zip
-cf update-buildpack swift_buildpack -p swift_buildpack-cached-v1.1.6.zip
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.7/swift_buildpack-cached-v1.1.7.zip
+cf update-buildpack swift_buildpack -p swift_buildpack-cached-v1.1.7.zip
 ```
 
 For more details on installing buildpacks, see [Adding buildpacks to Cloud Foundry](https://docs.cloudfoundry.org/adminguide/buildpacks.html).
