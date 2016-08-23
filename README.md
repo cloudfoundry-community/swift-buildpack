@@ -156,6 +156,7 @@ Please note that the swift_buildpack installed on Bluemix caches the following v
 
 - `DEVELOPMENT-SNAPSHOT-2016-08-18-a`
 - `DEVELOPMENT-SNAPSHOT-2016-08-07-a`
+- `DEVELOPMENT-SNAPSHOT-2016-08-04-a`
 - `DEVELOPMENT-SNAPSHOT-2016-07-25-a`
 - `DEVELOPMENT-SNAPSHOT-2016-06-20-a`
 - `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
@@ -183,14 +184,15 @@ Once Foundation (Linux) provides complete networking functionality and [`libdisp
 
 As yet, the Swift binaries (for Linux) do not include the [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) library. It is expected that this library will be fully integrated with the Swift binaries at some point later this year. As a stopgap solution, this buildpack includes the libdispatch binaries for the following Swift versions:
 
-- swift-DEVELOPMENT-SNAPSHOT-2016-03-24-a
-- swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a
-- swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a
-- swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a
-- swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a
-- swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a
-- swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a
-- swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a
+- `swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a`
+- `swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a`
+- `swift-DEVELOPMENT-SNAPSHOT-2016-08-04-a`
+- `swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a`
+- `swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a`
+- `swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a`
+- `swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a`
+- `swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a`
+- `swift-DEVELOPMENT-SNAPSHOT-2016-03-24-a`
 
 ### Debugging
 

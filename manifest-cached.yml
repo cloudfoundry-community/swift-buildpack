@@ -23,6 +23,12 @@ dependencies:
     cf_stacks:
       - cflinuxfs2
   - name: swift
+    version: DEVELOPMENT-SNAPSHOT-2016-05-09-a
+    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a/swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a-ubuntu14.04.tar.gz
+    md5: d650161684e640cda83ff5a8e81ab440
+    cf_stacks:
+      - cflinuxfs2
+  - name: swift
     version: DEVELOPMENT-SNAPSHOT-2016-06-06-a
     uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a-ubuntu14.04.tar.gz
     md5: 83158ac36d15e68bf368263ec6932952
@@ -38,6 +44,12 @@ dependencies:
     version: DEVELOPMENT-SNAPSHOT-2016-07-25-a
     uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a/swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a-ubuntu14.04.tar.gz
     md5: 1a2ae03839cf8b5d14d8ea988c77c491
+    cf_stacks:
+      - cflinuxfs2
+  - name: swift
+    version: DEVELOPMENT-SNAPSHOT-2016-08-04-a
+    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-08-04-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-04-a-ubuntu14.04.tar.gz
+    md5: 5d114d0a5fa2c358ce430194fe2d51b6
     cf_stacks:
       - cflinuxfs2
   - name: swift
@@ -58,7 +70,7 @@ dependencies:
     md5: 890274421f4480ce228ed3eab1fd3c73
     cf_stacks:
       - cflinuxfs2
-      
+
 exclude_files:
   - .git/
   - .gitignore
