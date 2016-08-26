@@ -14,89 +14,102 @@ Example usage if targeting any of the **cached** versions of the Swift binaries 
 $ cf push
 Using manifest file /Users/olivieri/git/Kitura-Starter-Bluemix/manifest.yml
 
-Updating app Kitura-Starter-Bluemix in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
+Creating app Kitura-Starter-Bluemix in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
+OK
+
+Creating route kitura-starter-bluemix-peculiar-forethought.mybluemix.net...
+OK
+
+Binding kitura-starter-bluemix-peculiar-forethought.mybluemix.net to Kitura-Starter-Bluemix...
 OK
 
 Uploading Kitura-Starter-Bluemix...
 Uploading app files from: /Users/olivieri/git/Kitura-Starter-Bluemix
-Uploading 62.4K, 48 files
+Uploading 24.4K, 16 files
 Done uploading               
 OK
 
-Stopping app Kitura-Starter-Bluemix in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
-OK
-
 Starting app Kitura-Starter-Bluemix in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
------> Downloaded app package (32K)
------> Downloaded app buildpack cache (4.0K)
+-----> Downloaded app package (12K)
 Cloning into '/tmp/buildpacks/swift-buildpack'...
------> Installing system level dependencies...
 -----> Installing libblocksruntime0_0.1-1_amd64.deb
 -----> Installing libblocksruntime-dev_0.1-1_amd64.deb
------> Installing libcurl3_7.35.0-1ubuntu2.6_amd64.deb
 -----> Installing libkqueue0_1.0.4-2ubuntu1_amd64.deb
 -----> Installing libssl-dev_1.0.1f-1ubuntu2.19_amd64.deb
 -----> Installing openssl_1.0.1f-1ubuntu2.19_amd64.deb
+-----> Installing uuid-dev_2.20.1-5.1ubuntu20_amd64.deb
 -----> No Aptfile found.
 -----> Writing profile script...
------> Buildpack version 1.1.6
------> Installing Swift DEVELOPMENT-SNAPSHOT-2016-06-20-a
+-----> Installing Swift DEVELOPMENT-SNAPSHOT-2016-07-25-a
        Downloaded Swift
------> Installing Clang 3.7.0
+-----> Installing Clang 3.8.0
        Downloaded Clang
 -----> Adding libdispatch binaries...
 -----> Building Package...
        Cloning https://github.com/IBM-Swift/Kitura.git
-       HEAD is now at 65ae28c Updated to new version.
-       Resolved version: 0.22.0
+       HEAD is now at f59a1a4 Update .travis.yml (#698)
+       Resolved version: 0.26.1
        Cloning https://github.com/IBM-Swift/Kitura-net.git
-       HEAD is now at d87f8fd Tuning and Cleanup of FastCGI Code (#51)
-       Resolved version: 0.22.2
-       HEAD is now at d1f7ffb IBM-Swift/Kitura#617 Add back Kitura-Build
-       Resolved version: 0.22.0
-       HEAD is now at 9b30704 Merge pull request #8 from tkhuran/develop
-       Resolved version: 0.8.0
+       HEAD is now at e312591 updated dependency versions in Package.swift
+       Resolved version: 0.26.0
+       Cloning https://github.com/IBM-Swift/Kitura-sys.git
+warning: unable to rmdir Package-Builder: Directory not empty
+warning: unable to rmdir Package-Builder: Directory not empty
+       HEAD is now at 67737a2 Migration 0725 (#10)
+       Resolved version: 0.26.0
+       Cloning https://github.com/IBM-Swift/LoggerAPI.git
+       HEAD is now at 98a5abd IBM-Swift/Kitura#646 - Added entry/exit logging (#11)
+       Resolved version: 0.10.0
        Cloning https://github.com/IBM-Swift/BlueSocket.git
-       HEAD is now at 20e506d Merge branch 'master' of github.com:IBM-Swift/BlueSocket
-       Resolved version: 0.6.2
+       HEAD is now at 3c6b4fc Minor formatting errors as a result of the merge.
+       Resolved version: 0.7.6
        Cloning https://github.com/IBM-Swift/CCurl.git
        HEAD is now at 3330699 Removed use of pkgConfig and added system declaration
        Resolved version: 0.2.1
        Cloning https://github.com/IBM-Swift/CHTTPParser.git
-       HEAD is now at 41daabb IBM-Swift/Kitura#365 Removed references to code installed externally and the pkgConfig file that is no longer needed.
-       Resolved version: 0.1.1
+       HEAD is now at 429eff6 Merge pull request #7 from ianpartridge/master
+       Resolved version: 0.3.0
+       Cloning https://github.com/IBM-Swift/CEpoll.git
+       HEAD is now at 111cbcb IBM-Swift/Kitura#435 Added a README.md file
+       Resolved version: 0.1.0
        Cloning https://github.com/IBM-Swift/SwiftyJSON.git
-       HEAD is now at 1eec775 Added Package info
-       Resolved version: 10.0.2
+       HEAD is now at 57621b4 Migration 0725 (#12)
+       Resolved version: 11.0.0
        Cloning https://github.com/IBM-Swift/Kitura-TemplateEngine.git
-       HEAD is now at 1fe55ef Merge remote-tracking branch 'origin/develop'
-       Resolved version: 0.16.0
-       HEAD is now at 967db14 Migration 0620 (#14)
-       Cloning https://github.com/IBM-Swift/Swift-cfenv
-       Compile CHttpParser utils.c
-       Compile CHttpParser http_parser.c
-       Compile Swift Module 'LoggerAPI' (1 sources)
+warning: unable to rmdir Package-Builder: Directory not empty
+       HEAD is now at 6445fb7 DEVELOPMENT-SNAPSHOT-2016-07-25-a
+       Resolved version: 0.26.0
+       Cloning https://github.com/IBM-Swift/HeliumLogger.git
+       HEAD is now at 333af58 Migration 0725 (#17)
+       Resolved version: 0.14.0
+       Cloning https://github.com/IBM-Swift/Swift-cfenv.git
+warning: unable to rmdir Kitura-Build: Directory not empty
+       HEAD is now at 809b1b6 Merge pull request #16 from IBM-Swift/migrate_0725
+       Resolved version: 1.5.0
+       Cloning https://github.com/IBM-Bluemix/cf-deployment-tracker-client-swift.git
+       HEAD is now at bbfc5de Updated readme to reflect the 07-25 version
+       Resolved version: 0.2.1
+       Compile CHTTPParser http_parser.c
+       Compile CHTTPParser utils.c
        Compile Swift Module 'Socket' (3 sources)
+       Compile Swift Module 'LoggerAPI' (1 sources)
        Compile Swift Module 'SwiftyJSON' (2 sources)
        Compile Swift Module 'KituraTemplateEngine' (1 sources)
        Compile Swift Module 'KituraSys' (3 sources)
        Compile Swift Module 'HeliumLogger' (1 sources)
-       clang-3.7: warning: argument unused during compilation: '-Xcc'
-       clang-3.7: warning: argument unused during compilation: '-Xcc'
-       clang-3.7: warning: argument unused during compilation: '-Xcc'
-       clang-3.7: warning: argument unused during compilation: '-Xcc'
-       Linking CHttpParser
+       Linking CHTTPParser
+       Compile Swift Module 'KituraNet' (29 sources)
        Compile Swift Module 'CloudFoundryEnv' (7 sources)
-       Compile Swift Module 'KituraNet' (22 sources)
-       Compile Swift Module 'Kitura' (37 sources)
+       Compile Swift Module 'CloudFoundryDeploymentTracker' (1 sources)
+       Compile Swift Module 'Kitura' (38 sources)
        Compile Swift Module 'Kitura_Starter_Bluemix' (1 sources)
-       Linking .build/release/Kitura-Starter-Bluemix
+       Linking ./.build/release/Kitura-Starter-Bluemix
 -----> Copying dynamic libraries
 -----> Copying binaries to 'bin'
------> Cleaning up build files
 -----> Cleaning up cache folder
------> Uploading droplet (12M)
+-----> Uploading droplet (15M)
 
+0 of 1 instances running, 1 starting
 1 of 1 instances running
 
 App started
@@ -112,13 +125,12 @@ OK
 requested state: started
 instances: 1/1
 usage: 256M x 1 instances
-urls: kitura-starter-bluemix-overaffected-subfloor.mybluemix.net
-last uploaded: Thu Jul 28 17:43:33 UTC 2016
-stack: unknown
-buildpack: https://github.com/IBM-Swift/swift-buildpack.git#develop
+urls: kitura-starter-bluemix-peculiar-forethought.mybluemix.net
+last uploaded: Fri Aug 26 18:04:38 UTC 2016
+stack: cflinuxfs2
 
-     state     since                    cpu    memory          disk          details   
-#0   running   2016-07-28 12:52:29 PM   0.0%   12.8M of 256M   41.1M of 1G      
+     state     since                    cpu    memory          disk          details
+#0   running   2016-08-26 01:07:47 PM   0.0%   15.6M of 256M   48.6M of 1G    
 ```
 
 The buildpack will detect your app as Swift if it has a `Package.swift` file in the root.
@@ -154,6 +166,8 @@ swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a
 
 Please note that the swift_buildpack installed on Bluemix caches the following versions of the Swift binaries:
 
+- `DEVELOPMENT-SNAPSHOT-2016-08-25-a`
+- `DEVELOPMENT-SNAPSHOT-2016-08-23-a`
 - `DEVELOPMENT-SNAPSHOT-2016-08-18-a`
 - `DEVELOPMENT-SNAPSHOT-2016-08-07-a`
 - `DEVELOPMENT-SNAPSHOT-2016-08-04-a`
@@ -182,7 +196,7 @@ Once Foundation (Linux) provides complete networking functionality and [`libdisp
 
 ### libdispatch
 
-As yet, the Swift binaries (for Linux) do not include the [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) library. It is expected that this library will be fully integrated with the Swift binaries at some point later this year. As a stopgap solution, this buildpack includes the libdispatch binaries for the following Swift versions:
+The Swift binaries (for Linux) prior to 2016-08-23 do not include the [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) library. Therefore, this buildpack adds the libdispatch binaries for the following Swift versions:
 
 - `swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a`
 - `swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a`
