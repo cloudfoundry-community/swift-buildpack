@@ -192,8 +192,10 @@ This buildpack installs the following system libraries:
 - libcurl3
 - libblocksruntime-dev
 - libkqueue0
+- openssl
+- libssl-dev
 
-Once Foundation (Linux) provides complete networking functionality and [`libdispatch`](#libdispatch) is bundled up with the Swift binaries, there won't be a need for installing these system libraries.
+Once Foundation (Linux) provides complete networfking functionality and [`libdispatch`](#libdispatch) is bundled up with the Swift binaries, there won't be a need for installing these system libraries.
 
 ### libdispatch
 
