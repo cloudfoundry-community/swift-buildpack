@@ -153,7 +153,7 @@ web: <executable_name>
 
 ### What is the latest version of Swift supported?
 
-The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a```.
+The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-08-26-a```.
 
 ### Specify a Swift version
 
@@ -161,11 +161,12 @@ You specify the version of Swift for your application using a `.swift-version` f
 
 ```shell
 $ cat .swift-version
-swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a
+swift-DEVELOPMENT-SNAPSHOT-2016-08-26-a
 ```
 
 Please note that the swift_buildpack installed on Bluemix caches the following versions of the Swift binaries:
 
+- `DEVELOPMENT-SNAPSHOT-2016-08-26-a`
 - `DEVELOPMENT-SNAPSHOT-2016-08-25-a`
 - `DEVELOPMENT-SNAPSHOT-2016-08-23-a`
 - `DEVELOPMENT-SNAPSHOT-2016-08-18-a`
@@ -227,15 +228,15 @@ Admin tasks
 
 To install this buildpack:
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.7/swift_buildpack-cached-v1.1.7.zip
-cf create-buildpack swift_buildpack swift_buildpack-cached-v1.1.7.zip <position>
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.11/swift_buildpack-cached-v1.1.11.zip
+cf create-buildpack swift_buildpack swift_buildpack-cached-v1.1.11.zip <position>
 ```
 
 And to update it:
 
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.7/swift_buildpack-cached-v1.1.7.zip
-cf update-buildpack swift_buildpack -p swift_buildpack-cached-v1.1.7.zip
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.11/swift_buildpack-cached-v1.1.11.zip
+cf update-buildpack swift_buildpack -p swift_buildpack-cached-v1.1.11.zip
 ```
 
 For more details on installing buildpacks, see [Adding buildpacks to Cloud Foundry](https://docs.cloudfoundry.org/adminguide/buildpacks.html).
