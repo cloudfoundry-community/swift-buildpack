@@ -153,7 +153,7 @@ web: <executable_name>
 
 ### What is the latest version of Swift supported?
 
-The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-08-26-a```.
+The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-08-29-a```.
 
 ### Specify a Swift version
 
@@ -161,11 +161,12 @@ You specify the version of Swift for your application using a `.swift-version` f
 
 ```shell
 $ cat .swift-version
-swift-DEVELOPMENT-SNAPSHOT-2016-08-26-a
+swift-DEVELOPMENT-SNAPSHOT-2016-08-29-a
 ```
 
 Please note that the swift_buildpack installed on Bluemix caches the following versions of the Swift binaries:
 
+- `DEVELOPMENT-SNAPSHOT-2016-08-29-a`
 - `DEVELOPMENT-SNAPSHOT-2016-08-26-a`
 - `DEVELOPMENT-SNAPSHOT-2016-08-25-a`
 - `DEVELOPMENT-SNAPSHOT-2016-08-23-a`
