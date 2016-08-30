@@ -14,7 +14,7 @@ fi
 # Variables
 BUILD_DIR=$1
 CACHE_DIR=$2
-DEFAULT_SWIFT_VERSION=DEVELOPMENT-SNAPSHOT-2016-08-26-a
+DEFAULT_SWIFT_VERSION=DEVELOPMENT-SNAPSHOT-2016-08-29-a
 CLANG_VERSION=3.8.0
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
