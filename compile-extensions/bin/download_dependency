@@ -32,8 +32,13 @@ if translated_uri.nil?
 end
 
 if File.exist? cache_path
-  file_path = File.join(cache_path, translated_uri.gsub(/[\/:]/, '_'))
-  translated_uri = "file://#{file_path}"
+  file_path = File.join(ogs_path, translated_uri.gsub(/[\/:]/, '_'))
+  # Let's check that the dependency is actually found in the dependencies folder
+  # If not found, then we will attempt to download it
+  if File.exist? file_path
+    debug "DEBUG: Dependency found: '#{file_path}'"
+    translated_uri = "file://#{file_path}"
+  end
 end
 
 `curl -s #{translated_uri} -o #{file_location}`
