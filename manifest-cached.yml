@@ -11,33 +11,9 @@ url_to_dependency_map:
 
 dependencies:
   - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-02-08-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-02-08-a/swift-DEVELOPMENT-SNAPSHOT-2016-02-08-a-ubuntu14.04.tar.gz
-    md5: cf23f98c559cf113bdea4e2d719d227f
-    cf_stacks:
-      - cflinuxfs2
-  - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-05-03-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a/swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a-ubuntu14.04.tar.gz
-    md5: f77eec8407e64dad03a29bf9112e52ac
-    cf_stacks:
-      - cflinuxfs2
-  - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-05-09-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a/swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a-ubuntu14.04.tar.gz
-    md5: d650161684e640cda83ff5a8e81ab440
-    cf_stacks:
-      - cflinuxfs2
-  - name: swift
     version: DEVELOPMENT-SNAPSHOT-2016-06-06-a
     uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a-ubuntu14.04.tar.gz
     md5: 83158ac36d15e68bf368263ec6932952
-    cf_stacks:
-      - cflinuxfs2
-  - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-06-20-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a/swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a-ubuntu14.04.tar.gz
-    md5: 8da727637a32c3a3e496dfc61391a4db
     cf_stacks:
       - cflinuxfs2
   - name: swift
@@ -47,45 +23,9 @@ dependencies:
     cf_stacks:
       - cflinuxfs2
   - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-08-04-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-08-04-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-04-a-ubuntu14.04.tar.gz
-    md5: 5d114d0a5fa2c358ce430194fe2d51b6
-    cf_stacks:
-      - cflinuxfs2
-  - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-08-07-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a-ubuntu14.04.tar.gz
-    md5: 225883da3a9a9096a921f12a97905625
-    cf_stacks:
-      - cflinuxfs2
-  - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-08-18-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a-ubuntu14.04.tar.gz
-    md5: e1d8cd3824d999a4c11ca6b574d9c997
-    cf_stacks:
-      - cflinuxfs2
-  - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-08-23-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-08-23-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-23-a-ubuntu14.04.tar.gz
-    md5: f65bd41323c37a1f424c94f5aa37cfdc
-    cf_stacks:
-      - cflinuxfs2
-  - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-08-25-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-08-25-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-25-a-ubuntu14.04.tar.gz
-    md5: 0c4d6e19f705a3cc4b782acaf8d84b75
-    cf_stacks:
-      - cflinuxfs2
-  - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-08-26-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-08-26-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-26-a-ubuntu14.04.tar.gz
-    md5: bd6919ff30a8021bf82515208326ce66
-    cf_stacks:
-      - cflinuxfs2
-  - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-08-29-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-08-29-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-29-a-ubuntu14.04.tar.gz
-    md5: a172d32dcfd2699b72f28cb96607d759
+    version: DEVELOPMENT-SNAPSHOT-2016-08-31-a
+    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-08-31-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-31-a-ubuntu14.04.tar.gz
+    md5: 41f1e73c2db79940565f026fad7df1b3
     cf_stacks:
       - cflinuxfs2
   - name: clang
