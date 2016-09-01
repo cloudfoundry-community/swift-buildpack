@@ -55,7 +55,7 @@ puts file_location
 
 if dependency_md5.nil?
   STDERR.puts "WARNING: md5 value for dependency could not be validated"
-  STDERR.puts "WARNING: More than likely this is because the specified dependency is missing in the MANIFEST file"
+  STDERR.puts "WARNING: More than likely this is because the requested dependency was not found in the MANIFEST file"
   exit 0
 else
   if dependency_md5 == generated_md5
