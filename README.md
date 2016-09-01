@@ -231,14 +231,14 @@ Admin tasks
 
 To install this buildpack:
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.12/swift_buildpack-cached-v1.1.12.zip
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.12/buildpack_swift_v1.1.12-20160901-1456.zip
 cf create-buildpack swift_buildpack swift_buildpack-cached-v1.1.12.zip <position>
 ```
 
 And to update it:
 
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.12/swift_buildpack-cached-v1.1.12.zip
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.12/buildpack_swift_v1.1.12-20160901-1456.zip
 cf update-buildpack swift_buildpack -p swift_buildpack-cached-v1.1.12.zip
 ```
 
