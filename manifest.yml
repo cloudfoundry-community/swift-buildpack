@@ -53,7 +53,7 @@ dependencies:
     cf_stacks:
       - cflinuxfs2
   - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-06-07-a
+    version: DEVELOPMENT-SNAPSHOT-2016-06-06-a
     uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a-ubuntu14.04.tar.gz
     md5: 83158ac36d15e68bf368263ec6932952
     cf_stacks:
