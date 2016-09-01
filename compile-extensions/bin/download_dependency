@@ -27,14 +27,24 @@ debug "DEBUG: translated_uri '#{translated_uri}'"
 debug "DEBUG: dependency_md5 '#{dependency_md5}'"
 
 if translated_uri.nil?
-  STDERR.puts "DEPENDENCY_MISSING_IN_MANIFEST: '#{original_url}'"
-  exit 1
+  STDERR.puts "Dependency not found in MANIFEST file: '#{original_url}'"
+  puts "Buildpack will attempt to download: '#{original_url}'"
+  tmp1 = original_url.gsub(/.tar/, '-ubuntu14.04\\0')
+  tmp2 = original_url.split(/.tar/).first
+  translated_uri = "https://swift.org/builds/development/ubuntu1404/#{tmp2}/#{tmp1}"
+  debug "DEBUG: Using the following URL for attempting to download dependency: #{translated_uri}"
+  #https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a-ubuntu14.04.tar.gz
+  #orig_string = "swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a.tar.gz"
+  #end_result = orig_string.gsub(/.tar/, '-ubuntu14.04\\0')
+  #print end_result
+  #"swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a.tar.gz".split(/.tar/).first
+  #exit 1
 end
 
 if File.exist? cache_path
   file_path = File.join(ogs_path, translated_uri.gsub(/[\/:]/, '_'))
   # Let's check that the dependency is actually found in the dependencies folder
-  # If not found, then we will attempt to download it
+  # If not found in the dependencies folder, we will not change the value of translated_uri and we will attempt to download it
   if File.exist? file_path
     debug "DEBUG: Dependency found: '#{file_path}'"
     translated_uri = "file://#{file_path}"
@@ -47,9 +57,11 @@ generated_md5 = Digest::MD5.file(file_location).hexdigest
 debug "DEBUG: generated_md5 '#{generated_md5}'"
 puts file_location
 
-if dependency_md5 == generated_md5
-  exit 0
-else
-  FileUtils.rm(file_location)
-  exit 3
+unless dependency_md5.nil?
+  if dependency_md5 == generated_md5
+    exit 0
+  else
+    FileUtils.rm(file_location)
+    exit 3
+  end
 end
