@@ -27,24 +27,20 @@ debug "DEBUG: translated_uri '#{translated_uri}'"
 debug "DEBUG: dependency_md5 '#{dependency_md5}'"
 
 if translated_uri.nil?
-  STDERR.puts "Dependency not found in MANIFEST file: '#{original_url}'"
-  STDERR.puts "Buildpack will attempt to download: '#{original_url}'"
-  tmp1 = original_url.gsub(/.tar/, '-ubuntu14.04\\0')
-  tmp2 = original_url.split(/.tar/).first
-  translated_uri = "https://swift.org/builds/development/ubuntu1404/#{tmp2}/#{tmp1}"
-  debug "DEBUG: Using the following URL for attempting to download dependency: #{translated_uri}"
-  #https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a-ubuntu14.04.tar.gz
-  #orig_string = "swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a.tar.gz"
-  #end_result = orig_string.gsub(/.tar/, '-ubuntu14.04\\0')
-  #print end_result
-  #"swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a.tar.gz".split(/.tar/).first
-  #exit 1
+  STDERR.puts "WARNING: You are attempting to use a dependency not specified in the MANIFEST file: #{original_url}"
+  STDERR.puts "WARNING: The buildpack will still attempt to download the specified dependency"
+  # Assumption is that the requested dependency is a Swift development version
+  swift_file = original_url.gsub(/.tar/, '-ubuntu14.04\\0')
+  swift_version = original_url.split(/.tar/).first
+  translated_uri = "https://swift.org/builds/development/ubuntu1404/#{swift_version}/#{swift_file}"
+  debug "DEBUG: Using the following URL for downloading the specified dependency: #{translated_uri}"
 end
 
 if File.exist? cache_path
   file_path = File.join(ogs_path, translated_uri.gsub(/[\/:]/, '_'))
-  # Let's check that the dependency is actually found in the dependencies folder
+  # Though this should not be needed, let's check that the dependency is actually found in the dependencies folder
   # If not found in the dependencies folder, we will not change the value of translated_uri and we will attempt to download it
+  # This is useful if a dependency was manualy taken out of the dependencies folder
   if File.exist? file_path
     debug "DEBUG: Dependency found: '#{file_path}'"
     translated_uri = "file://#{file_path}"
@@ -58,7 +54,8 @@ debug "DEBUG: generated_md5 '#{generated_md5}'"
 puts file_location
 
 if dependency_md5.nil?
-  debug "DEBUG: md5 value for dependency could not be validated"
+  STDERR.puts "WARNING: md5 value for dependency could not be validated"
+  STDERR.puts "WARNING: More than likely this is because the specified dependency is missing in the MANIFEST file"
   exit 0
 else
   if dependency_md5 == generated_md5
