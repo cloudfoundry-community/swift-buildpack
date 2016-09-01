@@ -8,7 +8,7 @@ Check out the [Kitura-Starter-Bluemix](https://github.com/IBM-Swift/Kitura-Start
 Usage
 -----
 
-Example usage if targeting any of the **cached** versions of the Swift binaries (see the [Specify a Swift version](#specify-a-swift-version) section):
+Example usage (see the [Specify a Swift version](#specify-a-swift-version) section):
 
 ```shell
 $ cf push
@@ -135,6 +135,16 @@ stack: cflinuxfs2
 
 The buildpack will detect your app as Swift if it has a `Package.swift` file in the root.
 
+### Version installed on Bluemix
+
+The latest version installed on Bluemix is (v1.1.6)[https://github.com/IBM-Swift/swift-buildpack/releases/tag/1.1.5].
+
+Please note that it is possible that the latest buildpack code contained in this repo hasn't yet been installed on Bluemix. If that happens to be the case and you'd like to leverage the latest buildpack code you can do so by adding the `-b https://github.com/IBM-Swift/swift-buildpack` parameter to the `cf push` command, as shown below:
+
+```shell
+cf push -b https://github.com/IBM-Swift/swift-buildpack
+```
+
 ### Procfile
 
 Using the `Procfile`, you can specify the name of executable process (e.g. `Server`) to run for your web server. Any binaries built from your Swift source using SPM will be placed in your $PATH. You can also specify any runtime parameters for your process in the `Procfile`.
@@ -153,7 +163,7 @@ web: <executable_name>
 
 ### What is the latest version of Swift supported?
 
-The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-08-29-a```.
+The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-08-31-a```.
 
 ### Specify a Swift version
 
@@ -161,30 +171,20 @@ You specify the version of Swift for your application using a `.swift-version` f
 
 ```shell
 $ cat .swift-version
-swift-DEVELOPMENT-SNAPSHOT-2016-08-29-a
+swift-DEVELOPMENT-SNAPSHOT-2016-08-31-a
 ```
 
-Please note that the swift_buildpack installed on Bluemix caches the following versions of the Swift binaries:
+Please note that the swift_buildpack installed on Bluemix **caches** the following versions of the Swift binaries:
 
-- `DEVELOPMENT-SNAPSHOT-2016-08-29-a`
-- `DEVELOPMENT-SNAPSHOT-2016-08-26-a`
-- `DEVELOPMENT-SNAPSHOT-2016-08-25-a`
-- `DEVELOPMENT-SNAPSHOT-2016-08-23-a`
-- `DEVELOPMENT-SNAPSHOT-2016-08-18-a`
-- `DEVELOPMENT-SNAPSHOT-2016-08-07-a`
-- `DEVELOPMENT-SNAPSHOT-2016-08-04-a`
+- `DEVELOPMENT-SNAPSHOT-2016-08-31-a`
 - `DEVELOPMENT-SNAPSHOT-2016-07-25-a`
-- `DEVELOPMENT-SNAPSHOT-2016-06-20-a`
 - `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
-- `DEVELOPMENT-SNAPSHOT-2016-05-03-a`
 
-If you'd like to use a different version of Swift (that is not cached) on Bluemix, in addition to including a `.swift-version` file, you'll also need to add the `-b https://github.com/IBM-Swift/swift-buildpack` parameter to the `cf push` command, as shown below:
+If you'd like to use a different version of Swift [that is not cached] on Bluemix, you should specify it in the `.swift-version` file.  Please be aware that using a Swift version that is not cached increases the provisioning time of your app on Bluemix.
 
-```shell
-cf push -b https://github.com/IBM-Swift/swift-buildpack
-```
+The [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/bluemix-buildpack/manifest.yml) file contains the complete list of the Swift versions that are cached on Bluemix.
 
-For a complete list of the Swift supported versions, check out the [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/bluemix-buildpack/manifest.yml) file. Since there are frequent Swift language changes, it's advised that you pin your application to a specific Swift version. Once you have tested and migrated your code to a newer version of Swift, you can then update the `.swift-version` file with the appropriate Swift version.
+Since there are frequent Swift language changes, it's advised that you pin your application to a specific Swift version. Once you have tested and migrated your code to a newer version of Swift, you can then update the `.swift-version` file with the appropriate Swift version.
 
 ### System level libraries
 
@@ -196,7 +196,7 @@ This buildpack installs the following system libraries:
 - openssl
 - libssl-dev
 
-Once Foundation (Linux) provides complete networfking functionality and [`libdispatch`](#libdispatch) is bundled up with the Swift binaries, there won't be a need for installing these system libraries.
+Once Foundation (Linux) provides complete networking functionality and [`libdispatch`](#libdispatch) is bundled up with the Swift binaries, there won't be a need for installing the above system libraries.
 
 ### libdispatch
 
@@ -246,11 +246,11 @@ For more details on installing buildpacks, see [Adding buildpacks to Cloud Found
 
 Packaging
 ---------
-The buildpack zip file provided in each release is built using `manifest-cached.yml` file:
+The buildpack zip file provided in each release is built using the `manifest.yml` file:
 
 ```shell
 BUNDLE_GEMFILE=cf.Gemfile bundle install
-BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached --use-custom-manifest manifest-cached.yml
+BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached --use-custom-manifest manifest.yml
 ```
 
 For details on packaging buildpacks, see [buildpack-packager](https://github.com/cloudfoundry/buildpack-packager).
