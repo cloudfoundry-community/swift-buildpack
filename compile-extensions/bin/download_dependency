@@ -56,8 +56,7 @@ if translated_uri.nil?
   if status_code == "200"
     debug "DEBUG: Dependency is reachable on remote server: #{original_url}"
   else
-    STDERR.puts "ERROR: Could not download the specified dependency: #{original_url}"
-    STDERR.puts "ERROR: More than likely, it is an invalid dependency!"
+    STDERR.puts "ERROR: Could not find/download the specified dependency: #{original_url}"
     exit 3
   end
 end
