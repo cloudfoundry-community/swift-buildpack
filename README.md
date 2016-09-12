@@ -171,12 +171,12 @@ You specify the version of Swift for your application using a `.swift-version` f
 
 ```shell
 $ cat .swift-version
-swift-DEVELOPMENT-SNAPSHOT-2016-08-31-a
+swift-DEVELOPMENT-SNAPSHOT-2016-09-11-a
 ```
 
 Please note that the swift_buildpack installed on Bluemix **caches** the following versions of the Swift binaries:
 
-- `DEVELOPMENT-SNAPSHOT-2016-08-31-a`
+- `DEVELOPMENT-SNAPSHOT-2016-09-11-a`
 - `DEVELOPMENT-SNAPSHOT-2016-07-25-a`
 - `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
 

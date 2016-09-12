@@ -38,9 +38,9 @@ dependencies:
     cf_stacks:
       - cflinuxfs2
   - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-08-31-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-08-31-a/swift-DEVELOPMENT-SNAPSHOT-2016-08-31-a-ubuntu14.04.tar.gz
-    md5: 41f1e73c2db79940565f026fad7df1b3
+    version: DEVELOPMENT-SNAPSHOT-2016-09-11-a
+    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-09-11-a/swift-DEVELOPMENT-SNAPSHOT-2016-09-11-a-ubuntu14.04.tar.gz
+    md5: 70a322e509adca76b700ff5b98864587
     cf_stacks:
       - cflinuxfs2
   - name: clang
