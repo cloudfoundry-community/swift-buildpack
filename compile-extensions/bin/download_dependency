@@ -20,12 +20,21 @@ require 'yaml'
 require 'compile_extensions'
 require 'digest'
 require 'fileutils'
+require "net/http"
 
 original_url      = ARGV[0]
 install_directory = ARGV[1]
 
 def debug(msg)
   STDERR.puts(msg) if ENV['BP_DEBUG']
+end
+
+def urlValid?(hostname, path)
+  http = Net::HTTP.start(hostname, 443, {open_timeout: 5, read_timeout: 5})
+  response = http.head(path)
+  response.code == "200"
+rescue Timeout::Error, SocketError
+  false
 end
 
 debug "DEBUG: download '#{original_url}' to '#{install_directory}'"
@@ -47,8 +56,17 @@ if translated_uri.nil?
   # Assumption is that the requested dependency is a Swift development version
   swift_file = original_url.gsub(/.tar/, '-ubuntu14.04\\0')
   swift_version = original_url.split(/.tar/).first
-  translated_uri = "https://swift.org/builds/development/ubuntu1404/#{swift_version}/#{swift_file}"
+  hostname = "swift.org"
+  swift_path = "builds/development/ubuntu1404/#{swift_version}/#{swift_file}"
+  translated_uri = "https://#{hostname}/#{swift_path}"
   debug "DEBUG: Using the following URL for downloading the specified dependency: #{translated_uri}"
+  if urlValid?(hostname, swift_path)
+    debug "DEBUG: URL '#{translated_uri}' is valid"
+  else
+    STDERR.puts "ERROR: Cannot download the specified dependency: #{original_url}"
+    STDERR.puts "ERROR: More than likely, it is an invalid dependency!"
+    exit 3
+  end
 end
 
 if File.exist? cache_path
