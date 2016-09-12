@@ -52,6 +52,7 @@ if translated_uri.nil?
   translated_uri = "https://#{hostname}/#{swift_path}"
   debug "DEBUG: Using the following URL for downloading the specified dependency: #{translated_uri}"
   status_code = `curl -I -s #{translated_uri} | head -n 1 | cut -d ' ' -f2`
+  status_code = status_code.strip
   debug "DEBUG: HTTP dependency availability status code: #{status_code}"
 
 
