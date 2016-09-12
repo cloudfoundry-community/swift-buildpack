@@ -59,6 +59,8 @@ if translated_uri.nil?
 
   STDERR.puts status_code == "200"
 
+  debug "DEBUG: HTTP dependency availability status code: '#{status_code}'"
+
   if status_code == "200"
     debug "DEBUG: Dependency is reachable on remote server: #{original_url}"
   else
