@@ -57,6 +57,8 @@ if translated_uri.nil?
 
   STDERR.puts status_code.instance_of? String
 
+  STDERR.puts status_code == "200"
+
   if status_code == "200"
     debug "DEBUG: Dependency is reachable on remote server: #{original_url}"
   else
