@@ -51,7 +51,7 @@ if translated_uri.nil?
   swift_path = "builds/development/ubuntu1404/#{swift_version}/#{swift_file}"
   translated_uri = "https://#{hostname}/#{swift_path}"
   debug "DEBUG: Using the following URL for downloading the specified dependency: #{translated_uri}"
-  status_code = `curl -I -s #{translated_uri} | head -n 1 | cut -d$" " -f2`
+  status_code = `curl -I -s #{translated_uri} | head -n 1 | cut -d$' ' -f2`
   debug "DEBUG: HTTP test status code: #{status_code}"
   if status_code == "200"
     debug "DEBUG: Dependency was found on remote server: #{original_url}"
