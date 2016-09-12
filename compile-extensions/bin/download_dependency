@@ -31,7 +31,7 @@ end
 
 def urlValid?(hostname, path)
   http = Net::HTTP.start(hostname, 443, {open_timeout: 5, read_timeout: 5})
-  response = http.head(path)
+  response = http.head("/#{path}")
   response.code == "200"
 rescue Timeout::Error, SocketError
   false
