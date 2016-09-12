@@ -69,6 +69,7 @@ end
 
 if File.file?(file_location)
   debug "DEBUG: Dependency was downloaded: #{original_url}"
+  STDERR.puts "DEBUG: Dependency was downloaded: #{original_url}"
 else
   STDERR.puts "ERROR: Could not download the specified dependency: #{original_url}"
   STDERR.puts "ERROR: More than likely, it is an invalid dependency!"
