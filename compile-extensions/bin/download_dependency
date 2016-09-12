@@ -54,14 +54,6 @@ if translated_uri.nil?
   status_code = `curl -I -s #{translated_uri} | head -n 1 | cut -d ' ' -f2`
   status_code = status_code.strip
   debug "DEBUG: HTTP dependency availability status code: #{status_code}"
-
-
-  STDERR.puts status_code.instance_of? String
-
-  STDERR.puts status_code == "200"
-
-  debug "DEBUG: HTTP dependency availability status code: '#{status_code}'"
-
   if status_code == "200"
     debug "DEBUG: Dependency is reachable on remote server: #{original_url}"
   else
