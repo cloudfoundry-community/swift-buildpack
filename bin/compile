@@ -178,7 +178,7 @@ rm -rf $BUILD_DIR/.build
 # This has no impact on the execution of the buildpack since [at the moment]
 # we are not taking advantage of the CACHE_DIR folder.
 status "Cleaning up cache folder"
-rm -rf $CACHE_DIR
+rm -rf $CACHE_DIR/*
 
 # Setup application environment
 PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"

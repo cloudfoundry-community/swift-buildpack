@@ -231,15 +231,15 @@ Admin tasks
 
 To install this buildpack:
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.12/buildpack_swift_v1.1.12-20160901-1456.zip
-cf create-buildpack swift_buildpack buildpack_swift_v1.1.12-20160901-1456.zip <position>
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.13/buildpack_swift_v1.1.13-20160901-1456.zip
+cf create-buildpack swift_buildpack buildpack_swift_v1.1.13-20160901-1456.zip <position>
 ```
 
 And to update it:
 
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.12/buildpack_swift_v1.1.12-20160901-1456.zip
-cf update-buildpack swift_buildpack -p buildpack_swift_v1.1.12-20160901-1456.zip
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.13/buildpack_swift_v1.1.13-20160901-1456.zip
+cf update-buildpack swift_buildpack -p buildpack_swift_v1.1.13-20160901-1456.zip
 ```
 
 For more details on installing buildpacks, see [Adding buildpacks to Cloud Foundry](https://docs.cloudfoundry.org/adminguide/buildpacks.html).
