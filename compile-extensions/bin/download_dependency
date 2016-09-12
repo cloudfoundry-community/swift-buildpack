@@ -52,11 +52,9 @@ if translated_uri.nil?
   translated_uri = "https://#{hostname}/#{swift_path}"
   debug "DEBUG: Using the following URL for downloading the specified dependency: #{translated_uri}"
   status_code = `curl -I -s #{translated_uri} | head -n 1 | cut -d ' ' -f2`
-  #status_code = `curl -I -s #{translated_uri} | head -n 1 | cut -d$' ' -f2`
-  #status_code = `curl -I -s #{translated_uri} | head -n 1`
-  debug "DEBUG: HTTP test status code: #{status_code}"
+  debug "DEBUG: HTTP dependency availability status code: #{status_code}"
   if status_code == "200"
-    debug "DEBUG: Dependency was found on remote server: #{original_url}"
+    debug "DEBUG: Dependency is reachable on remote server: #{original_url}"
   else
     STDERR.puts "ERROR: Could not download the specified dependency: #{original_url}"
     STDERR.puts "ERROR: More than likely, it is an invalid dependency!"
