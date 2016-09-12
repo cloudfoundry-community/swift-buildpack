@@ -29,14 +29,6 @@ def debug(msg)
   STDERR.puts(msg) if ENV['BP_DEBUG']
 end
 
-def urlValid?(hostname, path)
-  http = Net::HTTP.start(hostname, 443, {open_timeout: 5, read_timeout: 5})
-  response = http.head("/#{path}")
-  response.code == "200"
-rescue Timeout::Error, SocketError
-  false
-end
-
 debug "DEBUG: download '#{original_url}' to '#{install_directory}'"
 
 file_location     = File.join(install_directory, original_url.split('/').last)
@@ -60,13 +52,6 @@ if translated_uri.nil?
   swift_path = "builds/development/ubuntu1404/#{swift_version}/#{swift_file}"
   translated_uri = "https://#{hostname}/#{swift_path}"
   debug "DEBUG: Using the following URL for downloading the specified dependency: #{translated_uri}"
-  if urlValid?(hostname, swift_path)
-    debug "DEBUG: URL '#{translated_uri}' is valid"
-  else
-    STDERR.puts "ERROR: Cannot download the specified dependency: #{original_url}"
-    STDERR.puts "ERROR: More than likely, it is an invalid dependency!"
-    exit 3
-  end
 end
 
 if File.exist? cache_path
@@ -81,6 +66,15 @@ if File.exist? cache_path
 end
 
 `curl -s #{translated_uri} -o #{file_location}`
+
+if File.file?(file_location)
+  debug "DEBUG: Dependency was downloaded: #{original_url}"
+else
+  STDERR.puts "ERROR: Could not download the specified dependency: #{original_url}"
+  STDERR.puts "ERROR: More than likely, it is an invalid dependency!"
+  exit 3
+end
+
 generated_md5 = Digest::MD5.file(file_location).hexdigest
 
 debug "DEBUG: generated_md5 '#{generated_md5}'"
