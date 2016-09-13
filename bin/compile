@@ -52,6 +52,9 @@ source $compile_buildpack_dir/bin/common.sh
 #status "Downloaded DEB files..."
 #################################################
 
+# Log supported/default Swift version
+status "Default supported Swift version is $DEFAULT_SWIFT_VERSION"
+
 # Install system level dependencies for Kitura
 status "Installing system level dependencies..."
 mkdir -p $BUILD_DIR/.apt
