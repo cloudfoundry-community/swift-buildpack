@@ -47,8 +47,9 @@ debug "DEBUG: dependency_md5 '#{dependency_md5}'"
 if translated_uri.nil?
   # Assumption is that the requested dependency is a Swift development version
   STDERR.puts "WARNING: You are requesting a custom version of Swift (defined in your .swift-version)"
+  custom_swift_version = original_url.gsub(/.tar.gz/, '')
   STDERR.puts "WARNING: Default supported Swift version: #{default_swift_version}"
-  STDERR.puts "WARNING: Custom Swift version for your app: #{original_url}"
+  STDERR.puts "WARNING: Custom Swift version for your app: #{custom_swift_version}"
   STDERR.puts "WARNING: The buildpack will attempt to download requested version from Swift.org"
   swift_file = original_url.gsub(/.tar/, '-ubuntu14.04\\0')
   swift_version = original_url.split(/.tar/).first
@@ -62,7 +63,7 @@ if translated_uri.nil?
   if status_code == "200"
     debug "DEBUG: Dependency is reachable on remote server: #{original_url}"
   else
-    STDERR.puts "ERROR: Could not find/download the custom Swift version from Swift.org: #{original_url}"
+    STDERR.puts "ERROR: Could not find/download the custom Swift version from Swift.org: #{custom_swift_version}"
     exit 3
   end
 end
