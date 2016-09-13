@@ -29,7 +29,7 @@ fi
 # Variables
 BUILD_DIR=$1
 CACHE_DIR=$2
-DEFAULT_SWIFT_VERSION=DEVELOPMENT-SNAPSHOT-2016-08-29-a
+DEFAULT_SWIFT_VERSION=DEVELOPMENT-SNAPSHOT-2016-09-11-a
 CLANG_VERSION=3.8.0
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
@@ -127,7 +127,7 @@ cd $CACHE_DIR
 if [[ ! -d "$CACHE_DIR/$SWIFT_NAME_VERSION" ]]; then
   status "Installing Swift $SWIFT_VERSION"
   mkdir -p $SWIFT_NAME_VERSION
-  dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp)
+  dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp $DEFAULT_SWIFT_VERSION)
   echo "Downloaded Swift" | indent
   tar xz -C $SWIFT_NAME_VERSION -f $dependency
 fi

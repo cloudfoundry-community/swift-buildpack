@@ -23,6 +23,9 @@ require 'fileutils'
 
 original_url      = ARGV[0]
 install_directory = ARGV[1]
+if ARGV.size == 3
+  default_swift_version = ARGV[2]
+end
 
 def debug(msg)
   STDERR.puts(msg) if ENV['BP_DEBUG']
@@ -42,9 +45,11 @@ debug "DEBUG: translated_uri '#{translated_uri}'"
 debug "DEBUG: dependency_md5 '#{dependency_md5}'"
 
 if translated_uri.nil?
-  STDERR.puts "WARNING: You are attempting to use a dependency not specified in the MANIFEST file: #{original_url}"
-  STDERR.puts "WARNING: The buildpack will still attempt to download the specified dependency"
   # Assumption is that the requested dependency is a Swift development version
+  STDERR.puts "WARNING: You are requesting a custom version of Swift (defined in your .swift-version)"
+  STDERR.puts "WARNING: Default supported Swift version: #{default_swift_version}"
+  STDERR.puts "WARNING: Custom Swift version for your app: #{original_url}"
+  STDERR.puts "WARNING: The buildpack will attempt to download requested version from Swift.org"
   swift_file = original_url.gsub(/.tar/, '-ubuntu14.04\\0')
   swift_version = original_url.split(/.tar/).first
   hostname = "swift.org"
@@ -57,7 +62,7 @@ if translated_uri.nil?
   if status_code == "200"
     debug "DEBUG: Dependency is reachable on remote server: #{original_url}"
   else
-    STDERR.puts "ERROR: Could not find/download the specified dependency: #{original_url}"
+    STDERR.puts "ERROR: Could not find/download the custom Swift version from Swift.org: #{original_url}"
     exit 3
   end
 end
@@ -80,8 +85,7 @@ debug "DEBUG: generated_md5 '#{generated_md5}'"
 puts file_location
 
 if dependency_md5.nil?
-  STDERR.puts "WARNING: md5 value for dependency could not be validated"
-  STDERR.puts "WARNING: More than likely this is because the requested dependency was not found in the MANIFEST file"
+  debug "DEBUG: md5 value for dependency could not be validated; more than likely the dependency is not found in the MANIFEST file"
   exit 0
 else
   if dependency_md5 == generated_md5
