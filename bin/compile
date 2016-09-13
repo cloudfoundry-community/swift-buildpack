@@ -152,8 +152,7 @@ if [ -f $libdispatchBinariesFile ]; then
   status "Adding libdispatch binaries..."
   tar xzf $libdispatchBinariesFile -C $SWIFT_PATH
 else
-  status "This buildpack does not add libdispatch support for $SWIFT_NAME_VERSION."
-  status "Note: Swift binaries from 8/23 and later include libdispatch."
+  status "This buildpack does not add libdispatch binaries for $SWIFT_NAME_VERSION (note: Swift binaries from 8/23 and later already include libdispatch)"
 fi
 
 cd $BUILD_DIR
