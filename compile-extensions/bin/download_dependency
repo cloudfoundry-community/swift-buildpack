@@ -53,9 +53,7 @@ if translated_uri.nil?
   STDERR.puts "WARNING: The buildpack will attempt to download requested version from Swift.org"
   swift_file = original_url.gsub(/.tar/, '-ubuntu14.04\\0')
   swift_version = original_url.split(/.tar/).first
-  hostname = "swift.org"
-  swift_path = "builds/development/ubuntu1404/#{swift_version}/#{swift_file}"
-  translated_uri = "https://#{hostname}/#{swift_path}"
+  translated_uri = "https://swift.org/builds/development/ubuntu1404/#{swift_version}/#{swift_file}"
   debug "DEBUG: Using the following URL for downloading the specified dependency: #{translated_uri}"
   status_code = `curl -I -s #{translated_uri} | head -n 1 | cut -d ' ' -f2`
   status_code = status_code.strip
