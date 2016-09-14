@@ -66,8 +66,6 @@ if translated_uri.nil?
       custom_swift_version = "#{custom_swift_version}-RELEASE"
     end
   end
-  #swift_file = original_url.gsub(/.tar/, '-ubuntu14.04\\0')
-  #swift_version = original_url.split(/.tar/).first
   swift_file = "#{custom_swift_version}-ubuntu14.04.tar.gz"
   translated_uri = "https://swift.org/builds/#{snapshot_type}/ubuntu1404/#{custom_swift_version}/#{swift_file}"
   debug "DEBUG: Using the following URL for downloading the specified dependency: #{translated_uri}"
@@ -77,7 +75,7 @@ if translated_uri.nil?
   if status_code == "200"
     debug "DEBUG: Dependency is reachable on remote server: #{original_url}"
   else
-    STDERR.puts "ERROR: Could not find/download the custom Swift version from Swift.org: #{custom_swift_version}"
+    STDERR.puts "ERROR: Could not find/download the custom Swift version from Swift.org: #{translated_uri}"
     exit 3
   end
 end
