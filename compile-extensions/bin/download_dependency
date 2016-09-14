@@ -49,17 +49,27 @@ debug "DEBUG: dependency_md5 '#{dependency_md5}'"
 
 if translated_uri.nil?
   # Assumption is that the requested dependency is a Swift development or release snapshot
-  STDERR.puts "WARNING: You are requesting a custom version of Swift (defined in your .swift-version)"
   custom_swift_version = original_url.gsub(/.tar.gz/, '')
+  STDERR.puts "WARNING: You are requesting a custom version of Swift (defined in your .swift-version)"
   STDERR.puts "WARNING: Default supported Swift version: #{default_swift_version}"
   STDERR.puts "WARNING: Custom Swift version for your app: #{custom_swift_version}"
   STDERR.puts "WARNING: The buildpack will attempt to download requested version from Swift.org"
 
   # Determine snapshot type, swift version, url...
-  snapshot_type = (custom_swift_version.downcase.include? "development") ? "development" : custom_swift_version
-  swift_file = original_url.gsub(/.tar/, '-ubuntu14.04\\0')
-  swift_version = original_url.split(/.tar/).first
-  translated_uri = "https://swift.org/builds/#{snapshot_type}/ubuntu1404/#{swift_version}/#{swift_file}"
+  if custom_swift_version.downcase.include? "development"
+    snapshot_type = "development"
+  else
+    # Assuming release snapshot
+    snapshot_type = custom_swift_version.downcase
+    if !(snapshot_type.include? "release")
+      snapshot_type = "#{snapshot_type}-release"
+      custom_swift_version = "#{swift_version}-RELEASE"
+    end
+  end
+  #swift_file = original_url.gsub(/.tar/, '-ubuntu14.04\\0')
+  #swift_version = original_url.split(/.tar/).first
+  swift_file = "#{custom_swift_version}-ubuntu14.04.tar.gz"
+  translated_uri = "https://swift.org/builds/#{snapshot_type}/ubuntu1404/#{custom_swift_version}/#{swift_file}"
   debug "DEBUG: Using the following URL for downloading the specified dependency: #{translated_uri}"
   status_code = `curl -I -s #{translated_uri} | head -n 1 | cut -d ' ' -f2`
   status_code = status_code.strip

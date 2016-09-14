@@ -29,7 +29,7 @@ fi
 # Variables
 BUILD_DIR=$1
 CACHE_DIR=$2
-DEFAULT_SWIFT_VERSION=3.0-RELEASE
+DEFAULT_SWIFT_VERSION=3.0
 CLANG_VERSION=3.8.0
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
@@ -114,12 +114,14 @@ export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUIL
 
 BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-extensions/lib/common
 
+# Determine Swift version for the app
 if [ -f $BUILD_DIR/.swift-version ]; then
   # Take any pinned Swift version, stripping any redundant `swift-` prefix if present
   SWIFT_VERSION=$(cat $BUILD_DIR/.swift-version | sed -e "s/swift-//")
 else
   SWIFT_VERSION=$DEFAULT_SWIFT_VERSION
 fi
+
 SWIFT_NAME_VERSION="swift-${SWIFT_VERSION}"
 CLANG_NAME_VERSION="clang-${CLANG_VERSION}"
 

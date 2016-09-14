@@ -163,7 +163,7 @@ web: <executable_name>
 
 ### What is the latest version of Swift supported?
 
-The latest version of Swift supported by this buildpack is ```3.0-RELEASE```.
+The latest version of Swift supported by this buildpack is ```3.0```.
 
 ### Specify a Swift version
 
@@ -171,12 +171,12 @@ You specify the version of Swift for your application using a `.swift-version` f
 
 ```shell
 $ cat .swift-version
-swift-3.0-RELEASE
+3.0
 ```
 
 Please note that the swift_buildpack installed on Bluemix **caches** the following versions of the Swift binaries:
 
-- `3.0-RELEASE`
+- `3.0`
 - `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
 
 If you'd like to use a different version of Swift [that is not cached] on Bluemix, you can specify it in the `.swift-version` file.  Please be aware that using a Swift version that is not cached increases the provisioning time of your app on Bluemix.

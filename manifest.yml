@@ -32,7 +32,7 @@ dependencies:
     cf_stacks:
       - cflinuxfs2
   - name: swift
-    version: 3.0-RELEASE
+    version: 3.0
     uri: https://swift.org/builds/swift-3.0-release/ubuntu1404/swift-3.0-RELEASE/swift-3.0-RELEASE-ubuntu14.04.tar.gz
     md5: 88edb298674199f015235aa4eaa058fe
     cf_stacks:
