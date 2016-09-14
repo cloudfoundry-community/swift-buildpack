@@ -163,7 +163,7 @@ web: <executable_name>
 
 ### What is the latest version of Swift supported?
 
-The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-SNAPSHOT-2016-08-31-a```.
+The latest version of Swift supported by this buildpack is ```3.0-RELEASE```.
 
 ### Specify a Swift version
 
@@ -171,18 +171,17 @@ You specify the version of Swift for your application using a `.swift-version` f
 
 ```shell
 $ cat .swift-version
-swift-DEVELOPMENT-SNAPSHOT-2016-09-11-a
+swift-3.0-RELEASE
 ```
 
 Please note that the swift_buildpack installed on Bluemix **caches** the following versions of the Swift binaries:
 
-- `DEVELOPMENT-SNAPSHOT-2016-09-11-a`
-- `DEVELOPMENT-SNAPSHOT-2016-07-25-a`
+- `3.0-RELEASE`
 - `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
 
-If you'd like to use a different version of Swift [that is not cached] on Bluemix, you should specify it in the `.swift-version` file.  Please be aware that using a Swift version that is not cached increases the provisioning time of your app on Bluemix.
+If you'd like to use a different version of Swift [that is not cached] on Bluemix, you can specify it in the `.swift-version` file.  Please be aware that using a Swift version that is not cached increases the provisioning time of your app on Bluemix.
 
-The [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/bluemix-buildpack/manifest.yml) file contains the complete list of the Swift versions that are cached on Bluemix.
+The [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/develop/manifest.yml) file contains the complete list of the Swift versions that are cached on Bluemix.
 
 Since there are frequent Swift language changes, it's advised that you pin your application to a specific Swift version. Once you have tested and migrated your code to a newer version of Swift, you can then update the `.swift-version` file with the appropriate Swift version.
 
@@ -195,12 +194,13 @@ This buildpack installs the following system libraries:
 - libkqueue0
 - openssl
 - libssl-dev
+- uuid-dev
 
 Once Foundation (Linux) provides complete networking functionality and [`libdispatch`](#libdispatch) is bundled up with the Swift binaries, there won't be a need for installing the above system libraries.
 
 ### libdispatch
 
-The Swift binaries (for Linux) prior to 2016-08-23 do not include the [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) library. Therefore, this buildpack adds the libdispatch binaries for the following Swift versions:
+The Swift binaries (for Linux) **prior** to 2016-08-23 do not include the [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) library. Therefore, this buildpack adds the libdispatch binaries for the following Swift versions:
 
 - `swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a`
 - `swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a`

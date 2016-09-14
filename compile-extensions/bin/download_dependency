@@ -21,18 +21,21 @@ require 'compile_extensions'
 require 'digest'
 require 'fileutils'
 
+# Process arguments/parameters to the script
 original_url      = ARGV[0]
 install_directory = ARGV[1]
 if ARGV.size == 3
   default_swift_version = ARGV[2]
 end
 
+# Define utility functions
 def debug(msg)
   STDERR.puts(msg) if ENV['BP_DEBUG']
 end
 
 debug "DEBUG: download '#{original_url}' to '#{install_directory}'"
 
+# Perform necessary lookups
 file_location     = File.join(install_directory, original_url.split('/').last)
 manifest_location = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "manifest.yml"))
 cache_path        = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'dependencies'))
@@ -45,15 +48,18 @@ debug "DEBUG: translated_uri '#{translated_uri}'"
 debug "DEBUG: dependency_md5 '#{dependency_md5}'"
 
 if translated_uri.nil?
-  # Assumption is that the requested dependency is a Swift development version
+  # Assumption is that the requested dependency is a Swift development or release snapshot
   STDERR.puts "WARNING: You are requesting a custom version of Swift (defined in your .swift-version)"
   custom_swift_version = original_url.gsub(/.tar.gz/, '')
   STDERR.puts "WARNING: Default supported Swift version: #{default_swift_version}"
   STDERR.puts "WARNING: Custom Swift version for your app: #{custom_swift_version}"
   STDERR.puts "WARNING: The buildpack will attempt to download requested version from Swift.org"
+
+  # Determine snapshot type, swift version, url...
+  snapshot_type = (custom_swift_version.downcase.include? "development") ? "development" : custom_swift_version
   swift_file = original_url.gsub(/.tar/, '-ubuntu14.04\\0')
   swift_version = original_url.split(/.tar/).first
-  translated_uri = "https://swift.org/builds/development/ubuntu1404/#{swift_version}/#{swift_file}"
+  translated_uri = "https://swift.org/builds/#{snapshot_type}/ubuntu1404/#{swift_version}/#{swift_file}"
   debug "DEBUG: Using the following URL for downloading the specified dependency: #{translated_uri}"
   status_code = `curl -I -s #{translated_uri} | head -n 1 | cut -d ' ' -f2`
   status_code = status_code.strip
