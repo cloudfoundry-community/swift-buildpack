@@ -75,7 +75,7 @@ if translated_uri.nil?
   if status_code == "200"
     debug "DEBUG: Dependency is reachable on remote server: #{original_url}"
   else
-    STDERR.puts "ERROR: Could not find/download the custom Swift version from Swift.org: #{translated_uri}"
+    STDERR.puts "ERROR: Could not find/download requested custom Swift version from Swift.org: #{translated_uri}"
     exit 3
   end
 end
