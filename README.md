@@ -147,7 +147,7 @@ cf push -b https://github.com/IBM-Swift/swift-buildpack
 
 ### Procfile
 
-Using the `Procfile`, you can specify the name of executable process (e.g. `Server`) to run for your web server. Any binaries built from your Swift source using SPM will be placed in your $PATH. You can also specify any runtime parameters for your process in the `Procfile`.
+Using the `Procfile`, you specify the name of the executable process (e.g. `Server`) to run for your web server. Any binaries built from your Swift source using SPM will be placed in your $PATH. You can also specify any runtime parameters for your process in the `Procfile`.
 
 ```
 web: Server --bind 0.0.0.0:$PORT
