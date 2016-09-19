@@ -1,5 +1,5 @@
 IBM Bluemix buildpack for Swift
-===========================
+===============================
 
 This is the Bluemix buildpack for Swift applications, powered by the Swift Package Manager (SPM). Though this buildpack was developed mainly for Bluemix, it can be used on any Cloud Foundry environment. This buildpack requires access to the Internet for downloading and installing several system level dependencies.
 
