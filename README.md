@@ -1,4 +1,4 @@
-Bluemix buildpack for Swift
+IBM Bluemix buildpack for Swift
 ===========================
 
 This is the Bluemix buildpack for Swift applications, powered by the Swift Package Manager (SPM). Though this buildpack was developed mainly for Bluemix, it can be used on any Cloud Foundry environment. This buildpack requires access to the Internet for downloading and installing several system level dependencies.
@@ -137,7 +137,7 @@ The buildpack will detect your app as Swift if it has a `Package.swift` file in 
 
 ### Version installed on Bluemix
 
-The latest version of the Swift buildpack installed on Bluemix is [v1.1.6](https://github.com/IBM-Swift/swift-buildpack/releases/tag/1.1.5).
+The latest version of the IBM Bluemix buildpack for Swift on Bluemix is [v2.0.0](https://github.com/IBM-Swift/swift-buildpack/releases/tag/2.0.0).
 
 Please note that it is possible that the latest buildpack code contained in this repo hasn't yet been installed on Bluemix. If that happens to be the case and you'd like to leverage the latest buildpack code, you can do so by adding the `-b https://github.com/IBM-Swift/swift-buildpack` parameter to the `cf push` command, as shown below:
 
