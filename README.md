@@ -149,7 +149,7 @@ Using the `Procfile`, you specify the name of the executable process (e.g. `Serv
 web: Server --bind 0.0.0.0:$PORT
 ```
 
-### Alernative to Procfile
+### Alternative to Procfile
 
 Instead of using the `Procfile`, you can use the `command` attribute in the `manifest.yml` of your application to specify the name of your executable. The snippet of code below shows how to use the `command` attribute to specify the same executable and parameter values used in the above `Procfile` example:
 
@@ -167,7 +167,7 @@ Instead of specifying IP address and port values in the `Procfile` (or in the `c
 web: <executable_name>
 ```
 
-If instead of the `Procfile`, you are using the `command` attribute in your application's `manifest.yml` file, then the entry for the `command` is simplified to:
+If instead of the `Procfile`, you are using the `command` attribute in your application's `manifest.yml` file, then the entry for the `command` attribute is simplified to:
 
 ```
 command: <executable_name>
