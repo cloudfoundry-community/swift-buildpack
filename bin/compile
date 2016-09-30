@@ -130,36 +130,35 @@ cd $CACHE_DIR
 
 CACHE_ARRAY=()
 # Download and unpack Swift binaries
-if [[ ! -d "$SWIFT_NAME_VERSION" ]]; then
+if [[ ! -d "$CACHE_DIR/$SWIFT_NAME_VERSION" ]]; then
   status "Installing Swift $SWIFT_VERSION"
   mkdir -p $SWIFT_NAME_VERSION
-  IF=' ' read -a my_array <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp $DEFAULT_SWIFT_VERSION)
-  echo ${my_array[@]}
-  #dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp $DEFAULT_SWIFT_VERSION)
-  if [[ ${my_array[1]} = "0" ]]; then
+  IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp $DEFAULT_SWIFT_VERSION)
+  echo ${dependency_info[@]}
+  if [[ ${dependency_info[1]} = "true" ]]; then
     echo "Cached Swift" | indent
     CACHE_ARRAY+=($SWIFT_NAME_VERSION)
   else
     echo "Downloaded Swift" | indent
   fi
-  tar xz -C $SWIFT_NAME_VERSION -f ${my_array[0]}
+  tar xz -C $SWIFT_NAME_VERSION -f ${dependency_info[0]}
 fi
 SWIFT_PATH=$CACHE_DIR/$(echo $SWIFT_NAME_VERSION/swift*)
 
 # Download and unpack clang
-if [[ ! -d "$CLANG_NAME_VERSION" ]]; then
+if [[ ! -d "$CACHE_DIR/$CLANG_NAME_VERSION" ]]; then
   status "Installing Clang $CLANG_VERSION"
   mkdir -p $CLANG_NAME_VERSION
   #dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
-  IF=' ' read -a my_array <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
-  echo ${my_array[@]}
-  if [[ ${my_array[1]} = "0" ]]; then
+  IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
+  echo ${dependency_info[@]}
+  if [[ ${dependency_info[1]} = "true" ]]; then
     echo "Cached Clang" | indent
     CACHE_ARRAY+=($CLANG_NAME_VERSION)
   else
     echo "Downloaded Clang" | indent
   fi
-  echo ${my_array[0]} | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
+  echo ${dependency_info[0]} | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
 fi
 CLANG_PATH=$CACHE_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 
@@ -194,14 +193,11 @@ status "Cleaning up build files"
 rm -rf $BUILD_DIR/.build
 
 # Cleaning up the cache folder to speed up the upload to droplet step.
-# This has no impact on the execution of the buildpack since [at the moment]
-# we are not taking advantage of the CACHE_DIR folder.
 status "Cleaning up cache folder"
 status "before `ls -al $CACHE_DIR`"
 for i in "${CACHE_ARRAY[@]}"
 do
   rm -rf $CACHE_DIR/$i
-  #rm -rf $CACHE_DIR/*
 done
 status "after `ls -al $CACHE_DIR`"
 
