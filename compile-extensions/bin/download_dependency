@@ -98,7 +98,7 @@ end
 generated_md5 = Digest::MD5.file(file_location).hexdigest
 
 debug "DEBUG: generated_md5 '#{generated_md5}'"
-puts "#{file_location} #{is_cache}"
+puts "#{file_location} #{in_cache}"
 
 if dependency_md5.nil?
   debug "DEBUG: md5 value for dependency could not be validated; more than likely the dependency is not found in the MANIFEST file"
