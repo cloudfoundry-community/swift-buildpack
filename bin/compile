@@ -130,7 +130,7 @@ cd $CACHE_DIR
 
 CACHE_ARRAY=()
 # Download and unpack Swift binaries
-if [[ ! -d "$CACHE_DIR/$SWIFT_NAME_VERSION" ]]; then
+if [[ ! -d "$SWIFT_NAME_VERSION" ]]; then
   status "Installing Swift $SWIFT_VERSION"
   mkdir -p $SWIFT_NAME_VERSION
   IF=' ' read -a my_array <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp $DEFAULT_SWIFT_VERSION)
@@ -147,7 +147,7 @@ fi
 SWIFT_PATH=$CACHE_DIR/$(echo $SWIFT_NAME_VERSION/swift*)
 
 # Download and unpack clang
-if [[ ! -d "$CACHE_DIR/$CLANG_NAME_VERSION" ]]; then
+if [[ ! -d "$CLANG_NAME_VERSION" ]]; then
   status "Installing Clang $CLANG_VERSION"
   mkdir -p $CLANG_NAME_VERSION
   #dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
