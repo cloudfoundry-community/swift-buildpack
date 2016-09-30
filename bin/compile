@@ -134,6 +134,7 @@ if [[ ! -d "$CACHE_DIR/$SWIFT_NAME_VERSION" ]]; then
   status "Installing Swift $SWIFT_VERSION"
   mkdir -p $SWIFT_NAME_VERSION
   IF=' ' read -a my_array <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp $DEFAULT_SWIFT_VERSION)
+  echo ${my_array[@]}
   #dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp $DEFAULT_SWIFT_VERSION)
   if [[ ${my_array[1]} = "0" ]]; then
     echo "Cached Swift" | indent
@@ -151,6 +152,7 @@ if [[ ! -d "$CACHE_DIR/$CLANG_NAME_VERSION" ]]; then
   mkdir -p $CLANG_NAME_VERSION
   #dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
   IF=' ' read -a my_array <<< =$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
+  echo ${my_array[@]}
   if [[ ${my_array[1]} = "0" ]]; then
     echo "Cached Clang" | indent
     CACHE_ARRAY+=($CLANG_NAME_VERSION)
