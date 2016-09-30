@@ -151,7 +151,7 @@ if [[ ! -d "$CACHE_DIR/$CLANG_NAME_VERSION" ]]; then
   status "Installing Clang $CLANG_VERSION"
   mkdir -p $CLANG_NAME_VERSION
   #dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
-  IF=' ' read -a my_array <<< =$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
+  IF=' ' read -a my_array <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
   echo ${my_array[@]}
   if [[ ${my_array[1]} = "0" ]]; then
     echo "Cached Clang" | indent
