@@ -134,20 +134,7 @@ download_dependency $SWIFT_NAME_VERSION $SWIFT_VERSION $DEFAULT_SWIFT_VERSION
 SWIFT_PATH=$CACHE_DIR/$(echo $SWIFT_NAME_VERSION/swift*)
 
 # Download and unpack clang
-if [[ ! -d "$CACHE_DIR/$CLANG_NAME_VERSION" ]]; then
-  status "Installing Clang $CLANG_VERSION"
-  mkdir -p $CLANG_NAME_VERSION
-  #dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
-  IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
-  echo ${dependency_info[@]}
-  if [[ ${dependency_info[1]} = "true" ]]; then
-    echo "Cached Clang" | indent
-    CACHE_ARRAY+=($CLANG_NAME_VERSION)
-  else
-    echo "Downloaded Clang" | indent
-  fi
-  echo ${dependency_info[0]} | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
-fi
+download_dependency $CLANG_NAME_VERSION $CLANG_VERSION
 CLANG_PATH=$CACHE_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 
 # Update PATH environment variable

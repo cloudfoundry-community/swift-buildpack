@@ -80,6 +80,13 @@ download_dependency() {
     else
       echo "Downloaded $dependency_name" | indent
     fi
-    tar xz -C $dependency_name -f ${dependency_info[0]}
+    # Determine unpack options
+    if [[ "$S" == *gz ]]; then
+      # Assuming tar.gz 
+      tar xz -C $dependency_name -f ${dependency_info[0]}
+    else
+      # Assuming tar.xz file
+      echo ${dependency_info[0]} | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
+    fi
   fi
 }
