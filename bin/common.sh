@@ -64,37 +64,38 @@ set-env() {
 }
 
 download_dependency() {
+  # Current folder must be CACHE_DIR
   dependency_name=$1
   dependency_version=$2
   dependency_version_extension=$3
   default_dependency_version=$4
 
-  # Download and unpack dependency
-  if [[ ! -d "$CACHE_DIR/$dependency_name" ]]; then
-    status "Installing $dependency_name : $dependency_version"
-    mkdir -p $dependency_name
+  # Download dependency
+  if [[ ! -d "$dependency_name.$dependency_version_extension" ]]; then
+    status "Installing $dependency_name"
     # Place dependency tar file in CACHE_DIR
     IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_name.$dependency_version_extension $CACHE_DIR $default_dependency_version)
-    echo ${dependency_info[@]}
     if [[ ${dependency_info[1]} = "true" ]]; then
       echo "Cached $dependency_name" | indent
       CACHE_ARRAY+=(${dependency_info[@]})
     else
       echo "Downloaded $dependency_name" | indent
     fi
-    # Determine unpack options
-    if [[ "$dependency_version_extension" == *gz ]]; then
-      # Assuming tar.gz
-      tar xz -C $dependency_name -f ${dependency_info[0]}
-    else
-      # Assuming tar.xz file
-      echo ${dependency_info[0]} | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
-    fi
-
-
-    status "CONTENTS 1"
-    echo "aha: ${dependency_info[0]}"
-    pwd
-    ls -la
   fi
+
+  # Unpack dependency - determine unpack options
+  status "Unpacking ${dependency_info[@]}"
+  mkdir -p $dependency_name
+  if [[ "$dependency_version_extension" == *gz ]]; then
+    # Assuming tar.gz file
+    tar xz -C $dependency_name -f ${dependency_info[0]}
+  else
+    # Assuming tar.xz file
+    echo ${dependency_info[0]} | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
+  fi
+
+  status "CONTENTS 1"
+  echo "aha: ${dependency_info[0]}"
+  pwd
+  ls -la
 }
