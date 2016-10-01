@@ -75,7 +75,7 @@ download_dependency() {
   ls -la
 
   # Download dependency
-  if [[ ! -f "$dependency_name.$dependency_version_extension" ]]; then
+  if [[ ! -e "$dependency_name.$dependency_version_extension" ]]; then
     status "Getting $dependency_name"
     # Place dependency tar file in CACHE_DIR
     IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_name.$dependency_version_extension $CACHE_DIR $default_dependency_version)
