@@ -93,7 +93,7 @@ download_dependency() {
   mkdir -p $dependency_name
   if [[ "$dependency_version_extension" == *gz ]]; then
     # Assuming tar.gz file
-    tar xz -C $dependency_name -f $CACHE_DIR/$dependency_filename}
+    tar xz -C $dependency_name -f $CACHE_DIR/$dependency_filename
   else
     # Assuming tar.xz file
     echo $CACHE_DIR/$dependency_filename | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
