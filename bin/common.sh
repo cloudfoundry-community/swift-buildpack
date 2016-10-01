@@ -81,8 +81,8 @@ download_dependency() {
       echo "Downloaded $dependency_name" | indent
     fi
     # Determine unpack options
-    if [[ "$S" == *gz ]]; then
-      # Assuming tar.gz 
+    if [[ "${dependency_info[0]}" == *gz ]]; then
+      # Assuming tar.gz
       tar xz -C $dependency_name -f ${dependency_info[0]}
     else
       # Assuming tar.xz file
