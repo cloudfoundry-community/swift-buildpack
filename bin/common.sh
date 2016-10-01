@@ -66,13 +66,14 @@ set-env() {
 download_dependency() {
   dependency_name=$1
   dependency_version=$2
-  default_dependency_version=$3
+  dependency_version_extension=$3
+  default_dependency_version=$4
 
   # Download and unpack dependency
   if [[ ! -d "$CACHE_DIR/$dependency_name" ]]; then
     status "Installing $dependency_name : $dependency_version"
     mkdir -p $dependency_name
-    IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_name.tar.gz /tmp $default_dependency_version)
+    IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_name.$dependency_version_extension /tmp $default_dependency_version)
     echo ${dependency_info[@]}
     if [[ ${dependency_info[1]} = "true" ]]; then
       echo "Cached $dependency_name" | indent
@@ -81,7 +82,7 @@ download_dependency() {
       echo "Downloaded $dependency_name" | indent
     fi
     # Determine unpack options
-    if [[ "${dependency_info[0]}" == *gz ]]; then
+    if [[ "$dependency_version_extension" == *gz ]]; then
       # Assuming tar.gz
       tar xz -C $dependency_name -f ${dependency_info[0]}
     else
