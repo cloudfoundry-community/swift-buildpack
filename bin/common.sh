@@ -77,7 +77,7 @@ download_dependency() {
     echo ${dependency_info[@]}
     if [[ ${dependency_info[1]} = "true" ]]; then
       echo "Cached $dependency_name" | indent
-      CACHE_ARRAY+=($dependency_name)
+      CACHE_ARRAY+=(${dependency_info[@]})
     else
       echo "Downloaded $dependency_name" | indent
     fi
