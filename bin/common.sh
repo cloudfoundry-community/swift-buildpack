@@ -89,5 +89,9 @@ download_dependency() {
       # Assuming tar.xz file
       echo ${dependency_info[0]} | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
     fi
+
+    status "CONTENTS 1"
+    pwd
+    ls -la
   fi
 }
