@@ -174,6 +174,8 @@ rm -rf $BUILD_DIR/.build
 # Cleaning up the cache folder to speed up the upload to droplet step.
 status "Optimizing contents of cache folder"
 status "before `ls -al $CACHE_DIR`"
+cd $CACHE_DIR
+du -sh
 
 # Remove unpacked tars... (there is about 1 GB of data)
 rm -rf $CACHE_DIR/$SWIFT_NAME_VERSION
@@ -184,6 +186,8 @@ do
   rm -rf $i
 done
 status "after `ls -al $CACHE_DIR`"
+
+
 
 # Setup application environment
 PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
