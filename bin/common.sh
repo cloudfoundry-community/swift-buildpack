@@ -84,7 +84,7 @@ download_dependency() {
   fi
 
   # Unpack dependency - determine unpack options
-  status "Unpacking ${dependency_info[@]}"
+  status "Unpacking ${dependency_info[0]}"
   mkdir -p $dependency_name
   if [[ "$dependency_version_extension" == *gz ]]; then
     # Assuming tar.gz file
