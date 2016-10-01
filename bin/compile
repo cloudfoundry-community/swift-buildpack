@@ -186,7 +186,7 @@ do
   rm -rf $i
 done
 status "after `ls -al $CACHE_DIR`"
-
+du -sh
 
 
 # Setup application environment
