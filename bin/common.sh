@@ -69,16 +69,17 @@ download_dependency() {
   dependency_version=$2
   dependency_version_extension=$3
   default_dependency_version=$4
+  dependency_filename=$dependency_name.$dependency_version_extension
 
   status "CONTENTS 0"
   pwd
   ls -la
 
   # Download dependency
-  if [[ ! -e "$dependency_name.$dependency_version_extension" ]]; then
+  if [[ ! -e "$dependency_filename" ]]; then
     status "Getting $dependency_name"
     # Place dependency tar file in CACHE_DIR
-    IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_name.$dependency_version_extension $CACHE_DIR $default_dependency_version)
+    IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_filename $CACHE_DIR $default_dependency_version)
     if [[ ${dependency_info[1]} = "true" ]]; then
       echo "Cached $dependency_name" | indent
       CACHE_ARRAY+=(${dependency_info[@]})
@@ -88,18 +89,18 @@ download_dependency() {
   fi
 
   # Unpack dependency - determine unpack options
-  status "Unpacking ${dependency_info[0]}"
+  status "Unpacking $dependency_filename"
   mkdir -p $dependency_name
   if [[ "$dependency_version_extension" == *gz ]]; then
     # Assuming tar.gz file
-    tar xz -C $dependency_name -f ${dependency_info[0]}
+    tar xz -C $dependency_name -f $dependency_filename}
   else
     # Assuming tar.xz file
-    echo ${dependency_info[0]} | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
+    echo $dependency_filename | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
   fi
 
   status "CONTENTS 1"
-  echo "aha: ${dependency_info[0]}"
+  #echo "aha: ${dependency_info[0]}"
   pwd
   ls -la
 }
