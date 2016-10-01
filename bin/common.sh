@@ -70,6 +70,10 @@ download_dependency() {
   dependency_version_extension=$3
   default_dependency_version=$4
 
+  status "CONTENTS 0"
+  pwd
+  ls -la
+
   # Download dependency
   if [[ ! -f "$dependency_name.$dependency_version_extension" ]]; then
     status "Getting $dependency_name"
