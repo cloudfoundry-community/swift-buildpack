@@ -26,13 +26,14 @@ if [[ "${BP_DEBUG}X" != "X" ]]; then
   set -x # show all commands
 fi
 
-# Variables
+# Gloabl variables
 BUILD_DIR=$1
 CACHE_DIR=$2
 DEFAULT_SWIFT_VERSION=3.0
 CLANG_VERSION=3.8.0
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
+CACHE_ARRAY=()
 
 # Check environment support
 $compile_buildpack_dir/compile-extensions/bin/check_stack_support
@@ -128,21 +129,8 @@ CLANG_NAME_VERSION="clang-${CLANG_VERSION}"
 mkdir -p $CACHE_DIR
 cd $CACHE_DIR
 
-CACHE_ARRAY=()
 # Download and unpack Swift binaries
-if [[ ! -d "$CACHE_DIR/$SWIFT_NAME_VERSION" ]]; then
-  status "Installing Swift $SWIFT_VERSION"
-  mkdir -p $SWIFT_NAME_VERSION
-  IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp $DEFAULT_SWIFT_VERSION)
-  echo ${dependency_info[@]}
-  if [[ ${dependency_info[1]} = "true" ]]; then
-    echo "Cached Swift" | indent
-    CACHE_ARRAY+=($SWIFT_NAME_VERSION)
-  else
-    echo "Downloaded Swift" | indent
-  fi
-  tar xz -C $SWIFT_NAME_VERSION -f ${dependency_info[0]}
-fi
+download_dependency $SWIFT_NAME_VERSION $SWIFT_VERSION $DEFAULT_SWIFT_VERSION
 SWIFT_PATH=$CACHE_DIR/$(echo $SWIFT_NAME_VERSION/swift*)
 
 # Download and unpack clang

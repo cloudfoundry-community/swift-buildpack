@@ -62,3 +62,24 @@ export_env_dir() {
 set-env() {
   echo "export $1=$2" >> $PROFILE_PATH
 }
+
+download_dependency() {
+  dependency_name=$1
+  dependency_version=$2
+  default_dependency_version=$3
+
+  # Download and unpack dependency
+  if [[ ! -d "$CACHE_DIR/$dependency_name" ]]; then
+    status "Installing $dependency_name : $dependency_version"
+    mkdir -p $dependency_name
+    IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_name.tar.gz /tmp $default_dependency_version)
+    echo ${dependency_info[@]}
+    if [[ ${dependency_info[1]} = "true" ]]; then
+      echo "Cached $dependency_name" | indent
+      CACHE_ARRAY+=($dependency_name)
+    else
+      echo "Downloaded $dependency_name" | indent
+    fi
+    tar xz -C $dependency_name -f ${dependency_info[0]}
+  fi
+}
