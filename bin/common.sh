@@ -90,7 +90,9 @@ download_dependency() {
       echo ${dependency_info[0]} | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
     fi
 
+
     status "CONTENTS 1"
+    echo "aha: ${dependency_info[0]}"
     pwd
     ls -la
   fi
