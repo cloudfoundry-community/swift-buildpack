@@ -73,7 +73,8 @@ download_dependency() {
   if [[ ! -d "$CACHE_DIR/$dependency_name" ]]; then
     status "Installing $dependency_name : $dependency_version"
     mkdir -p $dependency_name
-    IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_name.$dependency_version_extension /tmp $default_dependency_version)
+    # Place dependency tar file in CACHE_DIR
+    IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_name.$dependency_version_extension $CACHE_DIR $default_dependency_version)
     echo ${dependency_info[@]}
     if [[ ${dependency_info[1]} = "true" ]]; then
       echo "Cached $dependency_name" | indent
