@@ -76,7 +76,7 @@ download_dependency() {
   ls -la
 
   # Download dependency
-  if [[ ! -e "$dependency_filename" ]]; then
+  if [[ ! -e "$CACHE_DIR/$dependency_filename" ]]; then
     status "Getting $dependency_name"
     # Place dependency tar file in CACHE_DIR
     IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_filename $CACHE_DIR $default_dependency_version)
@@ -93,10 +93,10 @@ download_dependency() {
   mkdir -p $dependency_name
   if [[ "$dependency_version_extension" == *gz ]]; then
     # Assuming tar.gz file
-    tar xz -C $dependency_name -f $dependency_filename}
+    tar xz -C $dependency_name -f $CACHE_DIR/$dependency_filename}
   else
     # Assuming tar.xz file
-    echo $dependency_filename | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
+    echo $CACHE_DIR/$dependency_filename | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
   fi
 
   status "CONTENTS 1"
