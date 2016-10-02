@@ -33,7 +33,7 @@ DEFAULT_SWIFT_VERSION=3.0
 CLANG_VERSION=3.8.0
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
-CACHE_ARRAY=()
+CACHED_ITEMS=()
 
 # Check environment support
 $compile_buildpack_dir/compile-extensions/bin/check_stack_support
@@ -138,10 +138,6 @@ SWIFT_PATH=$CACHE_DIR/$(echo $SWIFT_NAME_VERSION/swift*)
 download_dependency $CLANG_NAME_VERSION $CLANG_VERSION "tar.xz"
 CLANG_PATH=$CACHE_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 
-status "CONTENTS 2"
-pwd
-ls -la
-
 # Update PATH environment variable
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
@@ -174,20 +170,20 @@ rm -rf $BUILD_DIR/.build
 
 # Cleaning up the cache folder to speed up the upload to droplet step.
 status "Optimizing contents of cache folder"
-status "before `ls -al $CACHE_DIR`"
-cd $CACHE_DIR
-du -sh
+#status "before `ls -al $CACHE_DIR`"
+#cd $CACHE_DIR
+#du -sh
 
 # Remove unpacked tars... (there is about 1 GB of data)
 rm -rf $CACHE_DIR/$SWIFT_NAME_VERSION
 rm -rf $CACHE_DIR/$CLANG_NAME_VERSION
 
-for i in "${CACHE_ARRAY[@]}"
+for i in "${CACHED_ITEMS[@]}"
 do
   rm -rf $i
 done
-status "after `ls -al $CACHE_DIR`"
-du -sh
+#status "after `ls -al $CACHE_DIR`"
+#du -sh
 
 
 # Setup application environment

@@ -71,10 +71,6 @@ download_dependency() {
   default_dependency_version=$4
   dependency_filename=$dependency_name.$dependency_version_extension
 
-  status "CONTENTS 0"
-  pwd
-  ls -la
-
   # Download dependency
   if [[ ! -e "$CACHE_DIR/$dependency_filename" ]]; then
     status "Getting $dependency_name"
@@ -82,7 +78,7 @@ download_dependency() {
     IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_filename $CACHE_DIR $default_dependency_version)
     if [[ ${dependency_info[1]} = "true" ]]; then
       echo "Cached $dependency_name" | indent
-      CACHE_ARRAY+=(${dependency_info[@]})
+      CACHED_ITEMS+=(${dependency_info[@]})
     else
       echo "Downloaded $dependency_name" | indent
     fi
@@ -98,9 +94,4 @@ download_dependency() {
     # Assuming tar.xz file
     echo $CACHE_DIR/$dependency_filename | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
   fi
-
-  status "CONTENTS 1"
-  #echo "aha: ${dependency_info[0]}"
-  pwd
-  ls -la
 }
