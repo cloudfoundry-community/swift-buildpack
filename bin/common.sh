@@ -75,10 +75,11 @@ download_dependency() {
   if [[ ! -e "$CACHE_DIR/$dependency_filename" ]]; then
     status "Getting $dependency_name"
     # Place dependency tar file in CACHE_DIR
-    IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_filename $CACHE_DIR $default_dependency_version)
-    if [[ ${dependency_info[1]} = "true" ]]; then
+    #IF=' ' read -a dependency_info <<< $($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_filename $CACHE_DIR $default_dependency_version)
+    in_cache=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_filename $CACHE_DIR $default_dependency_version)
+    if [[ $in_cache = "true" ]]; then
       echo "Cached $dependency_name" | indent
-      CACHED_ITEMS+=(${dependency_info[@]})
+      CACHED_ITEMS+=($dependency_name.$dependency_version_extension)
     else
       echo "Downloaded $dependency_name" | indent
     fi

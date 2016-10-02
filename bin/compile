@@ -170,6 +170,8 @@ rm -rf $BUILD_DIR/.build
 
 # Cleaning up the cache folder to speed up the upload to droplet step.
 status "Optimizing contents of cache folder"
+#status "Cleaning up cache folder"
+#rm -rf $CACHE_DIR/*
 #status "before `ls -al $CACHE_DIR`"
 #cd $CACHE_DIR
 #du -sh
@@ -182,8 +184,8 @@ for i in "${CACHED_ITEMS[@]}"
 do
   rm -rf $i
 done
-#status "after `ls -al $CACHE_DIR`"
-#du -sh
+status "after `ls -al $CACHE_DIR`"
+du -sh
 
 
 # Setup application environment
