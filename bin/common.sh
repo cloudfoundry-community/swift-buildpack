@@ -78,7 +78,7 @@ download_dependency() {
     in_cache=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_filename $CACHE_DIR $default_dependency_version)
     if [[ $in_cache = "true" ]]; then
       echo "Cached $dependency_name" | indent
-      CACHED_ITEMS+=($dependency_filename)
+      #CACHED_ITEMS+=($dependency_filename)
     else
       echo "Downloaded $dependency_name" | indent
     fi
