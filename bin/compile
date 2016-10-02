@@ -184,9 +184,8 @@ for i in "${CACHED_ITEMS[@]}"
 do
   rm -rf $i
 done
-status "after `ls -al $CACHE_DIR`"
-du -sh
-
+#status "after `ls -al $CACHE_DIR`"
+#du -sh
 
 # Setup application environment
 PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
