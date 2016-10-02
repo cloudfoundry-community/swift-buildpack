@@ -119,6 +119,7 @@ BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-exte
 if [ -f $BUILD_DIR/.swift-version ]; then
   # Take any pinned Swift version, stripping any redundant `swift-` prefix if present
   SWIFT_VERSION=$(cat $BUILD_DIR/.swift-version | sed -e "s/swift-//")
+  SWIFT_VERSION="${SWIFT_VERSION/RELEASE/}"
 else
   SWIFT_VERSION=$DEFAULT_SWIFT_VERSION
 fi
