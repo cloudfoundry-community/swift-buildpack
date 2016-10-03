@@ -62,3 +62,36 @@ export_env_dir() {
 set-env() {
   echo "export $1=$2" >> $PROFILE_PATH
 }
+
+download_dependency() {
+  # Current folder must be CACHE_DIR
+  dependency_name=$1
+  dependency_version=$2
+  dependency_version_extension=$3
+  default_dependency_version=$4
+  dependency_filename=$dependency_name.$dependency_version_extension
+
+  # Download dependency
+  if [[ ! -e "$CACHE_DIR/$dependency_filename" ]]; then
+    status "Getting $dependency_name"
+    # Place dependency tar file in CACHE_DIR
+    in_cache=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $dependency_filename $CACHE_DIR $default_dependency_version)
+    if [[ $in_cache = "true" ]]; then
+      echo "Cached $dependency_name" | indent
+      #CACHED_ITEMS+=($dependency_filename)
+    else
+      echo "Downloaded $dependency_name" | indent
+    fi
+  fi
+
+  # Unpack dependency - determine unpack options
+  status "Unpacking $dependency_filename"
+  mkdir -p $dependency_name
+  if [[ "$dependency_version_extension" == *gz ]]; then
+    # Assuming tar.gz file
+    tar xz -C $dependency_name -f $CACHE_DIR/$dependency_filename
+  else
+    # Assuming tar.xz file
+    echo $CACHE_DIR/$dependency_filename | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
+  fi
+}

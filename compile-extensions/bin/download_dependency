@@ -66,7 +66,7 @@ if translated_uri.nil?
       custom_swift_version = "#{custom_swift_version}-RELEASE"
     end
   end
-  
+
   swift_file = "#{custom_swift_version}-ubuntu14.04.tar.gz"
   translated_uri = "https://swift.org/builds/#{snapshot_type}/ubuntu1404/#{custom_swift_version}/#{swift_file}"
   debug "DEBUG: Using the following URL for downloading the specified dependency: #{translated_uri}"
@@ -81,12 +81,14 @@ if translated_uri.nil?
   end
 end
 
+in_cache = false
 if File.exist? cache_path
   file_path = File.join(cache_path, translated_uri.gsub(/[\/:]/, '_'))
   # Though this should not be needed, let's check that the dependency is actually found in the dependencies folder
   # If not found in the dependencies folder, we will not change the value of translated_uri and we will attempt to download it
   # This is useful if a dependency was manualy taken out of the dependencies folder
   if File.exist? file_path
+    in_cache = true
     debug "DEBUG: Dependency found: '#{file_path}'"
     translated_uri = "file://#{file_path}"
   end
@@ -96,7 +98,8 @@ end
 generated_md5 = Digest::MD5.file(file_location).hexdigest
 
 debug "DEBUG: generated_md5 '#{generated_md5}'"
-puts file_location
+#puts "#{file_location} #{in_cache}"
+puts in_cache
 
 if dependency_md5.nil?
   debug "DEBUG: md5 value for dependency could not be validated; more than likely the dependency is not found in the MANIFEST file"
