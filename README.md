@@ -133,7 +133,7 @@ The buildpack will detect your app as Swift if it has a `Package.swift` file in 
 
 ### Version installed on Bluemix
 
-The latest version of the IBM Bluemix buildpack for Swift on Bluemix is [v2.0.0](https://github.com/IBM-Swift/swift-buildpack/releases/tag/2.0.0).
+The latest version of the IBM Bluemix buildpack for Swift on Bluemix is [v2.0.1](https://github.com/IBM-Swift/swift-buildpack/releases/tag/2.0.1).
 
 Please note that it is possible that the latest buildpack code contained in this repo hasn't yet been installed on Bluemix. If that happens to be the case and you'd like to leverage the latest buildpack code, you can do so by adding the `-b https://github.com/IBM-Swift/swift-buildpack` parameter to the `cf push` command, as shown below:
 
@@ -189,7 +189,6 @@ $ cat .swift-version
 Please note that the swift_buildpack installed on Bluemix **caches** the following versions of the Swift binaries:
 
 - `3.0`
-- `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
 
 If you'd like to use a different version of Swift [that is not cached] on Bluemix, you can specify it in the `.swift-version` file.  Please be aware that using a Swift version that is not cached increases the provisioning time of your app on Bluemix.
 
@@ -202,27 +201,13 @@ Since there are frequent Swift language changes, it's advised that you pin your 
 This buildpack installs the following system libraries:
 
 - libcurl3
-- libblocksruntime-dev
-- libkqueue0
 - openssl
 - libssl-dev
 - uuid-dev
 
-Once Foundation (Linux) provides complete networking functionality and [`libdispatch`](#libdispatch) is bundled up with the Swift binaries, there won't be a need for installing the above system libraries.
-
 ### libdispatch
 
-The Swift binaries (for Linux) **prior** to 2016-08-23 do not include the [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) library. Therefore, this buildpack adds the libdispatch binaries for the following Swift versions:
-
-- `swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-08-04-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-03-24-a`
+Previous versions of this buildpack provided the [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) binaries for Swift development builds **prior** to 2016-08-23. However, current and future versions of this buildpack will **not** provide those binaries. Users should upgrade their applications to Swift 3.0, which already includes the libdispatch binaries.
 
 ### Debugging
 
@@ -243,15 +228,15 @@ Admin tasks
 
 To install this buildpack:
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v2.0.0/buildpack_swift_v2.0.0-20160915-1220.zip
-cf create-buildpack swift_buildpack buildpack_swift_v2.0.0-20160915-1220.zip <position>
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v2.0.1/buildpack_swift_v2.0.1-20160915-1220.zip
+cf create-buildpack swift_buildpack buildpack_swift_v2.0.1-20160915-1220.zip <position>
 ```
 
 And to update it:
 
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v2.0.0/buildpack_swift_v2.0.0-20160915-1220.zip
-cf update-buildpack swift_buildpack -p buildpack_swift_v2.0.0-20160915-1220.zip
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v2.0.1/buildpack_swift_v2.0.1-20160915-1220.zip
+cf update-buildpack swift_buildpack -p buildpack_swift_v2.0.1-20160915-1220.zip
 ```
 
 For more details on installing buildpacks, see [Adding buildpacks to Cloud Foundry](https://docs.cloudfoundry.org/adminguide/buildpacks.html).

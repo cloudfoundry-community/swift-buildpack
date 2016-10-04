@@ -26,12 +26,6 @@ url_to_dependency_map:
 
 dependencies:
   - name: swift
-    version: DEVELOPMENT-SNAPSHOT-2016-06-06-a
-    uri: https://swift.org/builds/development/ubuntu1404/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a/swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a-ubuntu14.04.tar.gz
-    md5: 83158ac36d15e68bf368263ec6932952
-    cf_stacks:
-      - cflinuxfs2
-  - name: swift
     version: 3.0
     uri: https://swift.org/builds/swift-3.0-release/ubuntu1404/swift-3.0-RELEASE/swift-3.0-RELEASE-ubuntu14.04.tar.gz
     md5: 88edb298674199f015235aa4eaa058fe
