@@ -150,14 +150,13 @@ export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
 cd $BUILD_DIR
 status "Building Package..."
-if [ -f $BUILD_DIR/.swift-build-cloud-foundry ]; then
-  # Execute custom swift build command contained in file
+if [ -f $BUILD_DIR/.swift-build-linux ]; then
+  # Execute custom swift build command
   status "Using custom swift build command."
-  $(cat $BUILD_DIR/.swift-build-cloud-foundry) | indent
+  $(cat $BUILD_DIR/.swift-build-linux) -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
 else
   # Execute default swift build command
   status "Using default swift build command."
-  #swift build --configuration release | indent
   swift build --configuration release -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
 fi
 
