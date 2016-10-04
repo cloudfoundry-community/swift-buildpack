@@ -159,12 +159,13 @@ fi
 
 cd $BUILD_DIR
 status "Building Package..."
-if [ -s $BUILD_DIR/.swift-build-linux ]; then
+if [ -f $BUILD_DIR/.swift-build-linux ]; then
   # Execute custom swift build command contained in file
   status ".swift-build-linux found."
   $(cat $BUILD_DIR/.swift-build-linux) | indent
 else
   # Execute default swift build command
+  status "Using default swift build command."
   #swift build --configuration release | indent
   swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
 fi
