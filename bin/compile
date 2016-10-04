@@ -150,10 +150,11 @@ export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
 cd $BUILD_DIR
 status "Building Package..."
-SWIFT_BUILD_OPTIONS=""
 if [ -f $BUILD_DIR/.swift-build-options-linux ]; then
   SWIFT_BUILD_OPTIONS=$(cat $BUILD_DIR/.swift-build-options-linux)
   status "Using custom swift build options: $SWIFT_BUILD_OPTIONS"
+else
+  SWIFT_BUILD_OPTIONS=""
 fi
 swift build --configuration release $SWIFT_BUILD_OPTIONS -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
 
