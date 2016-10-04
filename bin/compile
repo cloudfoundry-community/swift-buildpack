@@ -125,7 +125,7 @@ BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-exte
 
 # Determine Swift version for the app
 if [ -f $BUILD_DIR/.swift-version ]; then
-  # Take any pinned Swift version, stripping any redundant `swift-` prefix if present
+  # Take any pinned Swift version, stripping any redundant `swift-` prefix and/or `RELEASE` suffix if present
   SWIFT_VERSION=$(cat $BUILD_DIR/.swift-version | sed -e "s/swift-//" | sed -e "s/-RELEASE//")
 else
   SWIFT_VERSION=$DEFAULT_SWIFT_VERSION
@@ -159,8 +159,14 @@ fi
 
 cd $BUILD_DIR
 status "Building Package..."
-#swift build --configuration release | indent
-swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
+if [ -s $BUILD_DIR/.swift-build-linux ]; then
+  # Execute custom swift build command contained in file
+  $(cat $BUILD_DIR/.swift-build-linux)
+else
+  # Execute default swift build command
+  #swift build --configuration release | indent
+  swift build --configuration release -Xcc -fblocks -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
+fi
 
 # These should be statically linked, seems a Swift bug.
 status "Copying dynamic libraries"
