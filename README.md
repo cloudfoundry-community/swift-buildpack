@@ -202,27 +202,13 @@ Since there are frequent Swift language changes, it's advised that you pin your 
 This buildpack installs the following system libraries:
 
 - libcurl3
-- libblocksruntime-dev
-- libkqueue0
 - openssl
 - libssl-dev
 - uuid-dev
 
-Once Foundation (Linux) provides complete networking functionality and [`libdispatch`](#libdispatch) is bundled up with the Swift binaries, there won't be a need for installing the above system libraries.
-
 ### libdispatch
 
-The Swift binaries (for Linux) **prior** to 2016-08-23 do not include the [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) library. Therefore, this buildpack adds the libdispatch binaries for the following Swift versions:
-
-- `swift-DEVELOPMENT-SNAPSHOT-2016-08-18-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-08-07-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-08-04-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-07-25-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-06-20-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-06-06-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a`
-- `swift-DEVELOPMENT-SNAPSHOT-2016-03-24-a`
+Previous versions of this buildpack provided the [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) binaries for the Swift development builds **prior** to 2016-08-23. However, current and future versions of this buildpack will **not** provide those binaries. Users should upgrade their applications to Swift 3.0, which already includes the libdispatch binaries.
 
 ### Debugging
 

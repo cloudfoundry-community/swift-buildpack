@@ -33,7 +33,7 @@ DEFAULT_SWIFT_VERSION=3.0
 CLANG_VERSION=3.8.0
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
-# If leveraging cache_dir, then we'd need CACHED_ITEMS
+# If leveraging CACHE_DIR, then we'd need CACHED_ITEMS
 #CACHED_ITEMS=()
 
 # Check environment support
@@ -50,7 +50,7 @@ source $compile_buildpack_dir/bin/common.sh
 #mkdir -p "$APT_STATE_DIR/lists/partial"
 #APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR"
 #apt-get $APT_OPTIONS update
-#apt-get $APT_OPTIONS -y --force-yes -d install --reinstall libblocksruntime-dev libkqueue0 libcurl3 openssl libssl-dev | indent
+#apt-get $APT_OPTIONS -y --force-yes -d install --reinstall libcurl3 openssl libssl-dev uuid-dev | indent
 #status "Downloaded DEB files..."
 #################################################
 
@@ -77,12 +77,12 @@ if [ -f $BUILD_DIR/Aptfile ]; then
   apt-get $APT_OPTIONS update
   for PACKAGE in $(cat $BUILD_DIR/Aptfile); do
     status "Entry found in Aptfile for $PACKAGE."
-    if [[ $PACKAGE == 'libblocksruntime-dev' || $PACKAGE == 'libkqueue0'  || $PACKAGE == 'libcurl3'  || $PACKAGE == 'openssl' || $PACKAGE == 'libssl-dev' ]]; then
+    if [[ $PACKAGE == 'libcurl3'  || $PACKAGE == 'openssl' || $PACKAGE == 'libssl-dev' || $PACKAGE == 'uuid-dev' ]]; then
       status "$PACKAGE already installed."
       continue
     fi
 
-    # If leveraging cache_dir, then uncomment this code
+    # If leveraging CACHE_DIR, then uncomment this code
     #if [ -f $APT_CACHE_DIR/archives/$PACKAGE*.deb ]; then
     #  status "$PACKAGE is already installed."
     #  continue
@@ -148,15 +148,6 @@ CLANG_PATH=$CACHE_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 # Update PATH environment variable
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
-# Add libdispatch binaries (these files will be part of the Swift binaries in the future)
-libdispatchBinariesFile=$compile_buildpack_dir/binary-dependencies/$SWIFT_NAME_VERSION-libdispatch.tar.gz
-if [ -f $libdispatchBinariesFile ]; then
-  status "Adding libdispatch binaries..."
-  tar xzf $libdispatchBinariesFile -C $SWIFT_PATH
-else
-  status "This buildpack does not add libdispatch binaries for $SWIFT_NAME_VERSION (note: Swift binaries from 8/23 and later already include libdispatch)"
-fi
-
 cd $BUILD_DIR
 status "Building Package..."
 if [ -f $BUILD_DIR/.swift-build-cloud-foundry ]; then
@@ -189,7 +180,7 @@ rm -rf $BUILD_DIR/.build
 status "Cleaning up cache folder"
 rm -rf $CACHE_DIR/*
 
-# If leveraging cache_dir, then uncomment this code
+# If leveraging CACHE_DIR, then uncomment this code
 #status "Optimizing contents of cache folder"
 # Remove unpacked tars (~1 GB of data)
 #rm -rf $CACHE_DIR/$SWIFT_NAME_VERSION
