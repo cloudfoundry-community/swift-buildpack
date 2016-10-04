@@ -189,7 +189,6 @@ $ cat .swift-version
 Please note that the swift_buildpack installed on Bluemix **caches** the following versions of the Swift binaries:
 
 - `3.0`
-- `DEVELOPMENT-SNAPSHOT-2016-06-06-a`
 
 If you'd like to use a different version of Swift [that is not cached] on Bluemix, you can specify it in the `.swift-version` file.  Please be aware that using a Swift version that is not cached increases the provisioning time of your app on Bluemix.
 
