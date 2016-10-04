@@ -161,6 +161,7 @@ cd $BUILD_DIR
 status "Building Package..."
 if [ -s $BUILD_DIR/.swift-build-linux ]; then
   # Execute custom swift build command contained in file
+  status ".swift-build-linux found."
   $(cat $BUILD_DIR/.swift-build-linux)
 else
   # Execute default swift build command
