@@ -161,7 +161,7 @@ cd $BUILD_DIR
 status "Building Package..."
 if [ -f $BUILD_DIR/.swift-build-cloud-foundry ]; then
   # Execute custom swift build command contained in file
-  status ".swift-build-cloud-foundry found."
+  status "Using custom swift build command."
   $(cat $BUILD_DIR/.swift-build-cloud-foundry) | indent
 else
   # Execute default swift build command
