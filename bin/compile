@@ -150,15 +150,12 @@ export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
 cd $BUILD_DIR
 status "Building Package..."
-if [ -f $BUILD_DIR/.swift-build-linux ]; then
-  # Execute custom swift build command
-  status "Using custom swift build command."
-  $(cat $BUILD_DIR/.swift-build-linux) -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
-else
-  # Execute default swift build command
-  status "Using default swift build command."
-  swift build --configuration release -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
+SWIFT_BUILD_OPTIONS=""
+if [ -f $BUILD_DIR/.swift-build-options-linux ]; then
+  SWIFT_BUILD_OPTIONS=$(cat $BUILD_DIR/.swift-build-options-linux)
+  status "Using custom swift build options: $SWIFT_BUILD_OPTIONS"
 fi
+swift build --configuration release $SWIFT_BUILD_OPTIONS -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
 
 # These should be statically linked, seems a Swift bug.
 status "Copying dynamic libraries"
