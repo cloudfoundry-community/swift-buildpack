@@ -156,6 +156,9 @@ if [ -f $BUILD_DIR/.swift-build-options-linux ]; then
 else
   SWIFT_BUILD_OPTIONS=""
 fi
+# Just in case binaries and the Packages folders were pushed
+swift build --clean
+rm -rf $BUILD_DIR/Packages
 swift build --configuration release $SWIFT_BUILD_OPTIONS -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
 
 # These should be statically linked, seems a Swift bug.
