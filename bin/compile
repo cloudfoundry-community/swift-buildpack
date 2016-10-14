@@ -77,7 +77,7 @@ if [ -f $BUILD_DIR/Aptfile ]; then
   apt-get $APT_OPTIONS update
   for PACKAGE in $(cat $BUILD_DIR/Aptfile); do
     status "Entry found in Aptfile for $PACKAGE."
-    if [[ $PACKAGE == 'libcurl3'  || $PACKAGE == 'openssl' || $PACKAGE == 'libssl-dev' || $PACKAGE == 'uuid-dev' ]]; then
+    if [[ $PACKAGE == 'libcurl3'  || $PACKAGE == 'openssl' || $PACKAGE == 'libssl-dev' ]]; then
       status "$PACKAGE already installed."
       continue
     fi
