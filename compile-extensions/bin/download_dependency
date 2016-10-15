@@ -70,6 +70,7 @@ if translated_uri.nil?
         snapshot_type = "#{snapshot_type}-release"
         custom_swift_version = "#{custom_swift_version}-RELEASE"
       end
+    end
   end
 
   swift_file = "#{custom_swift_version}-ubuntu14.04.tar.gz"
