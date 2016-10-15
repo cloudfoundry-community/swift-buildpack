@@ -58,13 +58,18 @@ if translated_uri.nil?
   # Determine snapshot type, swift version, url...
   if custom_swift_version.downcase.include? "development"
     snapshot_type = "development"
+    debug "DEBUG: snapshot_type #{snapshot_type}"
   else
-    # Assuming release snapshot
     snapshot_type = custom_swift_version.downcase
-    if !(snapshot_type.include? "release")
-      snapshot_type = "#{snapshot_type}-release"
-      custom_swift_version = "#{custom_swift_version}-RELEASE"
-    end
+    debug "DEBUG: snapshot_type #{snapshot_type}"
+    if snapshot_type.include? "preview"
+      # Preview snapshot... nothing to update
+    else
+      # Assuming release snapshot
+      if !(snapshot_type.include? "release")
+        snapshot_type = "#{snapshot_type}-release"
+        custom_swift_version = "#{custom_swift_version}-RELEASE"
+      end
   end
 
   swift_file = "#{custom_swift_version}-ubuntu14.04.tar.gz"
