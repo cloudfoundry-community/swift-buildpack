@@ -208,7 +208,7 @@ libmysqlclient-dev
 
 ### Additional compiler flags
 
-To specify additional compiler flags for the execution of the `swift build` command, you can include a `.swift-build-options-linux` file. For example, in order to leverage the system package `libmysqlclient-dev` in a Swift application, you'd need to add an additional compiler flag:
+To specify additional compiler flags for the execution of the `swift build` command, you can include a `.swift-build-options-linux` file. For example, in order to leverage the system package `libmysqlclient-dev` in a Swift application, you'd need an additional compiler flag:
 
 ```shell
 $ cat .swift-build-options-linux
