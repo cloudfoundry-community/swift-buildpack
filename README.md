@@ -199,7 +199,7 @@ Since there are frequent Swift language changes, it's advised that you pin your 
 ### Installing additional system level dependencies
 Many Swift applications will not require the installation of any additional libraries. It's very common for today’s applications to have dependencies only on services that provide REST interfaces to interact with them (e.g., Cloudant, AlchemyAPI, Personality Insights, etc.).
 
-However, since dependencies vary from application to application, there could be cases when additional system packages may be required to compile and/or execute a Swift application. To address this need, the IBM Bluemix buildpack for Swift supports the installation of Ubuntu trusty packages using the apt-get utility. You can specify the Ubuntu packages that the should be installed by including an `Aptfile` in the root directory of your Swift application. Each line in the Aptfile should contain a valid Ubuntu package name. For instance, if your application has a dependency on the `libmysqlclient-dev` package, then your Aptfile should look like this:
+However, since dependencies vary from application to application, there could be cases when additional system packages may be required to compile and/or execute a Swift application. To address this need, the IBM Bluemix buildpack for Swift supports the installation of Ubuntu trusty packages using the `apt-get` utility. You can specify the Ubuntu packages that the should be installed by including an `Aptfile` in the root directory of your Swift application. Each line in the Aptfile should contain a valid Ubuntu package name. For instance, if your application has a dependency on the `libmysqlclient-dev` package, then your Aptfile should look like this:
 
 ```shell
 $ cat Aptfile
