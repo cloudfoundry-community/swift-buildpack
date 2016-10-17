@@ -196,6 +196,25 @@ The [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/develop/man
 
 Since there are frequent Swift language changes, it's advised that you pin your application to a specific Swift version. Once you have tested and migrated your code to a newer version of Swift, you can then update the `.swift-version` file with the appropriate Swift version.
 
+### Installing additional system level dependencies
+Many Swift applications will not require the installation of any additional libraries. It's very uncommon for today’s applications to have dependencies only on services that provide REST interfaces to interact with them (e.g., Cloudant, AlchemyAPI, Personality Insights, etc.).
+
+However, since dependencies vary from application to application, there could be cases when additional system packages may be required to compile and/or execute a Swift application. To address this need, the IBM Bluemix buildpack for Swift supports the installation of Ubuntu trusty packages using the apt-get utility. You can specify the Ubuntu packages that the should be installed by including an `Aptfile` in the root directory of your Swift application. Each line in the Aptfile should contain a valid Ubuntu package name.
+
+```shell
+$ cat Aptfile
+libmysqlclient-dev
+```
+
+### Additional compiler flags
+
+To specify additional compiler flags for the execution of the `swift build` command, you can include a `.swift-build-options-linux` file. For example, in order to leverage the system package `libmysqlclient-dev` in a Swift application, you'd need to add an additional compiler flag:
+
+```shell
+$ cat .swift-build-options-linux
+-Xswiftc -DNOJSON
+```
+
 ### System level libraries
 
 This buildpack installs the following system libraries:
@@ -203,7 +222,6 @@ This buildpack installs the following system libraries:
 - libcurl3
 - openssl
 - libssl-dev
-- uuid-dev
 
 ### libdispatch
 
