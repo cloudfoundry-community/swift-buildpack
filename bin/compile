@@ -139,6 +139,10 @@ SWIFT_NAME_VERSION="swift-${SWIFT_VERSION}"
 CLANG_NAME_VERSION="clang-${CLANG_VERSION}"
 
 mkdir -p $CACHE_DIR
+
+status "CACHE_DIR 1 folder has `ls $CACHE_DIR`"
+status "BUILD_DIR 1 folder has `ls $BUILD_DIR`"
+
 SWIFT_INSTALL_DIR="$CACHE_DIR/.bluemix/swift"
 mkdir -p "$SWIFT_INSTALL_DIR"
 cd $SWIFT_INSTALL_DIR
@@ -170,6 +174,9 @@ restore_cache() {
 
 restore_cache
 
+status "CACHE_DIR 2 folder has `ls $CACHE_DIR`"
+status "BUILD_DIR 2 folder has `ls $BUILD_DIR`"
+
 ##	Build/compile Swift application
 cd $BUILD_DIR
 status "Building Package..."
@@ -182,6 +189,10 @@ fi
 # Just in case the .build and Packages folders were pushed
 swift build --clean
 rm -rf $BUILD_DIR/Packages
+
+status "CACHE_DIR 3 folder has `ls $CACHE_DIR`"
+status "BUILD_DIR 3 folder has `ls $BUILD_DIR`"
+
 swift build --configuration release $SWIFT_BUILD_OPTIONS -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
 
 # These should be statically linked, seems a Swift bug.
@@ -231,6 +242,9 @@ rm -rf $SWIFT_INSTALL_DIR
 status "Cleaning up cache folder"
 status "Cache folder has `ls $CACHE_DIR`"
 status "Cache folder size is `du -sk $CACHE_DIR`"
+
+status "CACHE_DIR 4 folder has `ls $CACHE_DIR`"
+status "BUILD_DIR 4 folder has `ls $BUILD_DIR`"
 
 # If leveraging CACHE_DIR, then uncomment this code
 #status "Optimizing contents of cache folder"
