@@ -33,16 +33,17 @@ DEFAULT_SWIFT_VERSION=3.0
 CLANG_VERSION=3.8.0
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
-source ${compile_buildpack_dir}/lib/cache.sh
-
 # If leveraging CACHE_DIR, then we'd need CACHED_ITEMS
 #CACHED_ITEMS=()
 
 # Check environment support
 $compile_buildpack_dir/compile-extensions/bin/check_stack_support
 
-# Load some convenience functions like status(), echo(), and indent()
+# Load convenience functions like status(), echo(), and indent()
 source $compile_buildpack_dir/bin/common.sh
+
+# Load caching functions
+source ${compile_buildpack_dir}/lib/cache.sh
 
 # Install system level dependencies - backup code
 #################################################
@@ -125,10 +126,7 @@ export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUIL
 
 BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-extensions/lib/common
 
-#########################################
-#
-#       Setup and install Swift dev tools & libs
-#
+## Setup and install Swift dev tools & libs
 # Determine Swift version for the app
 if [ -f $BUILD_DIR/.swift-version ]; then
   # Take any pinned Swift version, stripping any redundant `swift-` prefix and/or `RELEASE` suffix if present
@@ -156,10 +154,7 @@ CLANG_PATH=$SWIFT_INSTALL_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 # Update PATH environment variable
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
-#########################################
-#
-#	Restore any cached state based on current state
-#
+##	Restore any cached state based on current state
 DEFAULT_CACHE="Packages"
 
 restore_cache() {
@@ -175,10 +170,7 @@ restore_cache() {
 
 restore_cache
 
-#########################################
-#
-#	Build Packages
-#
+##	Build/compile Swift application
 cd $BUILD_DIR
 status "Building Package..."
 if [ -f $BUILD_DIR/.swift-build-options-linux ]; then
@@ -187,7 +179,7 @@ if [ -f $BUILD_DIR/.swift-build-options-linux ]; then
 else
   SWIFT_BUILD_OPTIONS=""
 fi
-# Just in case binaries and the Packages folders were pushed
+# Just in case the .build and Packages folders were pushed
 swift build --clean
 rm -rf $BUILD_DIR/Packages
 swift build --configuration release $SWIFT_BUILD_OPTIONS -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
@@ -205,10 +197,7 @@ find $BUILD_DIR/.build/release -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-
 status "Cleaning up build files"
 rm -rf $BUILD_DIR/.build
 
-#########################################
-#
-#	Save Cache
-#
+##	Save Cache
 cache_build() {
   echo "Clearing previous swift cache"
   clear_cache
@@ -254,10 +243,7 @@ status "Cache folder size is `du -sk $CACHE_DIR`"
 #  rm -rf $i
 #done
 
-#########################################
-#
 # Setup application environment
-#
 PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
 set-env PATH '$HOME/.swift-bin:$PATH'
 set-env LD_LIBRARY_PATH '$HOME/.swift-lib:$LIBRARY_PATH'
