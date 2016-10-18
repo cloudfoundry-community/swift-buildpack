@@ -141,7 +141,9 @@ CLANG_NAME_VERSION="clang-${CLANG_VERSION}"
 mkdir -p $CACHE_DIR
 
 status "CACHE_DIR 1 folder has `ls $CACHE_DIR`"
+sleep 5
 status "BUILD_DIR 1 folder has `ls $BUILD_DIR`"
+sleep 5
 
 SWIFT_INSTALL_DIR="$CACHE_DIR/.bluemix/swift"
 mkdir -p "$SWIFT_INSTALL_DIR"
@@ -175,7 +177,9 @@ restore_cache() {
 restore_cache
 
 status "CACHE_DIR 2 folder has `ls $CACHE_DIR`"
+sleep 5
 status "BUILD_DIR 2 folder has `ls $BUILD_DIR`"
+sleep 5
 
 ##	Build/compile Swift application
 cd $BUILD_DIR
@@ -191,7 +195,9 @@ swift build --clean
 rm -rf $BUILD_DIR/Packages
 
 status "CACHE_DIR 3 folder has `ls $CACHE_DIR`"
+sleep 5
 status "BUILD_DIR 3 folder has `ls $BUILD_DIR`"
+sleep 5
 
 swift build --configuration release $SWIFT_BUILD_OPTIONS -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
 
@@ -244,7 +250,9 @@ status "Cache folder has `ls $CACHE_DIR`"
 status "Cache folder size is `du -sk $CACHE_DIR`"
 
 status "CACHE_DIR 4 folder has `ls $CACHE_DIR`"
+sleep 5
 status "BUILD_DIR 4 folder has `ls $BUILD_DIR`"
+sleep 5
 
 # If leveraging CACHE_DIR, then uncomment this code
 #status "Optimizing contents of cache folder"
