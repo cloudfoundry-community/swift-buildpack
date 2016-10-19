@@ -161,7 +161,6 @@ DEFAULT_CACHE="Packages"
 
 restore_cache() {
   local cache_status="$(get_cache_status)"
-
   if [ "$cache_status" == "valid" ]; then
 	echo "Loading from cache:"
 	restore_cache_directories "$BUILD_DIR" "$CACHE_DIR" "$DEFAULT_CACHE"

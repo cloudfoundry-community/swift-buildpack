@@ -18,13 +18,13 @@ create_swift_signature() {
   echo "$(swift --version)"
 }
 
-create_packages_signature() {
+create_package_signature() {
   echo "$(cat $BUILD_DIR/Package.swift)"
 }
 
 save_signatures() {
   echo "$(create_swift_signature)" > $CACHE_DIR/swift/.swift-signature
-  echo "$(create_packages_signature)" > $CACHE_DIR/swift/.package-signature
+  echo "$(create_package_signature)" > $CACHE_DIR/swift/.package-signature
 }
 
 load_swift_signature() {
@@ -48,7 +48,7 @@ get_cache_status() {
     echo "disabled by config"
   elif [ "$(create_swift_signature)" != "$(load_swift_signature)" ]; then
     echo "new swift signature"
-  elif [ "$(create_packages_signature)" != "$(load_packages_signature)" ]; then
+  elif [ "$(create_package_signature)" != "$(load_packages_signature)" ]; then
     echo "new package signature"
   else
     echo "valid"
