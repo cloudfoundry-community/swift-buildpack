@@ -195,7 +195,7 @@ status "Cleaning up build files"
 rm -rf $BUILD_DIR/.build
 
 # ----------------------------------------------------------------------------- #
-# Place folders to be cached in CACHE_DIR                                       #
+# Place folders from BUILD_DIR to be cached in CACHE_DIR                        #
 # ----------------------------------------------------------------------------- #
 cache_build() {
   status "Clearing previous swift cache"
@@ -204,9 +204,9 @@ cache_build() {
   # TODO: need to add support to set this env variable
   #
   if ! ${SWIFT_PACKAGE_CACHE:-true}; then
-    echo "Skipping cache save (disabled by config)"
+    status "Skipping cache save (disabled by config)"
   else
-    echo "Saving cache (default):"
+    status "Saving cache (default):"
     save_cache_directories "$BUILD_DIR" "$CACHE_DIR" $CACHED_FOLDERS
   fi
   save_signatures
