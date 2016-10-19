@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# bin/compile <build-dir> <cache-dir>
 ##
 # Copyright IBM Corporation 2016
 #
@@ -16,7 +15,8 @@
 # limitations under the License.
 ##
 
-# For details on buildpacks, see the following link:
+# bin/compile <build-dir> <cache-dir>
+# For details on buildpacks, see:
 # http://mikusa.blogspot.com/2013/11/cloudfoundry-build-packs-introduction.html
 
 set -e
@@ -59,6 +59,10 @@ source ${compile_buildpack_dir}/lib/cache.sh
 
 # Log supported/default Swift version
 status "Default supported Swift version is $DEFAULT_SWIFT_VERSION"
+
+# Just in case the .build and Packages folders were pushed
+rm -rf $BUILD_DIR/.build
+rm -rf $BUILD_DIR/Packages
 
 # Install system level dependencies for Kitura
 status "Installing system level dependencies..."
@@ -190,9 +194,6 @@ if [ -f $BUILD_DIR/.swift-build-options-linux ]; then
 else
   SWIFT_BUILD_OPTIONS=""
 fi
-# Just in case the .build and Packages folders were pushed
-swift build --clean
-rm -rf $BUILD_DIR/Packages
 
 status "CACHE_DIR 3 folder has `ls $CACHE_DIR`"
 sleep 5
