@@ -250,6 +250,9 @@ status "Cleaning up cache folder"
 status "Cache folder has `ls $CACHE_DIR`"
 status "Cache folder size is `du -sk $CACHE_DIR`"
 
+rm -rf $CACHE_DIR/$SWIFT_NAME_VERSION
+rm -rf $CACHE_DIR/$CLANG_NAME_VERSION
+
 status "CACHE_DIR 4 folder has `ls $CACHE_DIR`"
 sleep 5
 status "BUILD_DIR 4 folder has `ls $BUILD_DIR`"
