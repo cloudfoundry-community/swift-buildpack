@@ -34,6 +34,7 @@ DEFAULT_SWIFT_VERSION=3.0
 CLANG_VERSION=3.8.0
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
+BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-extensions/lib/common
 # If leveraging CACHE_DIR, then we'd need CACHED_ITEMS
 #CACHED_ITEMS=()
 
@@ -128,8 +129,6 @@ export INCLUDE_PATH="$BUILD_DIR/.apt/usr/include:$INCLUDE_PATH"
 export CPATH="$INCLUDE_PATH"
 export CPPPATH="$INCLUDE_PATH"
 export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
-
-BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-extensions/lib/common
 
 ## Setup and install Swift dev tools & libs
 # Determine Swift version for the app
