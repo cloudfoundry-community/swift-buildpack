@@ -19,6 +19,9 @@
 # For details on buildpacks, see:
 # http://mikusa.blogspot.com/2013/11/cloudfoundry-build-packs-introduction.html
 
+# ----------------------------------------------------------------- #
+# Initial configuration and setup                                   #
+# ----------------------------------------------------------------- #
 set -e
 set -o pipefail
 
@@ -35,15 +38,14 @@ CLANG_VERSION=3.8.0
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
 BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-extensions/lib/common
+CACHED_FOLDERS="Packages"
 # If leveraging CACHE_DIR, then we'd need CACHED_ITEMS
 #CACHED_ITEMS=()
 
 # Check environment support
 $compile_buildpack_dir/compile-extensions/bin/check_stack_support
-
 # Load convenience functions like status(), echo(), and indent()
 source $compile_buildpack_dir/bin/common.sh
-
 # Load caching functions
 source ${compile_buildpack_dir}/lib/cache.sh
 
@@ -66,7 +68,9 @@ status "Default supported Swift version is $DEFAULT_SWIFT_VERSION"
 rm -rf $BUILD_DIR/.build
 rm -rf $BUILD_DIR/Packages
 
-# Install system level dependencies for Kitura
+# ----------------------------------------------------------------- #
+# Install system level dependencies for Kitura                      #
+# ----------------------------------------------------------------- #
 status "Installing system level dependencies..."
 mkdir -p $BUILD_DIR/.apt
 
@@ -75,7 +79,10 @@ for DEB in $(ls -1 $compile_buildpack_dir/binary-dependencies/*.deb); do
   dpkg -x $DEB $BUILD_DIR/.apt/
 done
 
-# Install any application specific system dependencies
+# ----------------------------------------------------------------- #
+# Install any application specific system dependencies specified    #
+# in Aptfile (if present) using apt-get                             #
+# ----------------------------------------------------------------- #
 if [ -f $BUILD_DIR/Aptfile ]; then
   status "Aptfile found."
   APT_CACHE_DIR="$CACHE_DIR/apt/cache"
@@ -109,7 +116,10 @@ else
   status "No Aptfile found."
 fi
 
-# Write profile script and set additional environment variables
+# ----------------------------------------------------------------- #
+# After installing system level packages, write profile script and  #
+# set additional environment variables                              #
+# ----------------------------------------------------------------- #
 status "Writing profile script..."
 mkdir -p $BUILD_DIR/.profile.d
 cat <<EOF >$BUILD_DIR/.profile.d/000_apt.sh
@@ -130,7 +140,9 @@ export CPATH="$INCLUDE_PATH"
 export CPPPATH="$INCLUDE_PATH"
 export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
 
-## Setup and install Swift dev tools & libs
+# ----------------------------------------------------------------- #
+# Install Swift dev tools & clang                                    #
+# ----------------------------------------------------------------- #
 # Determine Swift version for the app
 if [ -f $BUILD_DIR/.swift-version ]; then
   # Take any pinned Swift version, stripping any redundant `swift-` prefix and/or `RELEASE` suffix if present
@@ -156,22 +168,23 @@ CLANG_PATH=$CACHE_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 # Update PATH environment variable
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
-##	Restore any cached state based on current state
-DEFAULT_CACHE="Packages"
-
+# ----------------------------------------------------------------- #
+# Restore any cached state based on current state                   #
+# ----------------------------------------------------------------- #
 restore_cache() {
   local cache_status="$(get_cache_status)"
   if [ "$cache_status" == "valid" ]; then
-	echo "Loading from cache:"
-	restore_cache_directories "$BUILD_DIR" "$CACHE_DIR" "$DEFAULT_CACHE"
+    status "Loading from cache:"
+    restore_cache_directories "$BUILD_DIR" "$CACHE_DIR" $CACHED_FOLDERS
   else
-    echo "Skipping cache restore ($cache_status)"
+    status "Skipping cache restore ($cache_status)"
   fi
 }
-
 restore_cache
 
-##	Build/compile Swift application
+# ----------------------------------------------------------------- #
+# Build/compile Swift application                                   #
+# ----------------------------------------------------------------- #
 cd $BUILD_DIR
 status "Building Package..."
 if [ -f $BUILD_DIR/.swift-build-options-linux ]; then
@@ -196,11 +209,12 @@ find $BUILD_DIR/.build/release -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-
 status "Cleaning up build files"
 rm -rf $BUILD_DIR/.build
 
-##	Save Cache
+# ----------------------------------------------------------------- #
+# Place folders to be cached in CACHE_DIR                           #
+# ----------------------------------------------------------------- #
 cache_build() {
-  echo "Clearing previous swift cache"
+  status "Clearing previous swift cache"
   clear_cache
-
   #
   # TODO: need to add support to set this env variable
   #
@@ -208,15 +222,17 @@ cache_build() {
     echo "Skipping cache save (disabled by config)"
   else
     echo "Saving cache (default):"
-    save_cache_directories "$BUILD_DIR" "$CACHE_DIR" "$DEFAULT_CACHE"
+    save_cache_directories "$BUILD_DIR" "$CACHE_DIR" $CACHED_FOLDERS
   fi
-
   save_signatures
 }
-
 cache_build
 
-# Cleaning up the cache folder to speed up the upload to droplet step.
+# ----------------------------------------------------------------- #
+# Removing binaries and other files from the CACHE_DIR to speed up  #
+# the 'Uploading droplet' step. Caching tar files and/or large      #
+# directories results in a negative performance hit.                #
+# ----------------------------------------------------------------- #
 status "Optimizing contents of cache folder"
 rm -rf $CACHE_DIR/$SWIFT_NAME_VERSION
 rm -rf $CACHE_DIR/$CLANG_NAME_VERSION
@@ -237,7 +253,9 @@ status "Cache folder size is `du -sk $CACHE_DIR`"
 #  rm -rf $i
 #done
 
-# Set up application environment
+# ----------------------------------------------------------------- #
+# Set up application environment                                    #
+# ----------------------------------------------------------------- #
 PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
 set-env PATH '$HOME/.swift-bin:$PATH'
 set-env LD_LIBRARY_PATH '$HOME/.swift-lib:$LIBRARY_PATH'
