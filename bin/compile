@@ -23,7 +23,8 @@ set -e
 set -o pipefail
 
 if [[ "${BP_DEBUG}X" != "X" ]]; then
-  set -x # show all commands
+  # Show all commands
+  set -x
 fi
 
 # Global variables
@@ -57,10 +58,10 @@ source ${compile_buildpack_dir}/lib/cache.sh
 #status "Downloaded DEB files..."
 #################################################
 
-# Log supported/default Swift version
+# Log default Swift version
 status "Default supported Swift version is $DEFAULT_SWIFT_VERSION"
 
-# Just in case the .build and Packages folders were pushed
+# Remove .build and Packages folders (in case they were pushed)
 rm -rf $BUILD_DIR/.build
 rm -rf $BUILD_DIR/Packages
 
@@ -143,23 +144,15 @@ SWIFT_NAME_VERSION="swift-${SWIFT_VERSION}"
 CLANG_NAME_VERSION="clang-${CLANG_VERSION}"
 
 mkdir -p $CACHE_DIR
-
-status "CACHE_DIR 1 folder has `ls $CACHE_DIR`"
-sleep 5
-status "BUILD_DIR 1 folder has `ls $BUILD_DIR`"
-sleep 5
-
-SWIFT_INSTALL_DIR="$CACHE_DIR/.bluemix/swift"
-mkdir -p "$SWIFT_INSTALL_DIR"
-cd $SWIFT_INSTALL_DIR
+cd $CACHE_DIR
 
 # Download and unpack Swift binaries
 download_dependency $SWIFT_NAME_VERSION $SWIFT_VERSION "tar.gz" $DEFAULT_SWIFT_VERSION
-SWIFT_PATH=$SWIFT_INSTALL_DIR/$(echo $SWIFT_NAME_VERSION/swift*)
+SWIFT_PATH=$CACHE_DIR/$(echo $SWIFT_NAME_VERSION/swift*)
 
 # Download and unpack clang
 download_dependency $CLANG_NAME_VERSION $CLANG_VERSION "tar.xz"
-CLANG_PATH=$SWIFT_INSTALL_DIR/$(echo $CLANG_NAME_VERSION/clang*)
+CLANG_PATH=$CACHE_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 
 # Update PATH environment variable
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
@@ -180,11 +173,6 @@ restore_cache() {
 
 restore_cache
 
-status "CACHE_DIR 2 folder has `ls $CACHE_DIR`"
-sleep 5
-status "BUILD_DIR 2 folder has `ls $BUILD_DIR`"
-sleep 5
-
 ##	Build/compile Swift application
 cd $BUILD_DIR
 status "Building Package..."
@@ -194,11 +182,6 @@ if [ -f $BUILD_DIR/.swift-build-options-linux ]; then
 else
   SWIFT_BUILD_OPTIONS=""
 fi
-
-status "CACHE_DIR 3 folder has `ls $CACHE_DIR`"
-sleep 5
-status "BUILD_DIR 3 folder has `ls $BUILD_DIR`"
-sleep 5
 
 swift build --configuration release $SWIFT_BUILD_OPTIONS -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
 
@@ -235,27 +218,15 @@ cache_build() {
 
 cache_build
 
-#########################################
-#
-#	Clean up unnecessary content
-#
-# It is faster to untar local swift binaries that copy them back and forth across network
-status "Cleaning up Swift binaries"
-rm -rf $SWIFT_INSTALL_DIR
-
 # Cleaning up the cache folder to speed up the upload to droplet step.
-# This has no impact on the execution of the buildpack since [at the moment]
-# we are not taking advantage of the CACHE_DIR folder.
-status "Cleaning up cache folder"
+status "Optimizing contents of cache folder"
+rm -rf $CACHE_DIR/$SWIFT_NAME_VERSION
+rm -rf $CACHE_DIR/$CLANG_NAME_VERSION
+rm -rf $CACHE_DIR/"$SWIFT_NAME_VERSION.tar.gz"
+rm -rf $CACHE_DIR/"$CLANG_NAME_VERSION.tar.xz"
+
 status "Cache folder has `ls $CACHE_DIR`"
 status "Cache folder size is `du -sk $CACHE_DIR`"
-
-rm -rf $CACHE_DIR/*.tar.*
-
-status "CACHE_DIR 4 folder has `ls $CACHE_DIR`"
-sleep 5
-status "BUILD_DIR 4 folder has `ls $BUILD_DIR`"
-sleep 5
 
 # If leveraging CACHE_DIR, then uncomment this code
 #status "Optimizing contents of cache folder"
@@ -268,7 +239,7 @@ sleep 5
 #  rm -rf $i
 #done
 
-# Setup application environment
+# Set up application environment
 PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
 set-env PATH '$HOME/.swift-bin:$PATH'
 set-env LD_LIBRARY_PATH '$HOME/.swift-lib:$LIBRARY_PATH'
