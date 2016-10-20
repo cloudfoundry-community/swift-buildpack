@@ -16,8 +16,7 @@
 ##
 
 # ----------------------------------------------------------------------------- #
-# Initial configuration and setup. For details on buildpacks, see               #
-# http://mikusa.blogspot.com/2013/11/cloudfoundry-build-packs-introduction.html #
+# Configuration and setup.                                              #
 # ----------------------------------------------------------------------------- #
 set -e
 set -o pipefail
