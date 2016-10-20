@@ -83,11 +83,11 @@ if [ -f $BUILD_DIR/Aptfile ]; then
       continue
     fi
 
-    # If leveraging CACHE_DIR, then uncomment this code
-    #if [ -f $APT_CACHE_DIR/archives/$PACKAGE*.deb ]; then
-    #  status "$PACKAGE is already installed."
-    #  continue
-    #fi
+    # Check if CACHE_DIR already contains package
+    if [ -f $APT_CACHE_DIR/archives/$PACKAGE*.deb ]; then
+      status "$PACKAGE is already installed."
+      continue
+    fi
 
     status "Fetching .debs for $PACKAGE"
     apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $PACKAGE | indent
