@@ -227,23 +227,23 @@ This buildpack installs the following system libraries:
 
 Previous versions of this buildpack provided the [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) binaries for Swift development builds **prior** to 2016-08-23. However, current and future versions of this buildpack will **not** provide those binaries. Users should upgrade their applications to Swift 3.0, which already includes the libdispatch binaries.
 
-### Caching of Packages folder
+### Caching of the Packages folder
 
-You should know that the Bluemix buildpack for Swift will cache the contents of the Packages folder to speed up the provisioning of your application the next time you execute the `cf push` command. If you'd prefer not to use this caching mechanism, you can disable it by executing the following command:
+You should know the Bluemix buildpack for Swift will cache the contents of the `Packages` folder to speed up the provisioning of your application the next time you execute the `cf push` command. If you'd prefer not to use this caching mechanism, you can disable it by executing the following command:
 
 ```
 cf set-env <app_name> SWIFT_PACKAGES_CACHE false
 cf restage <app_name>
 ```
 
-If at some point, you'd like to re-enable caching of the Packages folder, you can do so by executing:
+If at some point, you'd like to re-enable caching of the `Packages` folder, you can do so by executing:
 
 ```
 cf set-env <app_name> SWIFT_PACKAGES_CACHE true
 cf restage <app_name>
 ```
 
-Note that if at some point you change the contents of your `Package.swift` file, the buildpack will fetch the dependencies again and update the cache accordingly. 
+Note that if at some point you change the contents of your `Package.swift` file, the buildpack will automatically refetch the dependencies and update the cache accordingly.
 
 ### Debugging
 
