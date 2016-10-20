@@ -231,14 +231,14 @@ Previous versions of this buildpack provided the [libdispatch](https://github.co
 
 You should know the Bluemix buildpack for Swift will cache the contents of the `Packages` folder to speed up the provisioning of your application the next time you execute the `cf push` command. If you'd prefer not to use this caching mechanism, you can disable it by executing the following command:
 
-```
+```shell
 cf set-env <app_name> SWIFT_PACKAGES_CACHE false
 cf restage <app_name>
 ```
 
 If at some point, you'd like to re-enable caching of the `Packages` folder, you can do so by executing:
 
-```
+```shell
 cf set-env <app_name> SWIFT_PACKAGES_CACHE true
 cf restage <app_name>
 ```
@@ -263,14 +263,15 @@ Admin tasks
 -----------
 
 To install this buildpack:
-```
+
+```shell
 wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v2.0.1/buildpack_swift_v2.0.1-20160915-1220.zip
 cf create-buildpack swift_buildpack buildpack_swift_v2.0.1-20160915-1220.zip <position>
 ```
 
 And to update it:
 
-```
+```shell
 wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v2.0.1/buildpack_swift_v2.0.1-20160915-1220.zip
 cf update-buildpack swift_buildpack -p buildpack_swift_v2.0.1-20160915-1220.zip
 ```
