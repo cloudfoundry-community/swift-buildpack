@@ -160,7 +160,7 @@ restore_cache() {
   local cache_status="$(get_cache_status)"
   if [ "$cache_status" == "valid" ]; then
     status "Loading from cache:"
-    restore_cache_directories "$BUILD_DIR" "$CACHE_DIR" $PACKAGES_DIR
+    restore_cache_directories "$BUILD_DIR" "$CACHE_DIR" "$PACKAGES_DIR"
   else
     status "Skipping cache restore ($cache_status)"
   fi
@@ -200,14 +200,13 @@ rm -rf $BUILD_DIR/.build
 cache_build() {
   status "Clearing previous swift cache"
   clear_cache
-  #
-  # TODO: need to add support to set this env variable
-  #
+  # cf set-env swift-helloworld SWIFT_PACKAGES_CACHE true
+  # cf restage swift-helloworld
   if ! ${SWIFT_PACKAGES_CACHE:-true}; then
     status "Skipping cache save (disabled by config)"
   else
     status "Saving cache (default):"
-    save_cache_directories "$BUILD_DIR" "$CACHE_DIR" $PACKAGES_DIR
+    save_cache_directories "$BUILD_DIR" "$CACHE_DIR" "$PACKAGES_DIR"
   fi
   save_signatures
 }
