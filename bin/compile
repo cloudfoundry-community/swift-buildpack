@@ -223,9 +223,6 @@ rm -rf $CACHE_DIR/$CLANG_NAME_VERSION
 rm -rf $CACHE_DIR/"$SWIFT_NAME_VERSION.tar.gz"
 rm -rf $CACHE_DIR/"$CLANG_NAME_VERSION.tar.xz"
 
-status "Cache folder has `ls $CACHE_DIR`"
-status "Cache folder size is `du -sk $CACHE_DIR`"
-
 # If leveraging CACHE_DIR, then uncomment this code
 #status "Optimizing contents of cache folder"
 # Remove unpacked tars (~1 GB of data)
@@ -236,6 +233,9 @@ status "Cache folder size is `du -sk $CACHE_DIR`"
 #do
 #  rm -rf $i
 #done
+
+#status "Cache folder has `ls $CACHE_DIR`"
+#status "Cache folder size is `du -sk $CACHE_DIR`"
 
 # ----------------------------------------------------------------------------- #
 # Set up application environment                                                #

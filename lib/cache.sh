@@ -61,14 +61,14 @@ restore_cache_directories() {
 
   for cachepath in ${@:3}; do
     if [ -e "$build_dir/$cachepath" ]; then
-      echo "- $cachepath (exists - skipping)"
+      echo "-----> - $cachepath (exists - skipping)"
     else
       if [ -e "$cache_dir/swift/$cachepath" ]; then
-        echo "- $cachepath"
+        echo "-----> - $cachepath"
         mkdir -p $(dirname "$build_dir/$cachepath")
         mv "$cache_dir/swift/$cachepath" "$build_dir/$cachepath"
       else
-        echo "- $cachepath (not cached - skipping)"
+        echo "-----> - $cachepath (not cached - skipping)"
       fi
     fi
   done
@@ -85,11 +85,11 @@ save_cache_directories() {
 
   for cachepath in ${@:3}; do
     if [ -e "$build_dir/$cachepath" ]; then
-      echo "- $cachepath"
+      echo "-----> - $cachepath"
       mkdir -p "$cache_dir/swift/$cachepath"
       cp -a "$build_dir/$cachepath" $(dirname "$cache_dir/swift/$cachepath")
     else
-      echo "- $cachepath (nothing to cache)"
+      echo "-----> - $cachepath (nothing to cache)"
     fi
   done
 }
