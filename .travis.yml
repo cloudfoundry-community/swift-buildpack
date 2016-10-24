@@ -1,26 +1,18 @@
 language: ruby
 
+rvm:
+  - 2.2
+
 branches:
   only:
   - master
   - develop
   - setup_travis
 
-matrix:
-  include:
-  - os: linux
-    dist: trusty
-    sudo: required
-
 before_install:
   # get the repos for bosh-lite and cloud foundery
   - git clone https://github.com/IBM-Bluemix/Kitura-Starter
   - git clone https://github.com/IBM-Bluemix/swift-helloworld.git
-  - git submodule update --init --remote --merge --recursive
-  - gem install bundler
-  - bundle install --gemfile=cf.Gemfile
-  - BUNDLE_GEMFILE=cf.Gemfile bundle install
-  - BUNDLE_GEMFILE=cf.Gemfile bundle update
   - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
   - echo "deb http://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
   - sudo apt-get update
@@ -28,9 +20,9 @@ before_install:
   - cf login -a https://api.ng.bluemix.net -u $BLUEMIX_USER -p $BLUEMIX_PASS -s dev -o $BLUEMIX_USER
   
 script:
-  - ./ci/push_and_test_app.sh Kitura-Starter $KITURA_STARTER_TIME $TRAVIS_BRANCH $TIMES_TO_REPEAT_TO_SUCCESS
+  - ./ci/performance_validator.sh Kitura-Starter $KITURA_STARTER_TIME $TRAVIS_BRANCH $TIMES_TO_REPEAT_TO_SUCCESS
   - rm -rf Kitura-Starter
-  - ./ci/push_and_test_app.sh swift-helloworld $SWIFT_HELLOWORLD_TIME $TRAVIS_BRANCH
+  - ./ci/performance_validator.sh swift-helloworld $SWIFT_HELLOWORLD_TIME $TRAVIS_BRANCH $TIMES_TO_REPEAT_TO_SUCCESS
   - rm -rf swift-helloworld
 
 after_success:
@@ -38,8 +30,8 @@ after_success:
 
 deploy:
   provider: releases
-  api_key:
-    secure: fXDpIpSWo9Q2bldTgk39pophOFcF1sSverLlMls3aApXeqSF1GzW0Uyj4ZmlpzSmV9+7wfOtveKsNhgvfway87nAMA7o3a+0LkoVqm5jralFtbJ+LiflP8qtA85b9UtPr0gJ89wp9fRQPnbkOCevJW8njI8xz1JRLfqLyOj+DA+HJziaG3BN4rDHDcWSV8oZuQcK63NH1GB63hzGlzEtPPgPQpVEv4869xbX7iBSJFIbrMVvJ08I25BEknefGroU//qmSbCZ2AcFL9jJiqgbvIuoUbEQcdzPdp+0cv3C65oLVJcqUDAOfFMsNTZiou5OtNpaErWHoqvtf8r0HHHLfsaWZtJ6IFz2XQ3g+0k52JOLhtANk591pHZiH5xlN6o671W1ajexmHCC7ibJC+Qo4oRCyqJDdHz+SW7TujInVtAVTEVu7inQ8YCnCzACuy5Oms50/5PVkJ+wF/2aQ+9xR6SfF5KDlPzRO7Sqc5Z4alYVx4pFJz28qoP6xP+s1PlipgjkLXQUnbHGvSjoPbGRwELn2RVTbxeIu1IWD33u8H9SskU2kdtKvc47MFLoTIKhfUBjfjrdCqA6Jw8xR/uZAGDwNhoS4Gi7gZ/tdWCjL3HWw0DLzazIqcUomN9doSYyh71FweZt6hUYvy+tOz+6X/DenWrrmbVNdZoM4c88rrU=
+  user: $GITHUB_USER
+  password: $GITHUB_PASS
   file: "$TRAVIS_BUILD_DIR/buildpack_swift_v$VERSION-$DATE.zip"
   skip_cleanup: true
   on:
