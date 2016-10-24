@@ -11,6 +11,9 @@ cd $APPLICATION_DIR
 
 passed=1
 
+echo "Clearing out any previous instances of $APPLICATION_DIR"
+cf delete $APPLICATION_DIR -f
+
 echo "$APPLICATION_DIR threshold value is $APPLICATION_TIMEOUT"
 echo
 
