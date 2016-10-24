@@ -3,6 +3,7 @@ language: ruby
 branches:
   only:
   - master
+  - develop
   - setup_travis
 
 matrix:
@@ -33,14 +34,7 @@ script:
   - rm -rf swift-helloworld
 
 after_success:
-  - cd $TRAVIS_BUILD_DIR
-  - BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached --use-custom-manifest manifest.yml
-  - export VERSION=`cat VERSION`
-  - export DATE=`date +"%Y%m%d-%M%S"`
-  - mv swift_buildpack-cached-v$VERSION.zip buildpack_swift_v$VERSION-$DATE.zip
-  - ls -al $TRAVIS_BUILD_DIR
-  - git tag $VERSION -f
-  - git push https://$GITHUB_USER:$GITHUB_PASS@github.com/IBM-Swift/swift-buildpack.git --tags --force --quiet
+  - ./ci/create_git_tag.sh
 
 deploy:
   provider: releases
@@ -50,4 +44,4 @@ deploy:
   skip_cleanup: true
   on:
     repo: IBM-Swift/swift-buildpack
-    all_branches: true
+    branch: master
