@@ -36,4 +36,4 @@ deploy:
   skip_cleanup: true
   on:
     repo: IBM-Swift/swift-buildpack
-    branch: master
+    all_branches: true
