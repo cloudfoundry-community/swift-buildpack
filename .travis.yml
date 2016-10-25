@@ -28,11 +28,15 @@ script:
 after_success:
   - ./ci/create_git_tag.sh
 
+before_deploy:
+  - export RELEASE_PKG_FILE=$(ls *.zip)
+  - echo "deploying $RELEASE_PKG_FILE to GitHub releases"
 deploy:
   provider: releases
-  user: "$GITHUB_USER"
-  password: "$GITHUB_PASS"
-  file: "$TRAVIS_BUILD_DIR/buildpack_swift_v$VERSION-$DATE.zip"
+  user: "${GITHUB_USER}"
+  password: "${GITHUB_PASS}"
+  file_glob: true
+  file: "${RELEASE_PKG_FILE}"
   skip_cleanup: true
   on:
     repo: IBM-Swift/swift-buildpack
