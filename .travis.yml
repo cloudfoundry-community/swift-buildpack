@@ -20,9 +20,9 @@ before_install:
   - cf login -a https://api.ng.bluemix.net -u $BLUEMIX_USER -p $BLUEMIX_PASS -s dev -o $BLUEMIX_USER
   
 script:
-  - ./ci/performance_validator.sh Kitura-Starter $KITURA_STARTER_TIME $TRAVIS_BRANCH $TIMES_TO_REPEAT_TO_SUCCESS
+  - ./ci/performance_validator.sh Kitura-Starter $KITURA_STARTER_TIME $TRAVIS_BRANCH $TIMES_TO_REPEAT_TO_SUCCESS $KITURA_STARTER_REPUSH_TIME
   - rm -rf Kitura-Starter
-  - ./ci/performance_validator.sh swift-helloworld $SWIFT_HELLOWORLD_TIME $TRAVIS_BRANCH $TIMES_TO_REPEAT_TO_SUCCESS
+  - ./ci/performance_validator.sh swift-helloworld $SWIFT_HELLOWORLD_TIME $TRAVIS_BRANCH $TIMES_TO_REPEAT_TO_SUCCESS $SWIFT_HELLOWORLD_REPUSH_TIME
   - rm -rf swift-helloworld
 
 after_success:
