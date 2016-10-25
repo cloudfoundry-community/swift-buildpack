@@ -30,8 +30,8 @@ after_success:
 
 deploy:
   provider: releases
-  user: $GITHUB_USER
-  password: $GITHUB_PASS
+  user: "$GITHUB_USER"
+  password: "$GITHUB_PASS"
   file: "$TRAVIS_BUILD_DIR/buildpack_swift_v$VERSION-$DATE.zip"
   skip_cleanup: true
   on:
