@@ -39,6 +39,9 @@ PACKAGES_DIR="Packages"
 #CACHED_ITEMS=()
 
 echo sjjs | grep s
+history | grep s
+echo RICK
+
 
 # Check environment support
 $compile_buildpack_dir/compile-extensions/bin/check_stack_support
