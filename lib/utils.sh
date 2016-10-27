@@ -132,7 +132,7 @@ download_packages() {
   fi
 }
 
-install_packages {
+install_packages() {
   for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
     status "Installing $(basename $DEB)"
     dpkg -x $DEB $BUILD_DIR/.apt/
