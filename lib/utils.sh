@@ -113,19 +113,11 @@ download_packages() {
     fi
   done
 
-  echo HERE1
-  printf '%s\n' "${packages[@]}"
-  echo HERE2
-
-  echo size
-  echo ${#packages[@]}
-
   if [ ${#packages[@]} -eq 0 ]; then
     status "No additional packages to download."
   else
     # Turn string array into a space delimited string
     packages="$(join_by_whitespace ${packages[@]})"
-    echo "PACKAGES TO INSTALL ARE: $packages"
     status "Fetching .debs for: $packages"
     if [ "$APT_PCKGS_LIST_UPDATED" = false ] ; then
       apt-get $APT_OPTIONS update
