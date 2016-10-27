@@ -121,7 +121,7 @@ download_packages() {
   echo ${#packages[@]}
 
   if [ ${#packages[@]} -eq 0 ]; then
-    status "No packages to download."
+    status "No additional packages to download."
   else
     # Turn string array into a space delimited string
     packages="$(join_by_whitespace ${packages[@]})"
