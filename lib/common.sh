@@ -105,8 +105,8 @@ install_packages() {
   for package in "${packages[@]}"; do
     # Check if CACHE_DIR already contains package
     if [ -f $APT_CACHE_DIR/archives/$package*.deb ]; then
-      status "$package is already installed."
-      # Remove entry from array if already installed
+      status "$package was already downloaded."
+      # Remove entry from array if already downloaded
       unset 'packages[${package}]'
       continue
     fi
