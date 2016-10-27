@@ -117,13 +117,17 @@ install_packages() {
   printf '%s\n' "${packages[@]}"
   echo HERE2
 
-  # Turn array into a space delimited string
+  # Turn string array into a space delimited string
   packages="$(join_by_whitespace ${packages[@]})"
   echo "PACKAGES TO INSTALL ARE: $packages"
 
-  status "Fetching .debs for $PACKAGE"
-  apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $packages | indent
-  status "Downloaded DEB files..."
+  if [ ${#packages[@]} -eq 0 ]; then
+    status "No packages to download."
+  else
+    status "Fetching .debs for: $packages"
+    apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $packages | indent
+    status "Downloaded DEB files..."
+  fi
 
   for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
     status "Installing $(basename $DEB)"
