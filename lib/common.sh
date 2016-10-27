@@ -24,7 +24,7 @@ status() {
 }
 
 join_by_whitespace() {
-  shift; echo "$*";
+  echo "$*";
 }
 
 protip() {
