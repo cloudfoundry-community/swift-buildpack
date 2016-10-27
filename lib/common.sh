@@ -24,7 +24,7 @@ status() {
 }
 
 join_by_whitespace() {
-  echo "$*";
+  echo "$*"
 }
 
 protip() {
@@ -101,7 +101,7 @@ download_dependency() {
 }
 
 install_packages() {
-  packages=("$@")
+  local packages=("$@")
   for package in "${packages[@]}"; do
     # Check if CACHE_DIR already contains package
     if [ -f $APT_CACHE_DIR/archives/$package*.deb ]; then
@@ -113,7 +113,7 @@ install_packages() {
   done
 
   # Turn array into a space delimited string
-  packages=join_by_whitespace "${packages[@]}"
+  packages="$(join_by_whitespace ${packages[@]})"
   echo "PACKAGES TO INSTALL ARE: $packages"
 
   status "Fetching .debs for $PACKAGE"
