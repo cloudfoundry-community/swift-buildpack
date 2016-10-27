@@ -217,11 +217,10 @@ $ cat .swift-build-options-linux
 
 ### System level libraries
 
-This buildpack installs the following system libraries:
+This buildpack installs the following Ubuntu 14.04 system libraries:
 
-- libcurl3
-- openssl
-- libssl-dev
+- libicu-dev
+- libcurl4-openssl-dev
 
 ### libdispatch
 
