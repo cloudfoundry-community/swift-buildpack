@@ -113,7 +113,7 @@ install_packages() {
   done
 
   #packages=join_by ' ' "${packages[@]}"
-  packages=join_by , "${packages[@]}"
+  join_by "," "${packages[@]}"
   echo "PACKAGES TO INSTALL ARE: $packages"
 
   status "Fetching .debs for $PACKAGE"
