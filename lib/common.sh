@@ -23,6 +23,10 @@ status() {
   echo "-----> $*"
 }
 
+join_by() {
+  local IFS="$1"; shift; echo "$*";
+}
+
 protip() {
   tip=$1
   help_url=$2
@@ -119,8 +123,4 @@ install_packages() {
     status "Installing $(basename $DEB)"
     dpkg -x $DEB $BUILD_DIR/.apt/
   done
-}
-
-join_by() {
-  local IFS="$1"; shift; echo "$*";
 }
