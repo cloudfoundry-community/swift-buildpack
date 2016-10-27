@@ -117,16 +117,15 @@ install_packages() {
   printf '%s\n' "${packages[@]}"
   echo HERE2
 
-  # Turn string array into a space delimited string
-  packages="$(join_by_whitespace ${packages[@]})"
-  echo "PACKAGES TO INSTALL ARE: $packages"
-
   echo size
   echo ${#packages[@]}
 
   if [ ${#packages[@]} -eq 0 ]; then
     status "No packages to download."
   else
+    # Turn string array into a space delimited string
+    packages="$(join_by_whitespace ${packages[@]})"
+    echo "PACKAGES TO INSTALL ARE: $packages"
     status "Fetching .debs for: $packages"
     apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $packages | indent
     status "Downloaded DEB files..."
