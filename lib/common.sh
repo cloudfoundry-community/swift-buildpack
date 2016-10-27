@@ -23,8 +23,8 @@ status() {
   echo "-----> $*"
 }
 
-join_by() {
-  local IFS="$1"; shift; echo "$*";
+join_by_whitespace() {
+  shift; echo "$*";
 }
 
 protip() {
@@ -113,7 +113,7 @@ install_packages() {
   done
 
   # Turn array into a space delimited string
-  packages=join_by " " "${packages[@]}"
+  packages=join_by_whitespace "${packages[@]}"
   echo "PACKAGES TO INSTALL ARE: $packages"
 
   status "Fetching .debs for $PACKAGE"
