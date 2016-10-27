@@ -225,8 +225,8 @@ rm -rf $CACHE_DIR/"$CLANG_NAME_VERSION.tar.xz"
 #  rm -rf $i
 #done
 
-#status "Cache folder has `ls $CACHE_DIR`"
-#status "Cache folder size is `du -sk $CACHE_DIR`"
+status "Cache folder has `ls $CACHE_DIR`"
+status "Cache folder size is `du -sk $CACHE_DIR`"
 
 # ----------------------------------------------------------------------------- #
 # Set up application environment                                                #
