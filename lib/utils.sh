@@ -23,6 +23,10 @@ status() {
   echo "-----> $*"
 }
 
+join_by_whitespace() {
+  echo "$*"
+}
+
 protip() {
   tip=$1
   help_url=$2
@@ -94,4 +98,39 @@ download_dependency() {
     # Assuming tar.xz file
     echo $CACHE_DIR/$dependency_filename | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
   fi
+}
+
+download_packages() {
+  local packages=("$@")
+  for package in "${packages[@]}"; do
+    # Check if CACHE_DIR already contains DEB file for package
+    if [ -f $APT_CACHE_DIR/archives/$package*.deb ]; then
+      status "$package was already downloaded."
+      # Remove element from array if DEB file already downloaded
+      unset 'packages[${package}]'
+      packages=("${packages[@]}")
+      continue
+    fi
+  done
+
+  if [ ${#packages[@]} -eq 0 ]; then
+    status "No additional packages to download."
+  else
+    # Turn string array into a space delimited string
+    packages="$(join_by_whitespace ${packages[@]})"
+    status "Fetching .debs for: $packages"
+    if [ "$APT_PCKGS_LIST_UPDATED" = false ] ; then
+      apt-get $APT_OPTIONS update
+      APT_PCKGS_LIST_UPDATED=true
+    fi
+    apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $packages | indent
+    status "Downloaded DEB files..."
+  fi
+}
+
+install_packages() {
+  for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
+    status "Installing $(basename $DEB)"
+    dpkg -x $DEB $BUILD_DIR/.apt/
+  done
 }
