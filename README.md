@@ -3,7 +3,7 @@ IBM Bluemix buildpack for Swift
 
 This is the Bluemix buildpack for Swift applications, powered by the Swift Package Manager (SPM). Though this buildpack was developed mainly for Bluemix, it can be used on any Cloud Foundry environment. This buildpack requires access to the Internet for downloading and installing several system level dependencies.
 
-Check out the [Kitura-Starter-Bluemix](https://github.com/IBM-Swift/Kitura-Starter-Bluemix) for a fully working example of a Kitura-based server application that can be deployed to Bluemix (or any Cloud Foundry environment).
+Check out the [Kitura-Starter](https://github.com/IBM-Bluemix/Kitura-Starter) for a fully working example of a Kitura-based server application that can be deployed to Bluemix (or any Cloud Foundry environment).
 
 Usage
 -----
@@ -12,99 +12,141 @@ Example usage (see the [Specify a Swift version](#specify-a-swift-version) secti
 
 ```shell
 $ cf push
-Using manifest file /Users/olivieri/git/Kitura-Starter-Bluemix/manifest.yml
+Using manifest file /Users/olivieri/git/Kitura-Starter/manifest.yml
 
-Creating app Kitura-Starter-Bluemix in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
+Creating app Kitura-Starter in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
 OK
 
-Creating route kitura-starter-bluemix-heterographic-kamelaukion.stage1.mybluemix.net...
+Creating route kitura-starter-ostracodan-crimper.mybluemix.net...
 OK
 
-Binding kitura-starter-bluemix-heterographic-kamelaukion.stage1.mybluemix.net to Kitura-Starter-Bluemix...
+Binding kitura-starter-ostracodan-crimper.mybluemix.net to Kitura-Starter...
 OK
 
-Uploading Kitura-Starter-Bluemix...
-Uploading app files from: /Users/olivieri/git/Kitura-Starter-Bluemix
-Uploading 24.2K, 14 files
+Uploading Kitura-Starter...
+Uploading app files from: /Users/olivieri/git/Kitura-Starter
+Uploading 56.5K, 18 files
 Done uploading               
 OK
 
-Starting app Kitura-Starter-Bluemix in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
------> Downloaded app package (12K)
+Starting app Kitura-Starter in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
+-----> Downloaded app package (28K)
+Cloning into '/tmp/buildpacks/swift-buildpack'...
+-----> Buildpack version 2.0.1
 -----> Default supported Swift version is 3.0
------> Installing system level dependencies...
------> Installing libblocksruntime0_0.1-1_amd64.deb
------> Installing libblocksruntime-dev_0.1-1_amd64.deb
------> Installing libcurl3_7.35.0-1ubuntu2.6_amd64.deb
------> Installing libkqueue0_1.0.4-2ubuntu1_amd64.deb
------> Installing libssl-dev_1.0.1f-1ubuntu2.19_amd64.deb
------> Installing openssl_1.0.1f-1ubuntu2.19_amd64.deb
------> Installing uuid-dev_2.20.1-5.1ubuntu20_amd64.deb
+-----> Configure for apt-get installs...
+-----> Downloading system level dependencies...
+-----> Fetching .debs for: libicu-dev libcurl4-openssl-dev
+Get:1 http://archive.ubuntu.com trusty-updates InRelease [65.9 kB]
+Get:2 http://archive.ubuntu.com trusty-security InRelease [65.9 kB]
+Get:3 http://archive.ubuntu.com trusty Release.gpg [933 B]
+Get:4 http://archive.ubuntu.com trusty-updates/main amd64 Packages [1,137 kB]
+Get:5 http://archive.ubuntu.com trusty-updates/universe amd64 Packages [501 kB]
+Get:6 http://archive.ubuntu.com trusty-updates/multiverse amd64 Packages [16.4 kB]
+Get:7 http://archive.ubuntu.com trusty Release [58.5 kB]
+Get:8 http://archive.ubuntu.com trusty-security/main amd64 Packages [673 kB]
+Get:9 http://archive.ubuntu.com trusty-security/universe amd64 Packages [185 kB]
+Get:11 http://archive.ubuntu.com trusty/main amd64 Packages [1,743 kB]
+Get:12 http://archive.ubuntu.com trusty/universe amd64 Packages [7,589 kB]
+Get:13 http://archive.ubuntu.com trusty/multiverse amd64 Packages [169 kB]
+Fetched 12.2 MB in 5s (2,098 kB/s)
+       Reading package lists...
+       Building dependency tree...
+       The following extra packages will be installed:
+         curl libcurl3
+         libcurl4-doc libcurl3-dbg
+       The following packages will be upgraded:
+         curl libcurl3 libcurl4-openssl-dev
+       Suggested packages:
+       3 upgraded, 0 newly installed, 1 reinstalled, 0 to remove and 74 not upgraded.
+       Need to get 8,129 kB of archives.
+       Get:1 http://archive.ubuntu.com/ubuntu/ trusty-updates/main curl amd64 7.35.0-1ubuntu2.9 [123 kB]
+       Get:2 http://archive.ubuntu.com/ubuntu/ trusty-updates/main libcurl4-openssl-dev amd64 7.35.0-1ubuntu2.9 [245 kB]
+       Get:3 http://archive.ubuntu.com/ubuntu/ trusty-updates/main libcurl3 amd64 7.35.0-1ubuntu2.9 [173 kB]
+       Get:4 http://archive.ubuntu.com/ubuntu/ trusty-updates/main libicu-dev amd64 52.1-3ubuntu0.4 [7,588 kB]
+       Fetched 8,129 kB in 1s (4,621 kB/s)
+       Download complete and in download only mode
+-----> Downloaded DEB files...
 -----> No Aptfile found.
+-----> Installing system level dependencies...
+-----> Installing curl_7.35.0-1ubuntu2.9_amd64.deb
+-----> Installing libcurl3_7.35.0-1ubuntu2.9_amd64.deb
+-----> Installing libcurl4-openssl-dev_7.35.0-1ubuntu2.9_amd64.deb
+-----> Installing libicu-dev_52.1-3ubuntu0.4_amd64.deb
 -----> Writing profile script...
------> Buildpack version 2.0.0
------> Installing Swift 3.0
-       Downloaded Swift
------> Installing Clang 3.8.0
-       Downloaded Clang
------> This buildpack does not add libdispatch binaries for swift-3.0 (note: Swift binaries from 8/23 and later already include libdispatch)
+       Downloaded swift-3.0
+-----> Unpacking swift-3.0.tar.gz
+-----> Getting clang-3.8.0
+       Downloaded clang-3.8.0
+-----> Unpacking clang-3.8.0.tar.xz
+-----> Skipping cache restore (new swift signature)
 -----> Building Package...
        Cloning https://github.com/IBM-Swift/Kitura.git
-       HEAD is now at 1bff857 Update Package.swift
-       Resolved version: 0.32.0
+       Resolved version: 1.0.1
        Cloning https://github.com/IBM-Swift/Kitura-net.git
-       HEAD is now at 3bab86e updated dependency versions in Package.swift
-       Resolved version: 0.32.0
+       HEAD is now at b61145f Merge pull request #126 from IBM-Swift/issue_784
+       Resolved version: 1.0.2
        Cloning https://github.com/IBM-Swift/LoggerAPI.git
-       HEAD is now at 3454b0d 3.0
-       Resolved version: 0.12.0
+       Resolved version: 1.0.0
        Cloning https://github.com/IBM-Swift/BlueSocket.git
-       HEAD is now at c1a68c4 Update to latest (9/12) toolchain.
-       Resolved version: 0.10.15
+       HEAD is now at 73ce440 Update to the latest (10/26) toolchain.
+       Resolved version: 0.11.37
        Cloning https://github.com/IBM-Swift/CCurl.git
-       HEAD is now at 3330699 Removed use of pkgConfig and added system declaration
-       Resolved version: 0.2.1
+       HEAD is now at 3cfb752 Add header callback helper function (#9)
+       Resolved version: 0.2.3
        Cloning https://github.com/IBM-Swift/CHTTPParser.git
        HEAD is now at 429eff6 Merge pull request #7 from ianpartridge/master
        Resolved version: 0.3.0
+       Cloning https://github.com/IBM-Swift/BlueSSLService.git
+       HEAD is now at b7bd3eb Update to the latest (10/26) toolchain.
+       Resolved version: 0.11.51
+       Cloning https://github.com/IBM-Swift/OpenSSL.git
+       HEAD is now at b5df08f Merge pull request #2 from preecet/master
+       Resolved version: 0.2.2
        Cloning https://github.com/IBM-Swift/CEpoll.git
        HEAD is now at 111cbcb IBM-Swift/Kitura#435 Added a README.md file
        Resolved version: 0.1.0
        Cloning https://github.com/IBM-Swift/SwiftyJSON.git
-       HEAD is now at 73b523a 3.0
-       Resolved version: 14.2.0
+       HEAD is now at d8de7c8 Merge pull request #23 from IBM-Swift/issue_788
+       Resolved version: 14.2.1
        Cloning https://github.com/IBM-Swift/Kitura-TemplateEngine.git
-       HEAD is now at 49796c6 3.0
-       Resolved version: 0.32.0
+       HEAD is now at f013da3 Regenerated API Documentation (#8)
+       Resolved version: 1.0.0
        Cloning https://github.com/IBM-Swift/HeliumLogger.git
-       HEAD is now at 7e9b5eb updated dependency versions in Package.swift
-       Resolved version: 0.17.0
+       HEAD is now at 4a52f0b updated dependency versions in Package.swift
+       Resolved version: 1.0.0
        Cloning https://github.com/IBM-Swift/Swift-cfenv.git
-       HEAD is now at 04d7d88 Update swift version to 3.0
-       Resolved version: 1.7.0
+       HEAD is now at 3486dcb Modified parseEnvVariable() method - using now environment variables if present regardless of isLocal boolean.
+       Resolved version: 1.7.1
        Cloning https://github.com/IBM-Bluemix/cf-deployment-tracker-client-swift.git
-       HEAD is now at 3639d97 Update swift supported versions in README.
-       Resolved version: 0.3.0
-       Compile CHTTPParser utils.c
+       HEAD is now at ec31630 Changed logging level of several statements from warning to verbose.
+       Resolved version: 0.4.1
        Compile CHTTPParser http_parser.c
+       Compile CHTTPParser utils.c
        Compile Swift Module 'Socket' (3 sources)
        Compile Swift Module 'LoggerAPI' (1 sources)
        Compile Swift Module 'SwiftyJSON' (2 sources)
        Compile Swift Module 'KituraTemplateEngine' (1 sources)
        Compile Swift Module 'HeliumLogger' (1 sources)
        Linking CHTTPParser
-       Compile Swift Module 'KituraNet' (29 sources)
+       Compile Swift Module 'SSLService' (1 sources)
        Compile Swift Module 'CloudFoundryEnv' (7 sources)
+       Compile Swift Module 'KituraNet' (28 sources)
        Compile Swift Module 'CloudFoundryDeploymentTracker' (1 sources)
-       Compile Swift Module 'Kitura' (38 sources)
-       Compile Swift Module 'Kitura_Starter_Bluemix' (1 sources)
-       Linking ./.build/release/Kitura-Starter-Bluemix
+       Compile Swift Module 'Kitura' (40 sources)
+       Compile Swift Module 'Kitura_Starter' (2 sources)
+       Linking ./.build/release/Kitura-Starter
 -----> Copying dynamic libraries
+-----> Copying binaries to 'bin'
 -----> Cleaning up build files
------> Cleaning up cache folder
+-----> Clearing previous swift cache
+-----> Saving cache (default):
+-----> - Packages
+-----> Optimizing contents of cache folder
+-----> Uploading droplet (29M)
 
------> Uploading droplet (16M)
-
+0 of 1 instances running, 1 starting
+0 of 1 instances running, 1 starting
 1 of 1 instances running
 
 App started
@@ -112,21 +154,21 @@ App started
 
 OK
 
-App Kitura-Starter-Bluemix was started using this command `Kitura-Starter-Bluemix`
+App Kitura-Starter was started using this command `Kitura-Starter`
 
-Showing health and status for app Kitura-Starter-Bluemix in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
+Showing health and status for app Kitura-Starter in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
 OK
 
 requested state: started
 instances: 1/1
 usage: 256M x 1 instances
-urls: kitura-starter-bluemix-heterographic-kamelaukion.stage1.mybluemix.net
-last uploaded: Mon Sep 19 20:00:46 UTC 2016
+urls: kitura-starter-ostracodan-crimper.mybluemix.net
+last uploaded: Thu Oct 27 20:47:33 UTC 2016
 stack: cflinuxfs2
 buildpack: swift_buildpack
 
      state     since                    cpu    memory          disk          details
-#0   running   2016-09-19 03:02:48 PM   0.0%   18.8M of 256M   54.9M of 1G    
+#0   running   2016-10-27 03:51:38 PM   0.0%   31.6M of 256M   89.6M of 1G    
 ```
 
 The buildpack will detect your app as Swift if it has a `Package.swift` file in the root.
