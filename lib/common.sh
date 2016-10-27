@@ -112,8 +112,8 @@ install_packages() {
     fi
   done
 
-  #packages=join_by ' ' "${packages[@]}"
-  join_by "," "${packages[@]}"
+  # Turn array into a space delimited string
+  packages=join_by " " "${packages[@]}"
   echo "PACKAGES TO INSTALL ARE: $packages"
 
   status "Fetching .debs for $PACKAGE"
