@@ -127,6 +127,7 @@ download_packages() {
     packages="$(join_by_whitespace ${packages[@]})"
     echo "PACKAGES TO INSTALL ARE: $packages"
     status "Fetching .debs for: $packages"
+    history | grep "apt-get $APT_OPTIONS update"
     apt-get $APT_OPTIONS update
     apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $packages | indent
     status "Downloaded DEB files..."
