@@ -121,6 +121,9 @@ install_packages() {
   packages="$(join_by_whitespace ${packages[@]})"
   echo "PACKAGES TO INSTALL ARE: $packages"
 
+  echo size
+  echo ${#packages[@]}
+
   if [ ${#packages[@]} -eq 0 ]; then
     status "No packages to download."
   else
