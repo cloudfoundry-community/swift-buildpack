@@ -41,7 +41,7 @@ PACKAGES_DIR="Packages"
 # Check environment support
 $compile_buildpack_dir/compile-extensions/bin/check_stack_support
 # Load convenience functions like status(), echo(), and indent()
-source $compile_buildpack_dir/lib/common.sh
+source $compile_buildpack_dir/lib/utils.sh
 # Load caching functions
 source ${compile_buildpack_dir}/lib/cache.sh
 

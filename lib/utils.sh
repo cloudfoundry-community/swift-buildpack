@@ -103,11 +103,12 @@ download_dependency() {
 install_packages() {
   local packages=("$@")
   for package in "${packages[@]}"; do
-    # Check if CACHE_DIR already contains package
+    # Check if CACHE_DIR already contains DEb file for package
     if [ -f $APT_CACHE_DIR/archives/$package*.deb ]; then
       status "$package was already downloaded."
-      # Remove entry from array if already downloaded
+      # Remove element from array if DEB file already downloaded
       unset 'packages[${package}]'
+      packages=("${packages[@]}")
       continue
     fi
   done
