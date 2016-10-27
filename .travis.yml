@@ -33,8 +33,8 @@ before_deploy:
   - echo "deploying $RELEASE_PKG_FILE to GitHub releases"
 deploy:
   provider: releases
-  user: "${GITHUB_USER}"
-  password: "${GITHUB_PASS}"
+  api_key:
+     secure: fXDpIpSWo9Q2bldTgk39pophOFcF1sSverLlMls3aApXeqSF1GzW0Uyj4ZmlpzSmV9+7wfOtveKsNhgvfway87nAMA7o3a+0LkoVqm5jralFtbJ+LiflP8qtA85b9UtPr0gJ89wp9fRQPnbkOCevJW8njI8xz1JRLfqLyOj+DA+HJziaG3BN4rDHDcWSV8oZuQcK63NH1GB63hzGlzEtPPgPQpVEv4869xbX7iBSJFIbrMVvJ08I25BEknefGroU//qmSbCZ2AcFL9jJiqgbvIuoUbEQcdzPdp+0cv3C65oLVJcqUDAOfFMsNTZiou5OtNpaErWHoqvtf8r0HHHLfsaWZtJ6IFz2XQ3g+0k52JOLhtANk591pHZiH5xlN6o671W1ajexmHCC7ibJC+Qo4oRCyqJDdHz+SW7TujInVtAVTEVu7inQ8YCnCzACuy5Oms50/5PVkJ+wF/2aQ+9xR6SfF5KDlPzRO7Sqc5Z4alYVx4pFJz28qoP6xP+s1PlipgjkLXQUnbHGvSjoPbGRwELn2RVTbxeIu1IWD33u8H9SskU2kdtKvc47MFLoTIKhfUBjfjrdCqA6Jw8xR/uZAGDwNhoS4Gi7gZ/tdWCjL3HWw0DLzazIqcUomN9doSYyh71FweZt6hUYvy+tOz+6X/DenWrrmbVNdZoM4c88rrU=
   file_glob: true
   file: "${RELEASE_PKG_FILE}"
   skip_cleanup: true
