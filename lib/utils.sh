@@ -127,10 +127,10 @@ download_packages() {
     packages="$(join_by_whitespace ${packages[@]})"
     echo "PACKAGES TO INSTALL ARE: $packages"
     status "Fetching .debs for: $packages"
-    #history | grep "apt-get $APT_OPTIONS update"
-    history
-    echo sjjs | grep s
-    apt-get $APT_OPTIONS update
+    if [ "$APT_PCKGS_LIST_UPDATED" = false ] ; then
+      apt-get $APT_OPTIONS update
+      APT_PCKGS_LIST_UPDATED=true
+    fi
     apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $packages | indent
     status "Downloaded DEB files..."
   fi
