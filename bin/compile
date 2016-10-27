@@ -65,14 +65,14 @@ mkdir -p $BUILD_DIR/.apt
 apt-get $APT_OPTIONS update
 
 # ----------------------------------------------------------------------------- #
-# Install system level dependencies for Kitura                                  #
+# Download system level dependencies for Kitura                                 #
 # ----------------------------------------------------------------------------- #
 status "Installing system level dependencies..."
 packages=("libicu-dev" "libcurl4-openssl-dev")
-install_packages "${packages[@]}"
+download_packages "${packages[@]}"
 
 # ----------------------------------------------------------------------------- #
-# Install any application specific system dependencies specified                #
+# Download any application specific system dependencies specified               #
 # in Aptfile (if present) using apt-get                                         #
 # ----------------------------------------------------------------------------- #
 if [ -f $BUILD_DIR/Aptfile ]; then
@@ -80,11 +80,16 @@ if [ -f $BUILD_DIR/Aptfile ]; then
   for PACKAGE in $(cat $BUILD_DIR/Aptfile); do
     status "Entry found in Aptfile for $PACKAGE."
     packages=($PACKAGE)
-    install_packages "${packages[@]}"
+    download_packages "${packages[@]}"
   done
 else
   status "No Aptfile found."
 fi
+
+# ----------------------------------------------------------------------------- #
+# Install any downloaded system level packages (DEB files)                      #
+# ----------------------------------------------------------------------------- #
+install_packages
 
 # ----------------------------------------------------------------------------- #
 # After installing system level packages, write profile script and              #

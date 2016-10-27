@@ -100,7 +100,7 @@ download_dependency() {
   fi
 }
 
-install_packages() {
+download_packages() {
   local packages=("$@")
   for package in "${packages[@]}"; do
     # Check if CACHE_DIR already contains DEB file for package
@@ -130,7 +130,9 @@ install_packages() {
     apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $packages | indent
     status "Downloaded DEB files..."
   fi
+}
 
+install_packages {
   for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
     status "Installing $(basename $DEB)"
     dpkg -x $DEB $BUILD_DIR/.apt/
