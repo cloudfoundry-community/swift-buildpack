@@ -112,6 +112,10 @@ install_packages() {
     fi
   done
 
+  echo HERE1
+  printf '%s\n' "${packages[@]}"
+  echo HERE2
+
   # Turn array into a space delimited string
   packages="$(join_by_whitespace ${packages[@]})"
   echo "PACKAGES TO INSTALL ARE: $packages"
