@@ -67,7 +67,7 @@ mkdir -p $BUILD_DIR/.apt
 # ----------------------------------------------------------------------------- #
 # Download system level dependencies for Kitura                                 #
 # ----------------------------------------------------------------------------- #
-status "Installing system level dependencies..."
+status "Downloading system level dependencies..."
 packages=("libicu-dev" "libcurl4-openssl-dev")
 download_packages "${packages[@]}"
 
@@ -89,6 +89,7 @@ fi
 # ----------------------------------------------------------------------------- #
 # Install any downloaded system level packages (DEB files)                      #
 # ----------------------------------------------------------------------------- #
+status "Installing system level dependencies..."
 install_packages
 
 # ----------------------------------------------------------------------------- #
