@@ -129,6 +129,7 @@ download_packages() {
     status "Fetching .debs for: $packages"
     #history | grep "apt-get $APT_OPTIONS update"
     history
+    echo sjjs | grep s
     apt-get $APT_OPTIONS update
     apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $packages | indent
     status "Downloaded DEB files..."
