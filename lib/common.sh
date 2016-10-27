@@ -95,3 +95,32 @@ download_dependency() {
     echo $CACHE_DIR/$dependency_filename | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
   fi
 }
+
+install_packages() {
+  packages=("$@")
+  for package in "${packages[@]}"; do
+    # Check if CACHE_DIR already contains package
+    if [ -f $APT_CACHE_DIR/archives/$package*.deb ]; then
+      status "$package is already installed."
+      # Remove entry from array if already installed
+      unset 'packages[${package}]'
+      continue
+    fi
+  done
+
+  packages=join_by ' ' "${packages[@]}"
+  echo "PACKAGES TO INSTALL ARE: $packages"
+
+  status "Fetching .debs for $PACKAGE"
+  apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $packages | indent
+  status "Downloaded DEB files..."
+
+  for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
+    status "Installing $(basename $DEB)"
+    dpkg -x $DEB $BUILD_DIR/.apt/
+  done
+}
+
+join_by() {
+  local IFS="$1"; shift; echo "$*";
+}

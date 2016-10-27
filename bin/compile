@@ -53,15 +53,23 @@ rm -rf $BUILD_DIR/.build
 rm -rf $BUILD_DIR/Packages
 
 # ----------------------------------------------------------------------------- #
+# Configure for apt-get installations                                           #
+# ----------------------------------------------------------------------------- #
+status "Configure for apt-get installations..."
+APT_CACHE_DIR="$CACHE_DIR/apt/cache"
+APT_STATE_DIR="$CACHE_DIR/apt/state"
+APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR"
+mkdir -p "$APT_CACHE_DIR/archives/partial"
+mkdir -p "$APT_STATE_DIR/lists/partial"
+mkdir -p $BUILD_DIR/.apt
+apt-get $APT_OPTIONS update
+
+# ----------------------------------------------------------------------------- #
 # Install system level dependencies for Kitura                                  #
 # ----------------------------------------------------------------------------- #
 status "Installing system level dependencies..."
-mkdir -p $BUILD_DIR/.apt
-
-for DEB in $(ls -1 $compile_buildpack_dir/binary-dependencies/*.deb); do
-  status "Installing $(basename $DEB)"
-  dpkg -x $DEB $BUILD_DIR/.apt/
-done
+packages=("libicu-dev" "libcurl4-openssl-dev")
+install_packages "${packages[@]}"
 
 # ----------------------------------------------------------------------------- #
 # Install any application specific system dependencies specified                #
@@ -69,32 +77,10 @@ done
 # ----------------------------------------------------------------------------- #
 if [ -f $BUILD_DIR/Aptfile ]; then
   status "Aptfile found."
-  APT_CACHE_DIR="$CACHE_DIR/apt/cache"
-  APT_STATE_DIR="$CACHE_DIR/apt/state"
-  APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR"
-  mkdir -p "$APT_CACHE_DIR/archives/partial"
-  mkdir -p "$APT_STATE_DIR/lists/partial"
-  apt-get $APT_OPTIONS update
   for PACKAGE in $(cat $BUILD_DIR/Aptfile); do
     status "Entry found in Aptfile for $PACKAGE."
-    if [[ $PACKAGE == 'libcurl3'  || $PACKAGE == 'openssl' || $PACKAGE == 'libssl-dev' ]]; then
-      status "$PACKAGE already installed."
-      continue
-    fi
-
-    # Check if CACHE_DIR already contains package
-    if [ -f $APT_CACHE_DIR/archives/$PACKAGE*.deb ]; then
-      status "$PACKAGE is already installed."
-      continue
-    fi
-
-    status "Fetching .debs for $PACKAGE"
-    apt-get $APT_OPTIONS -y --force-yes -d install --reinstall $PACKAGE | indent
-  done
-
-  for DEB in $(ls -1 $APT_CACHE_DIR/archives/*.deb); do
-    status "Installing $(basename $DEB)"
-    dpkg -x $DEB $BUILD_DIR/.apt/
+    packages=($PACKAGE)
+    install_packages "${packages[@]}"
   done
 else
   status "No Aptfile found."
