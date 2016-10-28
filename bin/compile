@@ -77,7 +77,7 @@ download_packages "${packages[@]}"
 # ----------------------------------------------------------------------------- #
 if [ -f $BUILD_DIR/Aptfile ]; then
   status "Aptfile found."
-  for PACKAGE in $(cat $BUILD_DIR/Aptfile); do
+  for PACKAGE in $(cat $BUILD_DIR/Aptfile | sed $'s/\r$//'); do
     status "Entry found in Aptfile for $PACKAGE."
     packages=($PACKAGE)
     download_packages "${packages[@]}"
@@ -127,8 +127,6 @@ else
   SWIFT_VERSION=$DEFAULT_SWIFT_VERSION
 fi
 
-echo "SWIFT_VERSION: $SWIFT_VERSION"
-
 SWIFT_NAME_VERSION="swift-${SWIFT_VERSION}"
 CLANG_NAME_VERSION="clang-${CLANG_VERSION}"
 
@@ -166,7 +164,7 @@ restore_cache
 cd $BUILD_DIR
 status "Building Package..."
 if [ -f $BUILD_DIR/.swift-build-options-linux ]; then
-  SWIFT_BUILD_OPTIONS=$(cat $BUILD_DIR/.swift-build-options-linux)
+  SWIFT_BUILD_OPTIONS=$(cat $BUILD_DIR/.swift-build-options-linux | sed $'s/\r$//')
   status "Using custom swift build options: $SWIFT_BUILD_OPTIONS"
 else
   SWIFT_BUILD_OPTIONS=""
