@@ -8,13 +8,13 @@ TRAVIS_BRANCH=$3
 TIMES_TO_REPEAT=$4
 APPLICATION_REPUSH_TIMEOUT=$5
 
-push_and_optionally_delete () {
-	DELETE=$1
+push_application () {
+	DELETE_FLAG=$1
 	TIMEOUT=$2
 
 	local RETVAL=1
 
-	if [ "$DELETE" = true ]; then
+	if [ "$DELETE_FLAG" = true ]; then
 		echo "Clearing out any previous instances of $APPLICATION_DIR"
 		cf delete $APPLICATION_DIR -f
 	fi
@@ -25,7 +25,7 @@ push_and_optionally_delete () {
 		START_TIME=$SECONDS
 		cf push -b https://github.com/IBM-Swift/swift-buildpack.git#$TRAVIS_BRANCH
 		ELAPSED_TIME=$(($SECONDS - $START_TIME))
-		if [ "$DELETE" = true ]; then
+		if [ "$DELETE_FLAG" = true ]; then
 			cf delete $APPLICATION_DIR -f
 		fi
 		echo "$APPLICATION_DIR took $ELAPSED_TIME seconds."
@@ -42,9 +42,9 @@ push_and_optionally_delete () {
 
 cd $APPLICATION_DIR
 
-passed=$(push_and_optionally_delete true $APPLICATION_TIMEOUT)
+passed=$(push_application true $APPLICATION_TIMEOUT)
 
-passed_repush=$(push_and_optionally_delete false $APPLICATION_REPUSH_TIMEOUT)
+passed_repush=$(push_application false $APPLICATION_REPUSH_TIMEOUT)
 
 cd ..
 
