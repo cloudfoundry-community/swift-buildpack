@@ -12,12 +12,14 @@ push_application () {
 	DELETE_FLAG=$1
 	TIMEOUT=$2
 
-	local RETVAL=1
+	RETVAL=1
 
 	if [ "$DELETE_FLAG" = true ]; then
 		echo "Clearing out any previous instances of $APPLICATION_DIR"
 		cf delete $APPLICATION_DIR -f
 	fi
+
+	echo $TIMES_TO_REPEAT
 
 	echo "$APPLICATION_DIR threshold value is $TIMEOUT"
 	echo
@@ -46,10 +48,11 @@ push_application () {
 
 cd $APPLICATION_DIR
 
-passed=$(push_application true $APPLICATION_TIMEOUT)
+push_application true $APPLICATION_TIMEOUT
+passed=$?
 
-passed_repush=$(push_application false $APPLICATION_REPUSH_TIMEOUT)
-
+push_application false $APPLICATION_REPUSH_TIMEOUT
+passed_repush=$?
 cd ..
 
 ! (( $passed | $passed_repush ));
