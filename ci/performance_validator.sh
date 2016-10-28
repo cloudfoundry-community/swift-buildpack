@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ev
 
 APPLICATION_DIR=$1
 APPLICATION_TIMEOUT=$2
@@ -25,15 +25,19 @@ push_application () {
 		START_TIME=$SECONDS
 		cf push -b https://github.com/IBM-Swift/swift-buildpack.git#$TRAVIS_BRANCH
 		ELAPSED_TIME=$(($SECONDS - $START_TIME))
+		
 		if [ "$DELETE_FLAG" = true ]; then
 			cf delete $APPLICATION_DIR -f
 		fi
+		
 		echo "$APPLICATION_DIR took $ELAPSED_TIME seconds."
+		
 		if [ "$ELAPSED_TIME" -lt "$TIMEOUT" ]; then
 			echo "Application was under threshold value."
 			RETVAL=0
 			break
 		fi
+
 		echo "$APPLICATION_DIR took longer than the threshold value."
 	done
 
