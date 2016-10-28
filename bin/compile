@@ -77,7 +77,7 @@ download_packages "${packages[@]}"
 # ----------------------------------------------------------------------------- #
 if [ -f $BUILD_DIR/Aptfile ]; then
   status "Aptfile found."
-  for PACKAGE in $(cat $BUILD_DIR/Aptfile); do
+  for PACKAGE in $(cat $BUILD_DIR/Aptfile | sed $'s/\r$//'); do
     status "Entry found in Aptfile for $PACKAGE."
     packages=($PACKAGE)
     download_packages "${packages[@]}"
@@ -122,7 +122,7 @@ export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUIL
 # Determine Swift version for the app
 if [ -f $BUILD_DIR/.swift-version ]; then
   # Take any pinned Swift version, stripping any redundant `swift-` prefix and/or `RELEASE` suffix if present
-  SWIFT_VERSION=$(cat $BUILD_DIR/.swift-version | sed -e "s/swift-//" | sed -e "s/-RELEASE//")
+  SWIFT_VERSION=$(cat $BUILD_DIR/.swift-version | sed $'s/\r$//' | sed -e "s/swift-//" | sed -e "s/-RELEASE//")
 else
   SWIFT_VERSION=$DEFAULT_SWIFT_VERSION
 fi
@@ -164,7 +164,7 @@ restore_cache
 cd $BUILD_DIR
 status "Building Package..."
 if [ -f $BUILD_DIR/.swift-build-options-linux ]; then
-  SWIFT_BUILD_OPTIONS=$(cat $BUILD_DIR/.swift-build-options-linux)
+  SWIFT_BUILD_OPTIONS=$(cat $BUILD_DIR/.swift-build-options-linux | sed $'s/\r$//')
   status "Using custom swift build options: $SWIFT_BUILD_OPTIONS"
 else
   SWIFT_BUILD_OPTIONS=""
