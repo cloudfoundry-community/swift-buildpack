@@ -9,20 +9,19 @@ TIMES_TO_REPEAT=$4
 APPLICATION_REPUSH_TIMEOUT=$5
 
 push_application () {
-	DELETE_FLAG=$1
-	TIMEOUT=$2
+	local DELETE_FLAG=$1
+	local TIMEOUT=$2
 
-	RETVAL=1
+	local RETVAL=1
 
 	if [ "$DELETE_FLAG" = true ]; then
 		echo "Clearing out any previous instances of $APPLICATION_DIR"
 		cf delete $APPLICATION_DIR -f
 	fi
 
-	echo $TIMES_TO_REPEAT
-
 	echo "$APPLICATION_DIR threshold value is $TIMEOUT"
 	echo
+	
 	for num in `seq 1 $TIMES_TO_REPEAT`; do
 		START_TIME=$SECONDS
 		cf push -b https://github.com/IBM-Swift/swift-buildpack.git#$TRAVIS_BRANCH
