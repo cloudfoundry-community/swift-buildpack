@@ -164,7 +164,8 @@ restore_cache
 cd $BUILD_DIR
 status "Building Package..."
 if [ -f $BUILD_DIR/.swift-build-options-linux ]; then
-  SWIFT_BUILD_OPTIONS=$(cat $BUILD_DIR/.swift-build-options-linux | sed $'s/\r$//')
+  # Expand variables in loaded string
+  SWIFT_BUILD_OPTIONS=$(eval echo $(cat $BUILD_DIR/.swift-build-options-linux | sed $'s/\r$//'))
   status "Using custom swift build options: $SWIFT_BUILD_OPTIONS"
 else
   SWIFT_BUILD_OPTIONS=""
