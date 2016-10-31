@@ -10,7 +10,6 @@ APPLICATION_REPUSH_TIMEOUT=$4
 push_application () {
 	local DELETE_FLAG=$1
 	local TIMEOUT=$2
-
 	local RETVAL=1
 
 	if [ "$DELETE_FLAG" = true ]; then
@@ -18,9 +17,8 @@ push_application () {
 		cf delete $APPLICATION_DIR -f
 	fi
 
-	echo "$APPLICATION_DIR threshold value is $TIMEOUT"
-	echo
-	
+	echo "$APPLICATION_DIR threshold value is: $TIMEOUT"
+	echo	
 	for num in `seq 1 $TIMES_TO_REPEAT`; do
 		START_TIME=$SECONDS
 		cf push -b https://github.com/IBM-Swift/swift-buildpack.git#$TRAVIS_BRANCH
@@ -40,7 +38,6 @@ push_application () {
 
 		echo "$APPLICATION_DIR took longer than the threshold value."
 	done
-
 	echo "$RETVAL"	
 }
 
