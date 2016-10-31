@@ -7,7 +7,6 @@ branches:
   only:
   - master
   - develop
-  - setup_travis
 
 before_install:
   # get the repos for bosh-lite and cloud foundery
@@ -40,4 +39,4 @@ deploy:
   skip_cleanup: true
   on:
     repo: IBM-Swift/swift-buildpack
-    all_branches: true
+    branch: master
