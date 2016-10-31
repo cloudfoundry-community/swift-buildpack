@@ -7,6 +7,7 @@ branches:
   only:
   - master
   - develop
+  - /^issue.*$/
 
 before_install:
   # get the repos for bosh-lite and cloud foundery
