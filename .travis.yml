@@ -30,7 +30,8 @@ after_success:
 
 before_deploy:
   - export RELEASE_PKG_FILE=$(ls *.zip)
-  - echo "deploying $RELEASE_PKG_FILE to GitHub releases"
+  - echo "Deploying $RELEASE_PKG_FILE under GitHub releases..."
+  
 deploy:
   provider: releases
   api_key:
