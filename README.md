@@ -257,6 +257,15 @@ $ cat .swift-build-options-linux
 -Xswiftc -DNOJSON
 ```
 
+Here's another example of the contents that can be added to the `.swift-build-options-linux` file:
+
+```shell
+$ cat .swift-build-options-linux
+-Xcc -I$BUILD_DIR/.apt/usr/include/postgresql
+```
+
+The compiler flag shown in the above example is required when leveraging the PostgreSQL system library `libpq-dev`.
+
 ### System level libraries
 
 This buildpack installs the following Ubuntu 14.04 system libraries:
