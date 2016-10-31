@@ -16,6 +16,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install cf-cli
   - cf login -a https://api.ng.bluemix.net -u $BLUEMIX_USER -p $BLUEMIX_PASS -s dev -o $BLUEMIX_USER
+  - export CF_DIAL_TIMEOUT=15
   # Clone test repos
   - git clone https://github.com/IBM-Bluemix/Kitura-Starter
   - git clone https://github.com/IBM-Bluemix/swift-helloworld.git
