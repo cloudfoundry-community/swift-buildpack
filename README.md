@@ -1,3 +1,5 @@
+[![Build Status - Develop](https://travis-ci.org/IBM-Swift/swift-buildpack.svg?branch=develop)](https://travis-ci.org/IBM-Swift/swift-buildpack)
+
 IBM Bluemix buildpack for Swift
 ===============================
 
