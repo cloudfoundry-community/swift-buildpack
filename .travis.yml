@@ -10,28 +10,28 @@ branches:
   - /^issue.*$/
 
 before_install:
-  # get the repos for bosh-lite and cloud foundery
-  - git clone https://github.com/IBM-Bluemix/Kitura-Starter
-  - git clone https://github.com/IBM-Bluemix/swift-helloworld.git
+  # Install Cloud Foundry command line
   - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
   - echo "deb http://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
   - sudo apt-get update
   - sudo apt-get install cf-cli
   - cf login -a https://api.ng.bluemix.net -u $BLUEMIX_USER -p $BLUEMIX_PASS -s dev -o $BLUEMIX_USER
-  
+  # Clone test repos
+  - git clone https://github.com/IBM-Bluemix/Kitura-Starter
+  - git clone https://github.com/IBM-Bluemix/swift-helloworld.git
+
 script:
   - ./ci/performance_validator.sh Kitura-Starter $KITURA_STARTER_PUSH_TIME $TIMES_TO_REPEAT_TO_SUCCESS $KITURA_STARTER_REPUSH_TIME
   - rm -rf Kitura-Starter
   - ./ci/performance_validator.sh swift-helloworld $SWIFT_HELLOWORLD_PUSH_TIME $TIMES_TO_REPEAT_TO_SUCCESS $SWIFT_HELLOWORLD_REPUSH_TIME
   - rm -rf swift-helloworld
-
-after_success:
+  # If all above steps succeeded, then create Git tags
   - ./ci/create_git_tag.sh
 
 before_deploy:
   - export RELEASE_PKG_FILE=$(ls *.zip)
   - echo "Deploying $RELEASE_PKG_FILE under GitHub releases..."
-  
+
 deploy:
   provider: releases
   api_key:
