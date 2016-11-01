@@ -43,7 +43,6 @@ deploy:
   skip_cleanup: true
   overwrite: true
   on:
-    tags: true
     repo: IBM-Swift/swift-buildpack
     all_branches: true
     condition: $DEPLOY_FLAG = true
