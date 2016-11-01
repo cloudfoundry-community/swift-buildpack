@@ -19,7 +19,7 @@ before_install:
   - cf login -a https://api.ng.bluemix.net -u $BLUEMIX_USER -p $BLUEMIX_PASS -s dev -o $BLUEMIX_USER
   # Clone test repos
   - git clone https://github.com/IBM-Bluemix/Kitura-Starter
-  - git clone https://github.com/IBM-Bluemix/swift-helloworld.git
+  - git clone -b bluemix-estado https://github.com/IBM-Bluemix/swift-helloworld.git
 
 script:
   - ./ci/performance_validator.sh Kitura-Starter $KITURA_STARTER_PUSH_TIME $TIMES_TO_REPEAT_TO_SUCCESS $KITURA_STARTER_REPUSH_TIME
