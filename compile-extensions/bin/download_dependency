@@ -1,4 +1,19 @@
 #!/usr/bin/env ruby
+##
+# Copyright IBM Corporation 2016
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+##
 
 $LOAD_PATH << File.expand_path('../../lib', __FILE__)
 require 'yaml'
@@ -6,15 +21,21 @@ require 'compile_extensions'
 require 'digest'
 require 'fileutils'
 
+# Process arguments/parameters to the script
 original_url      = ARGV[0]
 install_directory = ARGV[1]
+if ARGV.size == 3
+  default_swift_version = ARGV[2]
+end
 
+# Define utility functions
 def debug(msg)
   STDERR.puts(msg) if ENV['BP_DEBUG']
 end
 
 debug "DEBUG: download '#{original_url}' to '#{install_directory}'"
 
+# Perform necessary lookups
 file_location     = File.join(install_directory, original_url.split('/').last)
 manifest_location = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "manifest.yml"))
 cache_path        = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'dependencies'))
@@ -27,24 +48,72 @@ debug "DEBUG: translated_uri '#{translated_uri}'"
 debug "DEBUG: dependency_md5 '#{dependency_md5}'"
 
 if translated_uri.nil?
-  STDERR.puts "DEPENDENCY_MISSING_IN_MANIFEST: '#{original_url}'"
-  exit 1
+  # Assumption is that the requested dependency is a Swift development or release snapshot
+  custom_swift_version = original_url.gsub(/.tar.gz/, '')
+  STDERR.puts "WARNING: You are requesting a custom version of Swift (defined in your .swift-version)"
+  STDERR.puts "WARNING: Default supported Swift version: #{default_swift_version}"
+  STDERR.puts "WARNING: Custom Swift version for your app: #{custom_swift_version}"
+  STDERR.puts "WARNING: The buildpack will attempt to download requested version from Swift.org"
+
+  # Determine snapshot type, swift version, url...
+  if custom_swift_version.downcase.include? "development"
+    snapshot_type = "development"
+  else
+    snapshot_type = custom_swift_version.downcase
+    if snapshot_type.include? "preview"
+      # Preview snapshot... nothing to update
+    else
+      # Assuming release snapshot
+      if !(snapshot_type.include? "release")
+        snapshot_type = "#{snapshot_type}-release"
+        custom_swift_version = "#{custom_swift_version}-RELEASE"
+      end
+    end
+  end
+  debug "DEBUG: snapshot_type #{snapshot_type}"
+
+  swift_file = "#{custom_swift_version}-ubuntu14.04.tar.gz"
+  translated_uri = "https://swift.org/builds/#{snapshot_type}/ubuntu1404/#{custom_swift_version}/#{swift_file}"
+  debug "DEBUG: Using the following URL for downloading the specified dependency: #{translated_uri}"
+  status_code = `curl -I -s #{translated_uri} | head -n 1 | cut -d ' ' -f2`
+  status_code = status_code.strip
+  debug "DEBUG: HTTP dependency availability status code: #{status_code}"
+  if status_code == "200"
+    debug "DEBUG: Dependency is reachable on remote server: #{original_url}"
+  else
+    STDERR.puts "ERROR: Could not find/download requested custom Swift version from Swift.org: #{translated_uri}"
+    exit 3
+  end
 end
 
+in_cache = false
 if File.exist? cache_path
   file_path = File.join(cache_path, translated_uri.gsub(/[\/:]/, '_'))
-  translated_uri = "file://#{file_path}"
+  # Though this should not be needed, let's check that the dependency is actually found in the dependencies folder
+  # If not found in the dependencies folder, we will not change the value of translated_uri and we will attempt to download it
+  # This is useful if a dependency was manualy taken out of the dependencies folder
+  if File.exist? file_path
+    in_cache = true
+    debug "DEBUG: Dependency found: '#{file_path}'"
+    translated_uri = "file://#{file_path}"
+  end
 end
 
 `curl -s #{translated_uri} -o #{file_location}`
 generated_md5 = Digest::MD5.file(file_location).hexdigest
 
 debug "DEBUG: generated_md5 '#{generated_md5}'"
-puts file_location
+#puts "#{file_location} #{in_cache}"
+puts in_cache
 
-if dependency_md5 == generated_md5
+if dependency_md5.nil?
+  debug "DEBUG: md5 value for dependency could not be validated; more than likely the dependency is not found in the MANIFEST file"
   exit 0
 else
-  FileUtils.rm(file_location)
-  exit 3
+  if dependency_md5 == generated_md5
+    exit 0
+  else
+    FileUtils.rm(file_location)
+    exit 3
+  end
 end

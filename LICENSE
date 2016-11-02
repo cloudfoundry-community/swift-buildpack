@@ -1,6 +1,8 @@
 Copyright (c) 2015, Kyle Fuller (original Heroku buildpack)
 Copyright (c) 2015, Dr Nic Williams (conversion to use Cloud Foundry packaging toolchain)
 All rights reserved.
+Copyright (c) 2016, IBM (customization to support deployment of Kitura-based applications to Bluemix)
+All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
