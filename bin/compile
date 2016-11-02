@@ -29,7 +29,7 @@ fi
 # Global variables
 BUILD_DIR=$1
 CACHE_DIR=$2
-DEFAULT_SWIFT_VERSION=3.0
+DEFAULT_SWIFT_VERSION=3.0.1
 CLANG_VERSION=3.8.0
 compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
 compile_buildpack_bin=$compile_buildpack_dir/bin
@@ -134,7 +134,7 @@ mkdir -p $CACHE_DIR
 cd $CACHE_DIR
 
 # Download and unpack Swift binaries
-download_dependency $SWIFT_NAME_VERSION $SWIFT_VERSION "tar.gz" $DEFAULT_SWIFT_VERSION
+download_dependency $SWIFT_NAME_VERSION $SWIFT_VERSION "tar.gz" "swift-$DEFAULT_SWIFT_VERSION"
 SWIFT_PATH=$CACHE_DIR/$(echo $SWIFT_NAME_VERSION/swift*)
 
 # Download and unpack clang
