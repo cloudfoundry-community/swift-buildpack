@@ -35,7 +35,7 @@ before_deploy:
   - echo "Deploying $RELEASE_PKG_FILE under GitHub releases..."
   - export VERSION=$(cat VERSION)
   - echo "Removing previous relase assets"
-  - ./ci/remove_previous_assets.sh
+  - ./ci/remove_previous_assets.sh $VERSION
 
 deploy:
   provider: releases
