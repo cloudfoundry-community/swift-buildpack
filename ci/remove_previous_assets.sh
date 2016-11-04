@@ -20,10 +20,10 @@ set -ev
 VERSION=$1
 
 if [ "$DEPLOY_FLAG" == "true" ]; then
-  ASSETS_URL=`curl -i https://api.github.com/repos/IBM-Swift/swift-buildpack/releases/tags/$VERSION | grep assets_url | awk '{split($0,array,": ")} END {print array[2]array[3]}' | awk '{gsub(/"/, "", $1); print $1}' | awk '{gsub(",", "", $1); print $1}'`
+  ASSETS_URL=`curl -u $GITHUB_USER:$GITHUB_PASS -i https://api.github.com/repos/IBM-Swift/swift-buildpack/releases/tags/$VERSION | grep assets_url | awk '{split($0,array,": ")} END {print array[2]array[3]}' | awk '{gsub(/"/, "", $1); print $1}' | awk '{gsub(",", "", $1); print $1}'`
   if [ -n "$ASSETS_URL" ]; then 
-    ASSETS_ID=`curl -i $ASSETS_URL | grep -m 1 url | awk '{split($0,array,": ")} END {print array[2]array[3]}' | awk '{gsub(/"/, "", $1); print $1}' | awk '{gsub(",", "", $1); print $1}'`
-    curl --request DELETE -i $ASSETS_ID
+    ASSETS_ID=`curl -u $GITHUB_USER:$GITHUB_PASS -i $ASSETS_URL | grep -m 1 url | awk '{split($0,array,": ")} END {print array[2]array[3]}' | awk '{gsub(/"/, "", $1); print $1}' | awk '{gsub(",", "", $1); print $1}'`
+    curl -u $GITHUB_USER:$GITHUB_PASS -X DELETE $ASSETS_ID
   else
     echo "No assets assigned to release yet"
   fi
