@@ -19,7 +19,6 @@
 # Configuration and setup.                                                      #
 # ----------------------------------------------------------------------------- #
 set -e
-set -o pipefail
 
 if [[ "${BP_DEBUG}X" != "X" ]]; then
   # Show all commands
@@ -177,11 +176,7 @@ swift package fetch
 #need to parse the Package.swift files and install any dependencies it may need
 status "Getting package list to install."
 
-#need to disable this because the following command may fail
-set +o pipefail
 PACKAGES_TO_INSTALL=($(find . -type f -name "Package.swift" | xargs egrep -r "Apt *\(" | sed -e 's/^.*\.Apt *( *" *//' -e 's/".*$//' | sort | uniq))
-# turn the checking back on
-set -o pipefail
 if [ "${#PACKAGES_TO_INSTALL[@]}" -gt "0" ]; then
   status "Packages to install ${PACKAGES_TO_INSTALL[@]}"
   download_packages "${PACKAGES_TO_INSTALL[@]}"
