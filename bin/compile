@@ -66,6 +66,7 @@ mkdir -p $BUILD_DIR/.apt
 # ----------------------------------------------------------------------------- #
 # Copy pre-cached system level dependencies for Kitura                          #
 # ----------------------------------------------------------------------------- #
+status "Copying deb files to installation folder..."
 cp $compile_buildpack_dir/binary-dependencies/*.deb $APT_CACHE_DIR/archives
 
 # ----------------------------------------------------------------------------- #
@@ -150,7 +151,7 @@ CLANG_PATH=$CACHE_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
 # ----------------------------------------------------------------------------- #
-# Restore Packages folder based on current state                               #
+# Restore Packages folder based on current state                                #
 # ----------------------------------------------------------------------------- #
 restore_cache() {
   local cache_status="$(get_cache_status)"
@@ -215,7 +216,7 @@ cache_build
 # the 'Uploading droplet' step. Caching tar files and/or large                  #
 # directories results in a negative performance hit.                            #
 # ----------------------------------------------------------------------------- #
-status "Optimizing contents of cache folder"
+status "Optimizing contents of cache folder..."
 rm -rf $CACHE_DIR/$SWIFT_NAME_VERSION
 rm -rf $CACHE_DIR/$CLANG_NAME_VERSION
 rm -rf $CACHE_DIR/"$SWIFT_NAME_VERSION.tar.gz"
@@ -223,9 +224,6 @@ rm -rf $CACHE_DIR/"$CLANG_NAME_VERSION.tar.xz"
 for DEB in $(ls -1 $compile_buildpack_dir/binary-dependencies/*.deb); do
   rm $APT_CACHE_DIR/archives/$(basename $DEB)
 done
-status "Cache folder contents: `ls $CACHE_DIR`"
-status "Cache folder contents: `ls $APT_CACHE_DIR/archives`"
-#status "Cache folder size is: `du -sk $CACHE_DIR`"
 
 # ----------------------------------------------------------------------------- #
 # Set up application environment                                                #
