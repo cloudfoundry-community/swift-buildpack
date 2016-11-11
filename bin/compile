@@ -19,7 +19,6 @@
 # Configuration and setup.                                                      #
 # ----------------------------------------------------------------------------- #
 set -e
-set -o pipefail
 
 if [[ "${BP_DEBUG}X" != "X" ]]; then
   # Show all commands
@@ -65,11 +64,20 @@ mkdir -p "$APT_STATE_DIR/lists/partial"
 mkdir -p $BUILD_DIR/.apt
 
 # ----------------------------------------------------------------------------- #
+# Install system level dependencies for Kitura                                  #
+# ----------------------------------------------------------------------------- #
+for DEB in $(ls -1 $compile_buildpack_dir/binary-dependencies/*.deb); do
+  status "Installing $(basename $DEB)"
+  dpkg -x $DEB $BUILD_DIR/.apt/
+done
+
+# ----------------------------------------------------------------------------- #
 # Download system level dependencies for Kitura                                 #
 # ----------------------------------------------------------------------------- #
-status "Downloading system level dependencies..."
-packages=("libicu-dev" "libcurl4-openssl-dev")
-download_packages "${packages[@]}"
+# We are using DEB files again (see code block above)
+#status "Downloading system level dependencies..."
+#packages=("libicu-dev" "libcurl4-openssl-dev")
+#download_packages "${packages[@]}"
 
 # ----------------------------------------------------------------------------- #
 # Download any application specific system dependencies specified               #
