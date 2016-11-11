@@ -64,12 +64,9 @@ mkdir -p "$APT_STATE_DIR/lists/partial"
 mkdir -p $BUILD_DIR/.apt
 
 # ----------------------------------------------------------------------------- #
-# Install system level dependencies for Kitura                                  #
+# Copy pre-cached system level dependencies for Kitura                          #
 # ----------------------------------------------------------------------------- #
-for DEB in $(ls -1 $compile_buildpack_dir/binary-dependencies/*.deb); do
-  status "Installing $(basename $DEB)"
-  dpkg -x $DEB $BUILD_DIR/.apt/
-done
+cp $compile_buildpack_dir/binary-dependencies/*.deb $APT_CACHE_DIR/archives
 
 # ----------------------------------------------------------------------------- #
 # Download system level dependencies for Kitura                                 #
@@ -223,7 +220,11 @@ rm -rf $CACHE_DIR/$SWIFT_NAME_VERSION
 rm -rf $CACHE_DIR/$CLANG_NAME_VERSION
 rm -rf $CACHE_DIR/"$SWIFT_NAME_VERSION.tar.gz"
 rm -rf $CACHE_DIR/"$CLANG_NAME_VERSION.tar.xz"
-#status "Cache folder contents: `ls $CACHE_DIR`"
+for DEB in $(ls -1 $compile_buildpack_dir/binary-dependencies/*.deb); do
+  rm $APT_CACHE_DIR/archives/$DEB
+done
+status "Cache folder contents: `ls $CACHE_DIR`"
+status "Cache folder contents: `ls $APT_CACHE_DIR/archives`"
 #status "Cache folder size is: `du -sk $CACHE_DIR`"
 
 # ----------------------------------------------------------------------------- #
