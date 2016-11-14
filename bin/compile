@@ -64,6 +64,30 @@ mkdir -p "$APT_STATE_DIR/lists/partial"
 mkdir -p $BUILD_DIR/.apt
 
 # ----------------------------------------------------------------------------- #
+# Write profile script and set additional environment variables                 #
+# ----------------------------------------------------------------------------- #
+status "Writing profile script..."
+mkdir -p $BUILD_DIR/.profile.d
+cat <<EOF >$BUILD_DIR/.profile.d/000_apt.sh
+export PATH="\$HOME/.apt/usr/bin:\$PATH"
+export LD_LIBRARY_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu:\$HOME/.apt/usr/lib/i386-linux-gnu:\$HOME/.apt/usr/lib:\$LD_LIBRARY_PATH"
+export LIBRARY_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu:\$HOME/.apt/usr/lib/i386-linux-gnu:\$HOME/.apt/usr/lib:\$LIBRARY_PATH"
+export INCLUDE_PATH="\$HOME/.apt/usr/include:\$INCLUDE_PATH"
+export CPATH="\$INCLUDE_PATH"
+export CPPPATH="\$INCLUDE_PATH"
+export PKG_CONFIG_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/i386-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/pkgconfig:\$PKG_CONFIG_PATH"
+EOF
+
+export PATH="$BUILD_DIR/.apt/usr/bin:$PATH"
+export LD_LIBRARY_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu:$BUILD_DIR/.apt/usr/lib:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu:$BUILD_DIR/.apt/usr/lib:$LIBRARY_PATH"
+export INCLUDE_PATH="$BUILD_DIR/.apt/usr/include:$INCLUDE_PATH"
+export CPATH="$INCLUDE_PATH"
+export CPPPATH="$INCLUDE_PATH"
+export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+
+# ----------------------------------------------------------------------------- #
 # Copy pre-cached system level dependencies for Kitura                          #
 # ----------------------------------------------------------------------------- #
 status "Copying deb files to installation folder..."
@@ -91,36 +115,6 @@ if [ -f $BUILD_DIR/Aptfile ]; then
 else
   status "No Aptfile found."
 fi
-
-# ----------------------------------------------------------------------------- #
-# Install any downloaded system level packages (DEB files)                      #
-# ----------------------------------------------------------------------------- #
-status "Installing system level dependencies..."
-install_packages
-
-# ----------------------------------------------------------------------------- #
-# After installing system level packages, write profile script and              #
-# set additional environment variables                                          #
-# ----------------------------------------------------------------------------- #
-status "Writing profile script..."
-mkdir -p $BUILD_DIR/.profile.d
-cat <<EOF >$BUILD_DIR/.profile.d/000_apt.sh
-export PATH="\$HOME/.apt/usr/bin:\$PATH"
-export LD_LIBRARY_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu:\$HOME/.apt/usr/lib/i386-linux-gnu:\$HOME/.apt/usr/lib:\$LD_LIBRARY_PATH"
-export LIBRARY_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu:\$HOME/.apt/usr/lib/i386-linux-gnu:\$HOME/.apt/usr/lib:\$LIBRARY_PATH"
-export INCLUDE_PATH="\$HOME/.apt/usr/include:\$INCLUDE_PATH"
-export CPATH="\$INCLUDE_PATH"
-export CPPPATH="\$INCLUDE_PATH"
-export PKG_CONFIG_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/i386-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/pkgconfig:\$PKG_CONFIG_PATH"
-EOF
-
-export PATH="$BUILD_DIR/.apt/usr/bin:$PATH"
-export LD_LIBRARY_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu:$BUILD_DIR/.apt/usr/lib:$LD_LIBRARY_PATH"
-export LIBRARY_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu:$BUILD_DIR/.apt/usr/lib:$LIBRARY_PATH"
-export INCLUDE_PATH="$BUILD_DIR/.apt/usr/include:$INCLUDE_PATH"
-export CPATH="$INCLUDE_PATH"
-export CPPPATH="$INCLUDE_PATH"
-export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # ----------------------------------------------------------------------------- #
 # Install Swift dev tools & clang                                               #
@@ -165,6 +159,25 @@ restore_cache() {
 restore_cache
 
 # ----------------------------------------------------------------------------- #
+# Parse Package.swift to determine any required system level dependencies.      #
+# ----------------------------------------------------------------------------- #
+status "Fetching Swift packages and parsing Package.swift files..."
+swift package fetch
+PACKAGES_TO_INSTALL=($(find . -type f -name "Package.swift" | xargs egrep -r "Apt *\(" | sed -e 's/^.*\.Apt *( *" *//' -e 's/".*$//' | sort | uniq))
+if [ "${#PACKAGES_TO_INSTALL[@]}" -gt "0" ]; then
+  status "Packages to install ${PACKAGES_TO_INSTALL[@]}"
+  download_packages "${PACKAGES_TO_INSTALL[@]}"
+else
+  status "There are no extra packages to install."
+fi
+
+# ----------------------------------------------------------------------------- #
+# Install any downloaded system level packages (DEB files)                      #
+# ----------------------------------------------------------------------------- #
+status "Installing system level dependencies..."
+install_packages
+
+# ----------------------------------------------------------------------------- #
 # Build/compile Swift application                                               #
 # ----------------------------------------------------------------------------- #
 cd $BUILD_DIR
@@ -175,20 +188,6 @@ if [ -f $BUILD_DIR/.swift-build-options-linux ]; then
   status "Using custom swift build options: $SWIFT_BUILD_OPTIONS"
 else
   SWIFT_BUILD_OPTIONS=""
-fi
-
-#this is needed to get all the packages down before compile
-status "Fetching swift packages."
-swift package fetch
-#need to parse the Package.swift files and install any dependencies it may need
-status "Getting package list to install."
-
-PACKAGES_TO_INSTALL=($(find . -type f -name "Package.swift" | xargs egrep -r "Apt *\(" | sed -e 's/^.*\.Apt *( *" *//' -e 's/".*$//' | sort | uniq))
-if [ "${#PACKAGES_TO_INSTALL[@]}" -gt "0" ]; then
-  status "Packages to install ${PACKAGES_TO_INSTALL[@]}"
-  download_packages "${PACKAGES_TO_INSTALL[@]}"
-else
-  status "There are no extra packages to install."
 fi
 
 swift build --configuration release $SWIFT_BUILD_OPTIONS -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
