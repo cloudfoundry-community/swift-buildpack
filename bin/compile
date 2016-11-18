@@ -166,10 +166,10 @@ status "Fetching Swift packages and parsing Package.swift files..."
 swift package fetch
 PACKAGES_TO_INSTALL=($(find . -type f -name "Package.swift" | xargs egrep -r "Apt *\(" | sed -e 's/^.*\.Apt *( *" *//' -e 's/".*$//' | sort | uniq))
 if [ "${#PACKAGES_TO_INSTALL[@]}" -gt "0" ]; then
-  status "Packages to install ${PACKAGES_TO_INSTALL[@]}"
+  status "Packages to download: ${PACKAGES_TO_INSTALL[@]}"
   download_packages "${PACKAGES_TO_INSTALL[@]}"
 else
-  status "There are no extra packages to install."
+  status "No additional packages to download."
 fi
 
 # ----------------------------------------------------------------------------- #
