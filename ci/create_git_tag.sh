@@ -17,7 +17,7 @@
 
 set -ev
 
-if [ "$DEPLOY_FLAG" == "true" ]; then
+if [ "$TRAVIS_BRANCH" == "deploy-release" ]; then
   cd $TRAVIS_BUILD_DIR
   gem install bundler
   bundle install --gemfile=cf.Gemfile
