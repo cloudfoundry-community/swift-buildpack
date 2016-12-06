@@ -7,6 +7,7 @@ branches:
   only:
   - master
   - develop
+  - deploy-release
   - /^issue.*$/
 
 before_install:
