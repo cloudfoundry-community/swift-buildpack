@@ -51,5 +51,4 @@ deploy:
   target_commitish: $TRAVIS_BRANCH
   on:
     repo: IBM-Swift/swift-buildpack
-    all_branches: true
-    condition: $DEPLOY_FLAG = true
+    branch: deploy-release
