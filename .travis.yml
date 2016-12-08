@@ -1,0 +1,55 @@
+language: ruby
+
+rvm:
+  - 2.2
+
+branches:
+  only:
+  - master
+  - develop
+  - deploy-release
+  - /^issue.*$/
+
+before_install:
+  # Install Cloud Foundry command line
+  - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
+  - echo "deb http://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
+  - sudo apt-get update
+  - sudo apt-get install cf-cli
+  - export CF_DIAL_TIMEOUT=30
+  - cf version
+  - cf login -a https://$BLUEMIX_REGION -u $BLUEMIX_USER -p $BLUEMIX_PASS -s dev -o $BLUEMIX_USER
+  # Clone test repos
+  - git clone https://github.com/IBM-Bluemix/Kitura-Starter
+  - git clone -b bluemix-estado https://github.com/IBM-Bluemix/swift-helloworld.git
+
+script:
+  - ./ci/performance_validator.sh Kitura-Starter $KITURA_STARTER_PUSH_TIME $TIMES_TO_REPEAT_TO_SUCCESS $KITURA_STARTER_REPUSH_TIME
+  - rm -rf Kitura-Starter
+  - ./ci/performance_validator.sh swift-helloworld $SWIFT_HELLOWORLD_PUSH_TIME $TIMES_TO_REPEAT_TO_SUCCESS $SWIFT_HELLOWORLD_REPUSH_TIME
+  - rm -rf swift-helloworld
+  # If all above steps succeeded, then create Git tags
+  - ./ci/create_git_tag.sh
+
+before_deploy:
+  - export RELEASE_PKG_FILE=$(ls *.zip)
+  - echo "Deploying $RELEASE_PKG_FILE under GitHub releases..."
+  - export VERSION=$(cat VERSION)
+  - echo "Removing previous release assets..."
+  - ./ci/remove_previous_assets.sh $VERSION
+
+deploy:
+  provider: releases
+  api_key:
+     secure: fXDpIpSWo9Q2bldTgk39pophOFcF1sSverLlMls3aApXeqSF1GzW0Uyj4ZmlpzSmV9+7wfOtveKsNhgvfway87nAMA7o3a+0LkoVqm5jralFtbJ+LiflP8qtA85b9UtPr0gJ89wp9fRQPnbkOCevJW8njI8xz1JRLfqLyOj+DA+HJziaG3BN4rDHDcWSV8oZuQcK63NH1GB63hzGlzEtPPgPQpVEv4869xbX7iBSJFIbrMVvJ08I25BEknefGroU//qmSbCZ2AcFL9jJiqgbvIuoUbEQcdzPdp+0cv3C65oLVJcqUDAOfFMsNTZiou5OtNpaErWHoqvtf8r0HHHLfsaWZtJ6IFz2XQ3g+0k52JOLhtANk591pHZiH5xlN6o671W1ajexmHCC7ibJC+Qo4oRCyqJDdHz+SW7TujInVtAVTEVu7inQ8YCnCzACuy5Oms50/5PVkJ+wF/2aQ+9xR6SfF5KDlPzRO7Sqc5Z4alYVx4pFJz28qoP6xP+s1PlipgjkLXQUnbHGvSjoPbGRwELn2RVTbxeIu1IWD33u8H9SskU2kdtKvc47MFLoTIKhfUBjfjrdCqA6Jw8xR/uZAGDwNhoS4Gi7gZ/tdWCjL3HWw0DLzazIqcUomN9doSYyh71FweZt6hUYvy+tOz+6X/DenWrrmbVNdZoM4c88rrU=
+  file_glob: true
+  file: "${RELEASE_PKG_FILE}"
+  prerelease: true
+  skip_cleanup: true
+  overwrite: true
+  tag_name: $VERSION
+  name: $VERSION
+  target_commitish: $TRAVIS_BRANCH
+  on:
+    repo: IBM-Swift/swift-buildpack
+    branch: deploy-release

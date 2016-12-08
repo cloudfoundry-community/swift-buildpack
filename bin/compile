@@ -1,70 +1,203 @@
 #!/usr/bin/env bash
-# bin/compile <build-dir> <cache-dir>
+##
+# Copyright IBM Corporation 2016
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+##
 
+# ----------------------------------------------------------------------------- #
+# Configuration and setup.                                                      #
+# ----------------------------------------------------------------------------- #
 set -e
 set -o pipefail
 
 if [[ "${BP_DEBUG}X" != "X" ]]; then
-  set -x # show all commands
+  # Show all commands
+  set -x
 fi
 
+# Global variables
 BUILD_DIR=$1
 CACHE_DIR=$2
+DEFAULT_SWIFT_VERSION=3.0.1
+CLANG_VERSION=3.8.0
+compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
+compile_buildpack_bin=$compile_buildpack_dir/bin
+BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-extensions/lib/common
+PACKAGES_DIR="Packages"
+# If leveraging CACHE_DIR for tar files, then we'd need CACHED_ITEMS
+#CACHED_ITEMS=()
 
-DEFAULT_SWIFT_VERSION=DEVELOPMENT-SNAPSHOT-2016-03-24-a
-CLANG_VERSION=3.7.0
+# Check environment support
+$compile_buildpack_dir/compile-extensions/bin/check_stack_support
+# Load convenience functions like status(), echo(), and indent()
+source $compile_buildpack_dir/lib/utils.sh
+# Load caching functions
+source ${compile_buildpack_dir}/lib/cache.sh
 
+# Log default Swift version
+status "Default supported Swift version is $DEFAULT_SWIFT_VERSION"
+
+# Remove .build and Packages folders (in case they were pushed)
+rm -rf $BUILD_DIR/.build
+rm -rf $BUILD_DIR/Packages
+
+# ----------------------------------------------------------------------------- #
+# Configuration for apt-get package installs                                    #
+# ----------------------------------------------------------------------------- #
+status "Configure for apt-get installs..."
+APT_CACHE_DIR="$CACHE_DIR/apt/cache"
+APT_STATE_DIR="$CACHE_DIR/apt/state"
+APT_OPTIONS="-o debug::nolocking=true -o dir::cache=$APT_CACHE_DIR -o dir::state=$APT_STATE_DIR"
+APT_PCKGS_LIST_UPDATED=false
+mkdir -p "$APT_CACHE_DIR/archives/partial"
+mkdir -p "$APT_STATE_DIR/lists/partial"
+mkdir -p $BUILD_DIR/.apt
+
+# ----------------------------------------------------------------------------- #
+# Write profile script and set additional environment variables                 #
+# ----------------------------------------------------------------------------- #
+status "Writing profile script..."
+mkdir -p $BUILD_DIR/.profile.d
+cat <<EOF >$BUILD_DIR/.profile.d/000_apt.sh
+export PATH="\$HOME/.apt/usr/bin:\$PATH"
+export LD_LIBRARY_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu:\$HOME/.apt/usr/lib/i386-linux-gnu:\$HOME/.apt/usr/lib:\$LD_LIBRARY_PATH"
+export LIBRARY_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu:\$HOME/.apt/usr/lib/i386-linux-gnu:\$HOME/.apt/usr/lib:\$LIBRARY_PATH"
+export INCLUDE_PATH="\$HOME/.apt/usr/include:\$INCLUDE_PATH"
+export CPATH="\$INCLUDE_PATH"
+export CPPPATH="\$INCLUDE_PATH"
+export PKG_CONFIG_PATH="\$HOME/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/i386-linux-gnu/pkgconfig:\$HOME/.apt/usr/lib/pkgconfig:\$PKG_CONFIG_PATH"
+EOF
+
+export PATH="$BUILD_DIR/.apt/usr/bin:$PATH"
+export LD_LIBRARY_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu:$BUILD_DIR/.apt/usr/lib:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu:$BUILD_DIR/.apt/usr/lib:$LIBRARY_PATH"
+export INCLUDE_PATH="$BUILD_DIR/.apt/usr/include:$INCLUDE_PATH"
+export CPATH="$INCLUDE_PATH"
+export CPPPATH="$INCLUDE_PATH"
+export PKG_CONFIG_PATH="$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/i386-linux-gnu/pkgconfig:$BUILD_DIR/.apt/usr/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+
+# ----------------------------------------------------------------------------- #
+# Copy pre-cached system level dependencies for Kitura                          #
+# ----------------------------------------------------------------------------- #
+status "Copying deb files to installation folder..."
+cp $compile_buildpack_dir/binary-dependencies/*.deb $APT_CACHE_DIR/archives
+
+# ----------------------------------------------------------------------------- #
+# Download system level dependencies for Kitura                                 #
+# ----------------------------------------------------------------------------- #
+# We are using DEB files again (see code block above)
+#status "Downloading system level dependencies..."
+#packages=("libicu-dev" "libcurl4-openssl-dev")
+#download_packages "${packages[@]}"
+
+# ----------------------------------------------------------------------------- #
+# Download any application specific system dependencies specified               #
+# in Aptfile (if present) using apt-get                                         #
+# ----------------------------------------------------------------------------- #
+if [ -f $BUILD_DIR/Aptfile ]; then
+  status "Aptfile found."
+  for PACKAGE in $(cat $BUILD_DIR/Aptfile | sed $'s/\r$//'); do
+    status "Entry found in Aptfile for $PACKAGE."
+    packages=($PACKAGE)
+    download_packages "${packages[@]}"
+  done
+else
+  status "No Aptfile found."
+fi
+
+# ----------------------------------------------------------------------------- #
+# Install Swift dev tools & clang                                               #
+# ----------------------------------------------------------------------------- #
+# Determine Swift version for the app
 if [ -f $BUILD_DIR/.swift-version ]; then
-  # Take any pinned Swift version, stripping any redundant `swift-` prefix if present
-  SWIFT_VERSION=$(cat $BUILD_DIR/.swift-version | sed -e "s/swift-//")
+  # Take any pinned Swift version, stripping any redundant `swift-` prefix and/or `RELEASE` suffix if present
+  SWIFT_VERSION=$(cat $BUILD_DIR/.swift-version | sed $'s/\r$//' | sed -e "s/swift-//" | sed -e "s/-RELEASE//")
 else
   SWIFT_VERSION=$DEFAULT_SWIFT_VERSION
 fi
+
 SWIFT_NAME_VERSION="swift-${SWIFT_VERSION}"
 CLANG_NAME_VERSION="clang-${CLANG_VERSION}"
-
-compile_buildpack_dir=$(cd $(dirname $0); cd ..; pwd)
-compile_buildpack_bin=$compile_buildpack_dir/bin
-$compile_buildpack_dir/compile-extensions/bin/check_stack_support
-
-# Load some convenience functions like status(), echo(), and indent()
-source $compile_buildpack_dir/bin/common.sh
-
-BUILDPACK_PATH=$compile_buildpack_dir source $compile_buildpack_dir/compile-extensions/lib/common
 
 mkdir -p $CACHE_DIR
 cd $CACHE_DIR
 
-# download and unpack swift
-if [[ ! -d "$CACHE_DIR/$SWIFT_NAME_VERSION" ]]; then
-  status "Installing Swift $SWIFT_VERSION"
-  mkdir -p $SWIFT_NAME_VERSION
-  dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $SWIFT_NAME_VERSION.tar.gz /tmp)
-  echo "Downloaded Swift" | indent
-  tar xz -C $SWIFT_NAME_VERSION -f $dependency
-fi
+# Download and unpack Swift binaries
+download_dependency $SWIFT_NAME_VERSION $SWIFT_VERSION "tar.gz" "swift-$DEFAULT_SWIFT_VERSION"
 SWIFT_PATH=$CACHE_DIR/$(echo $SWIFT_NAME_VERSION/swift*)
 
-# download and unpack clang
-if [[ ! -d "$CACHE_DIR/$CLANG_NAME_VERSION" ]]; then
-  status "Installing Clang $CLANG_VERSION"
-  mkdir -p $CLANG_NAME_VERSION
-  dependency=$($compile_buildpack_dir/compile-extensions/bin/download_dependency $CLANG_NAME_VERSION.tar.xz /tmp)
-  echo "Downloaded Clang" | indent
-  echo $dependency | xz -d -c --files | tar x -C $CLANG_NAME_VERSION &> /dev/null
-fi
+# Download and unpack clang
+download_dependency $CLANG_NAME_VERSION $CLANG_VERSION "tar.xz"
 CLANG_PATH=$CACHE_DIR/$(echo $CLANG_NAME_VERSION/clang*)
 
+# Update PATH environment variable
 export PATH="$SWIFT_PATH/usr/bin:$CLANG_PATH/bin:$PATH"
 
-cd $BUILD_DIR
-status "Building Package"
-swift build --configuration release | indent
+# ----------------------------------------------------------------------------- #
+# Restore Packages folder based on current state                                #
+# ----------------------------------------------------------------------------- #
+restore_cache() {
+  local cache_status="$(get_cache_status)"
+  if [ "$cache_status" == "valid" ]; then
+    status "Loading from cache:"
+    restore_cache_directories "$BUILD_DIR" "$CACHE_DIR" "$PACKAGES_DIR"
+  else
+    status "Skipping cache restore ($cache_status)"
+  fi
+}
+restore_cache
 
-# These should be statically linked, seems a swift bug
+# ----------------------------------------------------------------------------- #
+# Parse Package.swift to determine any required system level dependencies.      #
+# ----------------------------------------------------------------------------- #
+cd $BUILD_DIR
+status "Fetching Swift packages and parsing Package.swift files..."
+swift package fetch
+PACKAGES_TO_INSTALL=($(set +o pipefail;find . -type f -name "Package.swift" | xargs egrep -r "Apt *\(" | sed -e 's/^.*\.Apt *( *" *//' -e 's/".*$//' | sort | uniq; set -o pipefail))
+if [ "${#PACKAGES_TO_INSTALL[@]}" -gt "0" ]; then
+  status "Additional packages to download: ${PACKAGES_TO_INSTALL[@]}"
+  download_packages "${PACKAGES_TO_INSTALL[@]}"
+else
+  status "No additional packages to download."
+fi
+
+# ----------------------------------------------------------------------------- #
+# Install any downloaded system level packages (DEB files)                      #
+# ----------------------------------------------------------------------------- #
+status "Installing system level dependencies..."
+install_packages
+
+# ----------------------------------------------------------------------------- #
+# Build/compile Swift application                                               #
+# ----------------------------------------------------------------------------- #
+status "Building Package..."
+if [ -f $BUILD_DIR/.swift-build-options-linux ]; then
+  # Expand variables in loaded string
+  SWIFT_BUILD_OPTIONS=$(eval echo $(cat $BUILD_DIR/.swift-build-options-linux | sed $'s/\r$//'))
+  status "Using custom swift build options: $SWIFT_BUILD_OPTIONS"
+else
+  SWIFT_BUILD_OPTIONS=""
+fi
+
+swift build --configuration release $SWIFT_BUILD_OPTIONS -Xcc -I$BUILD_DIR/.apt/usr/include -Xlinker -L$BUILD_DIR/.apt/usr/lib -Xlinker -L$BUILD_DIR/.apt/usr/lib/x86_64-linux-gnu -Xlinker -rpath=$BUILD_DIR/.apt/usr/lib | indent
+
+# These should be statically linked, seems a Swift bug.
 status "Copying dynamic libraries"
 mkdir -p $BUILD_DIR/.swift-lib
 cp $SWIFT_PATH/usr/lib/swift/linux/*.so $BUILD_DIR/.swift-lib
+cp $BUILD_DIR/.build/release/*.so $BUILD_DIR/.swift-lib 2>/dev/null || true
 
 status "Copying binaries to 'bin'"
 mkdir -p $BUILD_DIR/.swift-bin
@@ -73,11 +206,55 @@ find $BUILD_DIR/.build/release -type f -perm /a+x -exec cp {} $BUILD_DIR/.swift-
 status "Cleaning up build files"
 rm -rf $BUILD_DIR/.build
 
-# Setup application environment
-PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
-mkdir -p $BUILD_DIR/.profile.d
-set-env() {
-  echo "export $1=$2" >> $PROFILE_PATH
+# ----------------------------------------------------------------------------- #
+# Copy Packages folder from BUILD_DIR to CACHE_DIR                              #
+# ----------------------------------------------------------------------------- #
+cache_build() {
+  status "Clearing previous swift cache"
+  clear_cache
+  # cf set-env swift-helloworld SWIFT_PACKAGES_CACHE true
+  # cf restage swift-helloworld
+  if ! ${SWIFT_PACKAGES_CACHE:-true}; then
+    status "Skipping cache save (disabled by config)"
+  else
+    status "Saving cache (default):"
+    save_cache_directories "$BUILD_DIR" "$CACHE_DIR" "$PACKAGES_DIR"
+  fi
+  save_signatures
 }
+cache_build
+
+# ----------------------------------------------------------------------------- #
+# Removing binaries and tar files from the CACHE_DIR to speed up                #
+# the 'Uploading droplet' step. Caching tar files and/or large                  #
+# directories results in a negative performance hit.                            #
+# ----------------------------------------------------------------------------- #
+status "Optimizing contents of cache folder..."
+rm -rf $CACHE_DIR/$SWIFT_NAME_VERSION
+rm -rf $CACHE_DIR/$CLANG_NAME_VERSION
+rm -rf $CACHE_DIR/"$SWIFT_NAME_VERSION.tar.gz"
+rm -rf $CACHE_DIR/"$CLANG_NAME_VERSION.tar.xz"
+for DEB in $(ls -1 $compile_buildpack_dir/binary-dependencies/*.deb); do
+  rm $APT_CACHE_DIR/archives/$(basename $DEB)
+done
+
+# ----------------------------------------------------------------------------- #
+# Set up application environment                                                #
+# ----------------------------------------------------------------------------- #
+PROFILE_PATH="$BUILD_DIR/.profile.d/swift.sh"
 set-env PATH '$HOME/.swift-bin:$PATH'
-set-env LD_LIBRARY_PATH '$HOME/.swift-lib'
+set-env LD_LIBRARY_PATH '$HOME/.swift-lib:$LIBRARY_PATH'
+
+# ----------------------------------------------------------------------------- #
+# Backup code                                                                   #
+# ----------------------------------------------------------------------------- #
+# If leveraging CACHE_DIR for tar files, then uncomment this code
+#status "Optimizing contents of cache folder"
+# Remove unpacked tars (~1 GB of data)
+#rm -rf $CACHE_DIR/$SWIFT_NAME_VERSION
+#rm -rf $CACHE_DIR/$CLANG_NAME_VERSION
+# Remove items already cached in the buildpack package
+#for i in "${CACHED_ITEMS[@]}"
+#do
+#  rm -rf $i
+#done
