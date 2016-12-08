@@ -19,6 +19,7 @@
 # Configuration and setup.                                                      #
 # ----------------------------------------------------------------------------- #
 set -e
+set -o pipefail
 
 if [[ "${BP_DEBUG}X" != "X" ]]; then
   # Show all commands
@@ -164,7 +165,7 @@ restore_cache
 cd $BUILD_DIR
 status "Fetching Swift packages and parsing Package.swift files..."
 swift package fetch
-PACKAGES_TO_INSTALL=($(find . -type f -name "Package.swift" | xargs egrep -r "Apt *\(" | sed -e 's/^.*\.Apt *( *" *//' -e 's/".*$//' | sort | uniq))
+PACKAGES_TO_INSTALL=($(set +o pipefail;find . -type f -name "Package.swift" | xargs egrep -r "Apt *\(" | sed -e 's/^.*\.Apt *( *" *//' -e 's/".*$//' | sort | uniq; set -o pipefail))
 if [ "${#PACKAGES_TO_INSTALL[@]}" -gt "0" ]; then
   status "Additional packages to download: ${PACKAGES_TO_INSTALL[@]}"
   download_packages "${PACKAGES_TO_INSTALL[@]}"
